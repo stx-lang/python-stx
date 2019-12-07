@@ -1,6 +1,7 @@
 from stx import json
-from stx.components import Content
+from stx.parsers.blocks import parse_content
 from stx.reader import Reader
+from stx.utils import Stack
 
 
 def main():
@@ -18,7 +19,6 @@ if __name__ == '__main__':
         content = f.read()
         reader = Reader(content)
 
-        document = Content()
-        document.parse(reader)
+        document = parse_content(reader, Stack())
 
         print(json.dumps(document, indent=2))

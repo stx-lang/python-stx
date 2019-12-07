@@ -6,7 +6,7 @@
       <excludeFolder url="file://$MODULE_DIR$/env" />
       <excludeFolder url="file://$MODULE_DIR$/tests/.pytest_cache" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (stx)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PackageRequirementsSettings">

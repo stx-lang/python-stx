@@ -1,8 +1,5 @@
 from typing import List, Optional
 
-ETX = '\u0003'
-EOT = '\u0004'
-
 
 class Reader:
 
@@ -53,6 +50,10 @@ class Reader:
         self._indent_stack.pop()
 
     @property
+    def alive(self) -> bool:
+        return self.position < self.length
+
+    @property
     def indent(self):
         if len(self._indent_stack) > 0:
             return self._indent_stack[-1]
@@ -85,101 +86,80 @@ class Reader:
 
         return f'{line + 1}:{column + 1}'
 
-    def read_char(self) -> str:
+    def read_char(self) -> Optional[str]:
         # EOT if there is nothing to read
         if self.position >= self.length:
-            return EOT
+            return None
 
         indent = self.indent
 
         if self.column < indent:
             position0 = self.position
             skipped = 0
+            broken = False
 
             while self.position < self.length and skipped < indent:
                 if self.content[self.position] == ' ':
                     self.position += 1
                     skipped += 1
+                elif self.content[self.position] == '\n':
+                    broken = True
+                    self.position += 1
+                    break
                 else:
                     break
 
-            if skipped < indent:
+            if broken:
+                return '\n'
+            elif skipped < indent:
                 self.position = position0
-                return EOT
+                return None
 
         c = self.content[self.position]
 
         self.position += 1
 
-        if c == '\n':
-            position0 = self.position
-            separations = 0
-            skipped = 0
-
-            while self.position < self.length:
-                if self.content[self.position] == ' ':
-                    skipped += 1
-                elif self.content[self.position] == '\n':
-                    position0 = self.position + 1
-                    skipped = 0
-                    separations += 1
-
-                    if separations > 1:
-                        raise Exception(
-                            f'{self.location}: Too much separations')
-                else:
-                    break
-
-                self.position += 1
-
-                if skipped == indent:
-                    break
-
-            # EOF If there is no more to read
-            if self.position >= self.length:
-                return EOT
-
-            # Not enough spaces to complete the indentation, go back
-            if skipped < indent:
-                self.position = position0
-                return EOT
-
-            # ETX If there are separations
-            if separations > 0:
-                return ETX
-
         return c
 
+    def read_chars(self, length: int) -> Optional[str]:
+        chars = ''
+
+        for n in range(0, length):
+            c = self.read_char()
+
+            if c is None:
+                return None
+
+            chars += c
+
+        return chars
+
     def test(self, expected: str) -> bool:
-        if len(expected) == 0:
+        if not expected:
             return False
-        elif len(expected) > 1:
-            raise Exception()
 
         position0 = self.position
 
-        actual = self.read_char()
+        actual = self.read_chars(len(expected))
 
         self.position = position0
 
         return actual == expected
 
-    def any(self, *symbols: str) -> bool:
-        for symbol in symbols:
-            if self.test(symbol):
+    def any(self, *expected: str) -> bool:
+        for item in expected:
+            if self.test(item):
                 return True
 
         return False
 
     def pull(self, expected: str) -> bool:
-        if len(expected) == 0:
+        if not expected:
             return False
-        elif len(expected) > 1:
-            raise Exception()
 
         position0 = self.position
 
-        actual = self.read_char()
+        actual = self.read_chars(len(expected))
 
         if actual != expected:
             self.position = position0
