@@ -1,7 +1,10 @@
 from stx import json
-from stx.parsers.blocks import parse_content
+from stx.compiler import compile_block
+from stx.html5.renderer import render_document
+from stx.parsers.blocks import parse_block
 from stx.reader import Reader
 from stx.utils import Stack
+from stx.writting import HtmlWriter
 
 
 def main():
@@ -17,8 +20,12 @@ class Abc:
 if __name__ == '__main__':
     with open("example/book.txt", "r", encoding="utf-8") as f:
         content = f.read()
-        reader = Reader(content)
 
-        document = parse_content(reader, Stack())
+    reader = Reader(content)
 
-        print(json.dumps(document, indent=2))
+    block = parse_block(reader, Stack())
+
+    document = compile_block(block)
+
+    with open("example/book.html", "w", encoding="utf-8") as f:
+        html = render_document(HtmlWriter(f), document)

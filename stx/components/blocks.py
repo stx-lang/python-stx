@@ -6,62 +6,58 @@ class Block:
     pass
 
 
-class LineText(Block):
+class BLineText(Block):
 
-    def __init__(self, content: str):
-        self.content = content
+    def __init__(self, text: str):
+        self.text = text
 
 
-class Title(Block):
+class BTitle(Block):
 
     def __init__(self, content: Block, level: int):
         self.content = content
         self.level = level
 
 
-class Separator(Block):
+class BSeparator(Block):
 
     def __init__(self):
         self.size = 1
 
 
-class TableCell(Block):
+class BTableCell(Block):
 
     def __init__(self, content: Block):
         self.content = content
 
 
-class TableRow(Block):
+class BTableRow(Block):
 
-    def __init__(self, cells: List[TableCell]):
+    def __init__(self, cells: List[BTableCell]):
         self.cells = cells
 
 
-class Table(Block):
-    pass
-
-
-class ListItem(Block):
+class BListItem(Block):
 
     def __init__(self, content: Block, ordered: bool):
         self.content = content
         self.ordered = ordered
 
 
-class CodeBlock(Block):
+class BCodeBlock(Block):
 
-    def __init__(self, content: str):
-        self.content = content
+    def __init__(self, text: str):
+        self.text = text
 
 
-class Attribute(Block):
+class BAttribute(Block):
 
     def __init__(self, name: str, value: Optional[str]):
         self.name = name
         self.value = value
 
 
-class Content(Block):
+class BComposite(Block):
 
-    def __init__(self, components: List[Block]):
-        self.components = components
+    def __init__(self, blocks: List[Block]):
+        self.blocks = blocks

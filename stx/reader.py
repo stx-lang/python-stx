@@ -41,7 +41,7 @@ class Reader:
     @position.setter
     def position(self, value):
         self._position = value
-        self.debug()
+        # self.debug()
 
     def push_indent(self, indent: int):
         self._indent_stack.append(indent)

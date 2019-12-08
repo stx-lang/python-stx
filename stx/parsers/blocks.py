@@ -2,14 +2,14 @@ import string
 
 from typing import Optional
 
-from stx.components.blocks import Block, Content, Title, ListItem, TableRow
-from stx.components.blocks import LineText, Separator, TableCell, CodeBlock
-from stx.components.blocks import Attribute
 from stx.reader import Reader
 from stx.utils import Stack
+from stx.components.blocks import Block, BComposite, BTitle, BListItem
+from stx.components.blocks import BLineText, BSeparator, BTableCell
+from stx.components.blocks import BAttribute, BTableRow, BCodeBlock
 
 
-def parse_content(reader: Reader, stop_marks: Stack) -> Block:
+def parse_block(reader: Reader, stop_marks: Stack) -> Block:
     components = []
 
     while True:
@@ -28,29 +28,30 @@ def parse_content(reader: Reader, stop_marks: Stack) -> Block:
         if component is None:
             break
         elif (len(components) > 0
-              and isinstance(components[-1], Separator)
-              and isinstance(component, Separator)):
+              and isinstance(components[-1], BSeparator)
+              and isinstance(component, BSeparator)):
             # Collapse multiple separators into one
             components[-1].size += 1
         else:
             components.append(component)
 
     if len(components) == 0:
-        return Separator()
+        return BSeparator()
     if len(components) == 1:
         return components[0]
 
-    return Content(components)
+    return BComposite(components)
 
 
-def parse_separator(reader: Reader, stop_marks: Stack) -> Optional[Separator]:
+def parse_separator(
+        reader: Reader, stop_marks: Stack) -> Optional[BSeparator]:
     if reader.pull('\n'):
-        return Separator()
+        return BSeparator()
 
     return None
 
 
-def parse_title(reader: Reader, stop_marks: Stack) -> Optional[Title]:
+def parse_title(reader: Reader, stop_marks: Stack) -> Optional[BTitle]:
     if not reader.pull('='):
         return None
 
@@ -64,14 +65,14 @@ def parse_title(reader: Reader, stop_marks: Stack) -> Optional[Title]:
 
     reader.push_indent(reader.column)
 
-    content = parse_content(reader, stop_marks)
+    content = parse_block(reader, stop_marks)
 
     reader.pop_indent()
 
-    return Title(content, level)
+    return BTitle(content, level)
 
 
-def parse_list(reader: Reader, stop_marks: Stack) -> Optional[ListItem]:
+def parse_list(reader: Reader, stop_marks: Stack) -> Optional[BListItem]:
     if reader.pull('-'):
         ordered = False
     elif reader.pull('.'):
@@ -84,14 +85,15 @@ def parse_list(reader: Reader, stop_marks: Stack) -> Optional[ListItem]:
 
     reader.push_indent(reader.column)
 
-    content = parse_content(reader, stop_marks)
+    content = parse_block(reader, stop_marks)
 
     reader.pop_indent()
 
-    return ListItem(content, ordered)
+    return BListItem(content, ordered)
 
 
-def parse_table_row(reader: Reader, stop_marks: Stack) -> Optional[TableRow]:
+def parse_table_row(
+        reader: Reader, stop_marks: Stack) -> Optional[BTableRow]:
     cells = []
 
     while True:
@@ -100,7 +102,7 @@ def parse_table_row(reader: Reader, stop_marks: Stack) -> Optional[TableRow]:
         if cell is None:
             break
 
-        if isinstance(cell.content, Separator):
+        if isinstance(cell.content, BSeparator):
             break
 
         cells.append(cell)
@@ -108,10 +110,11 @@ def parse_table_row(reader: Reader, stop_marks: Stack) -> Optional[TableRow]:
     if len(cells) == 0:
         return None
 
-    return TableRow(cells)
+    return BTableRow(cells)
 
 
-def parse_table_cell(reader: Reader, stop_marks: Stack) -> Optional[TableCell]:
+def parse_table_cell(
+        reader: Reader, stop_marks: Stack) -> Optional[BTableCell]:
     if not reader.pull('|'):
         return None
 
@@ -119,26 +122,27 @@ def parse_table_cell(reader: Reader, stop_marks: Stack) -> Optional[TableCell]:
         pass
 
     if reader.test('|'):
-        return TableCell(LineText(''))
+        return BTableCell(BLineText(''))
 
     stop_marks.push('|')
     reader.push_indent(reader.column)
 
-    content = parse_content(reader, stop_marks)
+    content = parse_block(reader, stop_marks)
 
     reader.pop_indent()
     stop_marks.pop()
 
-    return TableCell(content)
+    return BTableCell(content)
 
 
-def parse_code_block(reader: Reader, stop_marks: Stack) -> Optional[CodeBlock]:
+def parse_code_block(
+        reader: Reader, stop_marks: Stack) -> Optional[BCodeBlock]:
     content = parse_text_block(reader, '```')
 
     if content is None:
         return None
 
-    return CodeBlock(content)
+    return BCodeBlock(content)
 
 
 def parse_ignore_block(
@@ -149,7 +153,7 @@ def parse_ignore_block(
     if content is None:
         return None
 
-    return Separator()
+    return BSeparator()
 
 
 def parse_text_block(reader: Reader, delimiter: str) -> Optional[str]:
@@ -210,10 +214,11 @@ def parse_attribute(reader: Reader, stop_marks: Stack):
 
         value += c
 
-    return Attribute(name, value)
+    return BAttribute(name, value)
 
 
-def parse_line_text(reader: Reader, stop_marks: Stack) -> Optional[LineText]:
+def parse_line_text(
+        reader: Reader, stop_marks: Stack) -> Optional[BLineText]:
     content = []
 
     while True:
@@ -230,4 +235,4 @@ def parse_line_text(reader: Reader, stop_marks: Stack) -> Optional[LineText]:
     if len(content) == 0:
         return None
 
-    return LineText(''.join(content))
+    return BLineText(''.join(content))
