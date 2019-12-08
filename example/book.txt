@@ -12,6 +12,8 @@ Line-`2`
 
 Line-_3_
 
+> Table Caption (before)
+
 |= Header-1 | Header-2 | Header-3 |
 |  Cell-1   | Cell-2   | Cell-3   |
 |  Cell-4   | Cell-5   | Cell-6   |
@@ -22,3 +24,5 @@ Line-_3_
 Code-Block-Line-1
 Code-Block-Line-2
 ```
+
+< Code caption (after)

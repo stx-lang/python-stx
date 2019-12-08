@@ -41,9 +41,24 @@ def render_contents(writer: HtmlWriter, contents: List[CContent]):
 
 
 def render_code_block(writer: HtmlWriter, code: CCodeBlock):
-    writer.open_tag('pre')
-    writer.text(code.text)
-    writer.close_tag('pre')
+    if code.caption is None:
+        writer.open_tag('pre')
+        writer.text(code.text)
+        writer.close_tag('pre')
+    else:
+        writer.open_tag('figure')
+
+        writer.open_tag('pre')
+        writer.text(code.text)
+        writer.close_tag('pre')
+
+        writer.open_tag('figcaption')
+
+        render_content(writer, code.caption, collapse_paragraph=True)
+
+        writer.close_tag('figcaption')
+
+        writer.close_tag('figure')
 
 
 def render_heading(writer: HtmlWriter, heading: CHeading):
@@ -64,6 +79,13 @@ def render_heading(writer: HtmlWriter, heading: CHeading):
 
 def render_table(writer: HtmlWriter, table: CTable):
     writer.open_tag('table')
+
+    if table.caption is not None:
+        writer.open_tag('caption')
+
+        render_content(writer, table.caption, collapse_paragraph=True)
+
+        writer.close_tag('caption')
 
     for row in table.rows:
         writer.open_tag('tr')

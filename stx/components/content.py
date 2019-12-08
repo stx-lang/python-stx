@@ -15,6 +15,10 @@ class CContent:
         self._attributes = value
 
 
+class WithCaption:
+    caption: Optional[CContent]
+
+
 class CStyledText(CContent):
 
     def __init__(self, contents: List[CContent], style: str):
@@ -80,10 +84,12 @@ class CTableRow(CContent):
         return False
 
 
-class CTable(CContent):
+class CTable(CContent, WithCaption):
 
-    def __init__(self, rows: List[CTableRow]):
+    def __init__(
+            self, rows: List[CTableRow], caption: Optional[CContent] = None):
         self.rows = rows
+        self.caption = caption
 
 
 class CHeading(CContent):
@@ -93,10 +99,11 @@ class CHeading(CContent):
         self.level = level
 
 
-class CCodeBlock(CContent):
+class CCodeBlock(CContent, WithCaption):
 
-    def __init__(self, text: str):
+    def __init__(self, text: str, caption: Optional[CContent] = None):
         self.text = text
+        self.caption = caption
 
 
 class CContainer(CContent):

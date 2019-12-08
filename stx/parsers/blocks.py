@@ -4,7 +4,8 @@ from typing import Optional
 
 from stx.reader import Reader
 from stx.utils import Stack
-from stx.components.blocks import Block, BComposite, BTitle, BListItem
+from stx.components.blocks import Block, BComposite, BTitle, BListItem, \
+    BElement
 from stx.components.blocks import BLineText, BSeparator, BTableCell
 from stx.components.blocks import BAttribute, BTableRow, BCodeBlock
 
@@ -19,6 +20,7 @@ def parse_block(reader: Reader, stop_marks: Stack) -> Block:
         component = (parse_separator(reader, stop_marks) or
                      parse_title(reader, stop_marks) or
                      parse_list(reader, stop_marks) or
+                     parse_element(reader, stop_marks) or
                      parse_table_row(reader, stop_marks) or
                      parse_code_block(reader, stop_marks) or
                      parse_ignore_block(reader, stop_marks) or
@@ -73,6 +75,8 @@ def parse_title(reader: Reader, stop_marks: Stack) -> Optional[BTitle]:
 
 
 def parse_list(reader: Reader, stop_marks: Stack) -> Optional[BListItem]:
+    # TODO refactor to Element
+
     if reader.pull('-'):
         ordered = False
     elif reader.pull('.'):
@@ -90,6 +94,24 @@ def parse_list(reader: Reader, stop_marks: Stack) -> Optional[BListItem]:
     reader.pop_indent()
 
     return BListItem(content, ordered)
+
+
+def parse_element(reader: Reader, stop_marks: Stack) -> Optional[BElement]:
+    if not reader.any('>', '<'):
+        return None
+
+    mark = reader.read_char()
+
+    while reader.pull(' '):
+        pass
+
+    reader.push_indent(reader.column)
+
+    content = parse_block(reader, stop_marks)
+
+    reader.pop_indent()
+
+    return BElement(content, mark)
 
 
 def parse_table_row(

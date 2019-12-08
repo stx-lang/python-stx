@@ -2,10 +2,11 @@ from typing import Optional, List
 
 from stx.compiling.raw_text import compile_paragraph
 from stx.components.blocks import Block, BComposite, BAttribute, BTitle, \
-    BTableRow, BListItem, BTableCell, BSeparator, BCodeBlock, BLineText
+    BTableRow, BListItem, BTableCell, BSeparator, BCodeBlock, BLineText, \
+    BElement
 from stx.components.content import CContent, CList, CTable, CContainer, \
     CHeading, CListItem, CTableRow, CTableCell, CCodeBlock, CRawText, \
-    CParagraph, CPlainText
+    CParagraph, CPlainText, WithCaption
 
 
 def compile_block(block: Block) -> CContent:
@@ -49,9 +50,12 @@ def compile_table_row(row: BTableRow) -> CTableRow:
     )
 
 
-def compile_code_block(code: BCodeBlock) -> CCodeBlock:
+def compile_code_block(
+        code: BCodeBlock,
+        caption: Optional[CContent] = None) -> CCodeBlock:
     return CCodeBlock(
         text=code.text,
+        caption=caption,
     )
 
 
@@ -65,12 +69,19 @@ def compile_blocks(blocks: List[Block]) -> CContent:
     active_raw: Optional[CRawText] = None
     active_attrs: Optional[dict] = None
 
+    pending_caption = None
+
+    def caption_validation():
+        if pending_caption is not None:
+            raise Exception('floating caption')
+
     contents = []
 
     for block in blocks:
         reset_list = True
         reset_table = True
         reset_raw = True
+        validate_caption = True
 
         if isinstance(block, BTitle):
             heading = compile_title(block)
@@ -93,11 +104,31 @@ def compile_blocks(blocks: List[Block]) -> CContent:
                 active_list.items.append(item)
 
             reset_list = False
+        elif isinstance(block, BElement):
+            if block.mark == '>':
+                pending_caption = compile_block(block.content)
+            elif block.mark == '<':
+                post_caption = compile_block(block.content)
+
+                if len(contents) == 0:
+                    raise Exception('no element to put caption')
+
+                last_content = contents[-1]
+
+                if not isinstance(last_content, WithCaption):
+                    raise Exception('element cannot have caption')
+
+                last_content.caption = post_caption
+            else:
+                raise NotImplementedError(f'not implemented mark {block.mark}')
+
+            validate_caption = False
         elif isinstance(block, BTableRow):
             row = compile_table_row(block)
 
             if active_table is None:
-                active_table = CTable([row])
+                active_table = CTable([row], caption=pending_caption)
+                pending_caption = None
 
                 contents.append(active_table)
             else:
@@ -109,7 +140,8 @@ def compile_blocks(blocks: List[Block]) -> CContent:
             reset_table = block.size >= 2
             reset_raw = block.size >= 2
         elif isinstance(block, BCodeBlock):
-            code_block = compile_code_block(block)
+            code_block = compile_code_block(block, pending_caption)
+            pending_caption = None
 
             contents.append(code_block)
         elif isinstance(block, BLineText):
@@ -140,6 +172,11 @@ def compile_blocks(blocks: List[Block]) -> CContent:
 
         if reset_raw:
             active_raw = None
+
+        if validate_caption:
+            caption_validation()
+
+    caption_validation()
 
     for i in range(0, len(contents)):
         if isinstance(contents[i], CRawText):
