@@ -14,7 +14,10 @@ class Writer:
         self.tab_symbol = tab_symbol or '  '
         self.indentation = 0
 
-    def write(self, chars: str):
+    def write(self, chars: Optional[str]):
+        if not chars:
+            return
+
         for char in chars:
             if self._broken:
                 if self.pretty_print and self.indentation > 0:
@@ -46,7 +49,8 @@ class HtmlWriter(Writer):
     def tag(
             self,
             name: str,
-            attributes: Optional[dict] = None):
+            attributes: Optional[dict] = None,
+            inline=False):
         self.write('<')
         self.write(name)  # TODO escape
 
@@ -54,26 +58,37 @@ class HtmlWriter(Writer):
 
         self.write('>')
 
+        if not inline:
+            self.write('\n')
+
     def open_tag(
             self,
             name: str,
-            attributes: Optional[dict] = None):
+            attributes: Optional[dict] = None,
+            inline=False):
         self.write('<')
         self.write(name)  # TODO escape
 
         self._write_attributes(attributes)
 
-        self.write('>\n')
-        self.indentation += 1
+        self.write('>')
 
-    def close_tag(self, name: str):
-        self.indentation -= 1
+        if not inline:
+            self.write('\n')
+            self.indentation += 1
 
-        self.break_line()
+    def close_tag(self, name: str, inline=False):
+        if not inline:
+            self.indentation -= 1
+
+            self.break_line()
 
         self.write('</')
         self.write(name)
-        self.write('>\n')
+        self.write('>')
+
+        if not inline:
+            self.write('\n')
 
     def text(self, content: str):
         self.write(content)  # TODO escape

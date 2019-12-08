@@ -17,15 +17,15 @@ class CContent:
 
 class CStyledText(CContent):
 
-    def __init__(self, content: CContent, style: str):
-        self.content = content
+    def __init__(self, contents: List[CContent], style: str):
+        self.contents = contents
         self.style = style
 
 
 class CLinkText(CContent):
 
-    def __init__(self, content: CContent, reference: Optional[str]):
-        self.content = content
+    def __init__(self, contents: List[CContent], reference: Optional[str]):
+        self.contents = contents
         self.reference = reference
 
 

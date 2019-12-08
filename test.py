@@ -1,5 +1,4 @@
-from stx import json
-from stx.compiler import compile_block
+from stx.compiling.compiler import compile_block
 from stx.html5.renderer import render_document
 from stx.parsers.blocks import parse_block
 from stx.reader import Reader

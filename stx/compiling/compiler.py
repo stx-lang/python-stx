@@ -1,5 +1,6 @@
 from typing import Optional, List
 
+from stx.compiling.raw_text import compile_paragraph
 from stx.components.blocks import Block, BComposite, BAttribute, BTitle, \
     BTableRow, BListItem, BTableCell, BSeparator, BCodeBlock, BLineText
 from stx.components.content import CContent, CList, CTable, CContainer, \
@@ -56,10 +57,6 @@ def compile_code_block(code: BCodeBlock) -> CCodeBlock:
 
 def compile_composite(composite: BComposite) -> CContent:
     return compile_blocks(composite.blocks)
-
-
-def compile_paragraph(text: str):
-    return CParagraph([CPlainText(text)])
 
 
 def compile_blocks(blocks: List[Block]) -> CContent:

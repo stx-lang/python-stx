@@ -123,26 +123,30 @@ def render_plain_text(writer: HtmlWriter, plain: CPlainText):
 
 
 def render_styled_text(writer: HtmlWriter, styled: CStyledText):
-    if styled.style == 'bold':
+    if styled.style == 'strong':
         tag = 'strong'
+    elif styled.style == 'emphasized':
+        tag = 'em'
+    elif styled.style == 'code':
+        tag = 'code'
     else:
         tag = 'span'
 
-    writer.open_tag(tag)
+    writer.open_tag(tag, inline=True)
 
-    render_content(writer, styled.content)
+    render_contents(writer, styled.contents)
 
-    writer.close_tag(tag)
+    writer.close_tag(tag, inline=True)
 
 
 def render_link_text(writer: HtmlWriter, link: CLinkText):
     writer.open_tag('a', {
         'href': link.reference,
-    })
+    }, inline=True)
 
-    render_content(writer, link.content)
+    render_contents(writer, link.contents)
 
-    writer.close_tag('a')
+    writer.close_tag('a', inline=True)
 
 
 def render_content(
