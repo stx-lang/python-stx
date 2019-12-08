@@ -18,7 +18,7 @@ Line-_3_
 |  Cell-1   | Cell-2   | Cell-3   |
 |  Cell-4   | Cell-5   | Cell-6   |
 
-[Line-4]
+[Title-3]
 
 ```
 Code-Block-Line-1

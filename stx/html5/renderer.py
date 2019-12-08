@@ -70,7 +70,12 @@ def render_heading(writer: HtmlWriter, heading: CHeading):
         level = 6
 
     tag = f'h{level}'
-    writer.open_tag(tag)
+    attrs = {}
+
+    if len(heading.ids) > 0:
+        attrs['id'] = heading.ids[0]
+
+    writer.open_tag(tag, attrs)
 
     render_content(writer, heading.content, collapse_paragraph=True)
 
@@ -163,7 +168,8 @@ def render_styled_text(writer: HtmlWriter, styled: CStyledText):
 
 def render_link_text(writer: HtmlWriter, link: CLinkText):
     writer.open_tag('a', {
-        'href': link.reference,
+        # TODO external links
+        'href': f'#{link.reference}',
     }, inline=True)
 
     render_contents(writer, link.contents)

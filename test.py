@@ -1,4 +1,5 @@
 from stx.compiling.compiler import compile_block
+from stx.compiling.validator import build_links
 from stx.html5.renderer import render_document
 from stx.parsers.blocks import parse_block
 from stx.reader import Reader
@@ -25,6 +26,8 @@ if __name__ == '__main__':
     block = parse_block(reader, Stack())
 
     document = compile_block(block)
+
+    build_links(document)
 
     with open("example/book.html", "w", encoding="utf-8") as f:
         html = render_document(HtmlWriter(f), document)
