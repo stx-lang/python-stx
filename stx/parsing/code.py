@@ -1,13 +1,10 @@
-import string
+from typing import Optional
 
-from typing import Optional, Tuple, List
-
+from stx.components.blocks import BCodeBlock
+from stx.components.blocks import BSeparator
+from stx.components.blocks import Block
 from stx.reader import Reader
 from stx.utils import Stack
-from stx.components.blocks import Block, BComposite, BTitle, BListItem, \
-    BElement, BDirective
-from stx.components.blocks import BLineText, BSeparator, BTableCell
-from stx.components.blocks import BAttribute, BTableRow, BCodeBlock
 
 
 def parse_code_block(

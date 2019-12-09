@@ -1,15 +1,11 @@
-import string
+from typing import Optional
 
 import stx.parsing.block as block
 
-from typing import Optional, Tuple, List
-
+from stx.components.blocks import BLineText, BSeparator, BTableCell
+from stx.components.blocks import BTableRow
 from stx.reader import Reader
 from stx.utils import Stack
-from stx.components.blocks import Block, BComposite, BTitle, BListItem, \
-    BElement, BDirective
-from stx.components.blocks import BLineText, BSeparator, BTableCell
-from stx.components.blocks import BAttribute, BTableRow, BCodeBlock
 
 
 def parse_table_row(

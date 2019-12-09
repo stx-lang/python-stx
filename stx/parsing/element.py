@@ -1,16 +1,10 @@
-import string
+from typing import Optional
 
 import stx.parsing.block as block
 
-from typing import Optional, Tuple, List
-
+from stx.components.blocks import BTitle, BListItem, BElement
 from stx.reader import Reader
 from stx.utils import Stack
-from stx.components.blocks import Block, BComposite, BTitle, BListItem, \
-    BElement, BDirective
-from stx.components.blocks import BLineText, BSeparator, BTableCell
-from stx.components.blocks import BAttribute, BTableRow, BCodeBlock
-
 
 
 def parse_title(reader: Reader, stop_marks: Stack) -> Optional[BTitle]:

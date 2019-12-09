@@ -1,13 +1,10 @@
 import string
+from typing import Tuple, List
 
-from typing import Optional, Tuple, List
-
+from stx.components.blocks import BAttribute
+from stx.components.blocks import BDirective
 from stx.reader import Reader
 from stx.utils import Stack
-from stx.components.blocks import Block, BComposite, BTitle, BListItem, \
-    BElement, BDirective
-from stx.components.blocks import BLineText, BSeparator, BTableCell
-from stx.components.blocks import BAttribute, BTableRow, BCodeBlock
 
 
 def parse_name_values(reader) -> Tuple[str, List[str]]:

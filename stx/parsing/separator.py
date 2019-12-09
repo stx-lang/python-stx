@@ -1,15 +1,8 @@
-import string
+from typing import Optional
 
-from typing import Optional, Tuple, List
-
+from stx.components.blocks import BSeparator
 from stx.reader import Reader
 from stx.utils import Stack
-from stx.components.blocks import Block, BComposite, BTitle, BListItem, \
-    BElement, BDirective
-from stx.components.blocks import BLineText, BSeparator, BTableCell
-from stx.components.blocks import BAttribute, BTableRow, BCodeBlock
-
-
 
 
 def parse_separator(

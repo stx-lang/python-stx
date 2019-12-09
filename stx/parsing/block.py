@@ -1,21 +1,14 @@
-import string
-
-from typing import Optional, Tuple, List
-
-from stx.reader import Reader
-from stx.utils import Stack
-from stx.components.blocks import Block, BComposite, BTitle, BListItem, \
-    BElement, BDirective
-from stx.components.blocks import BLineText, BSeparator, BTableCell
-from stx.components.blocks import BAttribute, BTableRow, BCodeBlock
-
-
-import stx.parsing.separator as separator
-import stx.parsing.line as line
-import stx.parsing.table as table
 import stx.parsing.code as code
 import stx.parsing.directive as directive
 import stx.parsing.element as element
+import stx.parsing.line as line
+import stx.parsing.separator as separator
+import stx.parsing.table as table
+
+from stx.components.blocks import BSeparator
+from stx.components.blocks import Block, BComposite
+from stx.reader import Reader
+from stx.utils import Stack
 
 
 def parse_block(reader: Reader, stop_marks: Stack) -> Block:
