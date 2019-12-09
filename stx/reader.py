@@ -9,6 +9,13 @@ class Reader:
         self.content = content
         self._indent_stack: List[int] = []
 
+    @staticmethod
+    def from_file(file_path: str, encoding: str):
+        with open(file_path, 'r', encoding=encoding) as f:
+            content = f.read()
+
+        return Reader(content)
+
     def debug(self):
         line1 = ''
         line2 = ''

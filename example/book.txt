@@ -1,5 +1,7 @@
 = Title-1
 
+#include[test.txt]
+
 Line-*1*
 Line-`2`
 
@@ -7,10 +9,6 @@ Line-`2`
 
 - List-Item-1
 - List-Item-2
-
-!!!
-#directive[asdf]
-!!!
 
 == Title-3
 

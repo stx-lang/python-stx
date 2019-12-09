@@ -35,6 +35,9 @@ def parse_name_values(reader) -> Tuple[str, List[str]]:
 
         value += c
 
+    if len(value) > 0:
+        values.append(value.strip())
+
     return name, values
 
 
