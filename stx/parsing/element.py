@@ -6,6 +6,8 @@ from stx.components.blocks import BTitle, BListItem, BElement
 from stx.reader import Reader
 from stx.utils import Stack
 
+# TODO collapse title and and directive into the element class
+
 
 def parse_title(reader: Reader, stop_marks: Stack) -> Optional[BTitle]:
     if not reader.pull('='):
@@ -21,7 +23,7 @@ def parse_title(reader: Reader, stop_marks: Stack) -> Optional[BTitle]:
 
     reader.push_indent(reader.column)
 
-    content = block.parse_block(reader, stop_marks)
+    content = block.parse(reader, stop_marks)
 
     reader.pop_indent()
 
@@ -43,7 +45,7 @@ def parse_list(reader: Reader, stop_marks: Stack) -> Optional[BListItem]:
 
     reader.push_indent(reader.column)
 
-    content = block.parse_block(reader, stop_marks)
+    content = block.parse(reader, stop_marks)
 
     reader.pop_indent()
 
@@ -61,7 +63,7 @@ def parse_element(reader: Reader, stop_marks: Stack) -> Optional[BElement]:
 
     reader.push_indent(reader.column)
 
-    content = block.parse_block(reader, stop_marks)
+    content = block.parse(reader, stop_marks)
 
     reader.pop_indent()
 

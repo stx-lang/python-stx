@@ -6,6 +6,8 @@ from stx.components.blocks import Block
 from stx.reader import Reader
 from stx.utils import Stack
 
+# TODO make code block class more generic
+
 
 def parse_code_block(
         reader: Reader, stop_marks: Stack) -> Optional[BCodeBlock]:

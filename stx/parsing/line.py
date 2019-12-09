@@ -5,7 +5,7 @@ from stx.reader import Reader
 from stx.utils import Stack
 
 
-def parse_line_text(
+def parse(
         reader: Reader, stop_marks: Stack) -> Optional[BLineText]:
     content = []
 

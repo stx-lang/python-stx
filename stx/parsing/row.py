@@ -8,7 +8,7 @@ from stx.reader import Reader
 from stx.utils import Stack
 
 
-def parse_table_row(
+def parse(
         reader: Reader, stop_marks: Stack) -> Optional[BTableRow]:
     cells = []
 
@@ -43,7 +43,7 @@ def parse_table_cell(
     stop_marks.push('|')
     reader.push_indent(reader.column)
 
-    content = block.parse_block(reader, stop_marks)
+    content = block.parse(reader, stop_marks)
 
     reader.pop_indent()
     stop_marks.pop()

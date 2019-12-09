@@ -1,7 +1,7 @@
 from stx.compiling.compiler import compile_block
 from stx.compiling.validator import build_links
 from stx.html5.renderer import render_document
-from stx.parsing.block import parse_block
+from stx.parsing.block import parse
 from stx.reader import Reader
 from stx.utils import Stack
 from stx.writting import HtmlWriter
@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     reader = Reader(content)
 
-    block = parse_block(reader, Stack())
+    block = parse(reader, Stack())
 
     document = compile_block(block)
 

@@ -6,6 +6,8 @@ from stx.components.blocks import BDirective
 from stx.reader import Reader
 from stx.utils import Stack
 
+# TODO collapse attribute and directive into a single class
+
 
 def parse_name_values(reader) -> Tuple[str, List[str]]:
     name = ''
@@ -52,4 +54,3 @@ def parse_directive(reader: Reader, stop_marks: Stack):
     name, values = parse_name_values(reader)
 
     return BDirective(name, values)
-
