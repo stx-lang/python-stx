@@ -3,7 +3,7 @@ from typing import Optional, List
 from stx.compiling.raw_text import compile_paragraph
 from stx.components.blocks import Block, BComposite, BAttribute, BTitle, \
     BTableRow, BListItem, BTableCell, BSeparator, BCodeBlock, BLineText, \
-    BElement
+    BElement, BDirective
 from stx.components.content import CContent, CList, CTable, CContainer, \
     CHeading, CListItem, CTableRow, CTableCell, CCodeBlock, CRawText, \
     CParagraph, CPlainText, WithCaption
@@ -160,7 +160,9 @@ def compile_blocks(blocks: List[Block]) -> CContent:
             if block.name in active_attrs:
                 raise Exception(f'Attribute already defined: {block.name}')
 
-            active_attrs[block.name] = block.value
+            active_attrs[block.name] = block.values
+        elif isinstance(block, BDirective):
+            raise Exception(f'directive not implemented: {block.name}')
         else:
             raise NotImplementedError()
 

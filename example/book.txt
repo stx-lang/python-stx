@@ -8,6 +8,8 @@ Line-`2`
 - List-Item-1
 - List-Item-2
 
+#directive[asdf]
+
 == Title-3
 
 Line-_3_

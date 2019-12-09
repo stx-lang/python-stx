@@ -59,9 +59,16 @@ class BCodeBlock(Block):
 
 class BAttribute(Block):
 
-    def __init__(self, name: str, value: Optional[str]):
+    def __init__(self, name: str, values: List[str]):
         self.name = name
-        self.value = value
+        self.values = values
+
+
+class BDirective(Block):
+
+    def __init__(self, name: str, values: List[str]):
+        self.name = name
+        self.values = values
 
 
 class BComposite(Block):
