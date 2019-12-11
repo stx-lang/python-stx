@@ -1,6 +1,7 @@
 from os import path
-from typing import Dict
+from typing import Dict, List
 
+from stx.compiling.index_node import IndexNode
 from stx.components.content import CContent
 from stx.reader import Reader
 
@@ -14,6 +15,7 @@ class Context:
         self.encoding = None
         self.ids: IDsMap = {}
         self.linked_stylesheets = []
+        self.index: List[IndexNode] = None
 
     def resolve_reader(self, file_path: str) -> Reader:
         return Reader.from_file(

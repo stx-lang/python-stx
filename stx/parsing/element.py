@@ -2,7 +2,7 @@ from typing import Optional
 
 import stx.parsing.block as block
 
-from stx.components.blocks import BTitle, BListItem, BElement
+from stx.components.blocks import BTitle, BListItem, MarkedBlock
 from stx.reader import Reader
 from stx.utils import Stack
 
@@ -52,7 +52,7 @@ def parse_list(reader: Reader, stop_marks: Stack) -> Optional[BListItem]:
     return BListItem(content, ordered)
 
 
-def parse_element(reader: Reader, stop_marks: Stack) -> Optional[BElement]:
+def parse_element(reader: Reader, stop_marks: Stack) -> Optional[MarkedBlock]:
     if not reader.any('>', '<'):
         return None
 
@@ -67,4 +67,4 @@ def parse_element(reader: Reader, stop_marks: Stack) -> Optional[BElement]:
 
     reader.pop_indent()
 
-    return BElement(content, mark)
+    return MarkedBlock(content, mark)

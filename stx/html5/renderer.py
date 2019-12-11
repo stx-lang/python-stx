@@ -1,9 +1,10 @@
-from typing import List
+from typing import List, Optional
 
 from stx.compiling.context import Context
+from stx.compiling.index_node import IndexNode
 from stx.components.content import CContent, CContainer, CCodeBlock, CHeading, \
     CTable, CList, CParagraph, CRawText, CTableRow, CPlainText, CStyledText, \
-    CLinkText, CEmbeddedText
+    CLinkText, CEmbeddedText, CFigure
 from stx.writting import HtmlWriter
 
 
@@ -26,6 +27,8 @@ def render_document(context: Context, writer: HtmlWriter, content: CContent):
     writer.close_tag('head')
 
     writer.open_tag('body')
+
+    render_index(context, writer)
 
     writer.open_tag('main')
 
@@ -55,26 +58,10 @@ def render_code_block(context: Context, writer: HtmlWriter, code: CCodeBlock):
     if css_classes is not None and len(css_classes) > 0:
         pre_attributes['class'] = ' '.join(css_classes)
 
-    if code.caption is None:
-        writer.open_tag('pre', inline=True, attributes=pre_attributes)
-        writer.text(code.text, disable_indentation=True)
-        writer.close_tag('pre', inline=True)
-        writer.break_line()
-    else:
-        writer.open_tag('figure')
-
-        writer.open_tag('pre', inline=True, attributes=pre_attributes)
-        writer.text(code.text, disable_indentation=True)
-        writer.close_tag('pre', inline=True)
-        writer.break_line()
-
-        writer.open_tag('figcaption')
-
-        render_content(context, writer, code.caption, collapse_paragraph=True)
-
-        writer.close_tag('figcaption')
-
-        writer.close_tag('figure')
+    writer.open_tag('pre', inline=True, attributes=pre_attributes)
+    writer.text(code.text, disable_indentation=True)
+    writer.close_tag('pre', inline=True)
+    writer.break_line()
 
 
 def render_heading(context: Context, writer: HtmlWriter, heading: CHeading):
@@ -102,14 +89,19 @@ def render_heading(context: Context, writer: HtmlWriter, heading: CHeading):
     writer.close_tag(tag)
 
 
-def render_table(context: Context, writer: HtmlWriter, table: CTable):
+def render_table(
+        context: Context,
+        writer: HtmlWriter,
+        table: CTable):
     writer.open_tag('table')
 
     if table.caption is not None:
         writer.open_tag('caption')
 
         if table.number is not None:
+            writer.open_tag('span', {'class': 'stx-number'}, inline=True)
             writer.text(table.number)
+            writer.close_tag('span', inline=True)
             writer.text(' ')
 
         render_content(context, writer, table.caption, collapse_paragraph=True)
@@ -207,6 +199,26 @@ def render_embedded_text(
     writer.write_raw(embedded.text)
 
 
+def render_figure(context: Context, writer: HtmlWriter, figure: CFigure):
+    writer.open_tag('figure')
+
+    render_content(context, writer, figure.content)
+
+    writer.open_tag('figcaption')
+
+    if figure.number is not None:
+        writer.open_tag('span', {'class': 'stx-number'}, inline=True)
+        writer.text(figure.number)
+        writer.close_tag('span', inline=True)
+        writer.text(' ')
+
+    render_content(context, writer, figure.caption, collapse_paragraph=True)
+
+    writer.close_tag('figcaption')
+
+    writer.close_tag('figure')
+
+
 def render_content(
         context: Context,
         writer: HtmlWriter,
@@ -236,5 +248,46 @@ def render_content(
         render_raw(context, writer, content)
     elif isinstance(content, CEmbeddedText):
         render_embedded_text(context, writer, content)
+    elif isinstance(content, CFigure):
+        render_figure(context, writer, content)
     else:
         raise NotImplementedError()
+
+
+def render_index(context: Context, writer: HtmlWriter):
+    writer.open_tag('nav', {'class': 'toc'})
+
+    render_index_nodes(context, writer, context.index)
+
+    writer.close_tag('nav')
+
+
+def render_index_nodes(
+        context: Context, writer: HtmlWriter, nodes: List[IndexNode]):
+    if len(nodes) == 0:
+        return
+
+    writer.open_tag('ol')
+
+    for node in nodes:
+        writer.open_tag('li')
+
+        writer.open_tag('a', {
+            'href': f'#{node.heading.ids[0]}',
+        }, inline=True)
+
+        if node.heading.number is not None:
+            writer.text(node.heading.number)
+            writer.text(' ')
+
+        render_content(
+            context, writer, node.heading.content, collapse_paragraph=True)
+
+        writer.close_tag('a', inline=True)
+        writer.break_line()
+
+        render_index_nodes(context, writer, node.nodes)
+
+        writer.close_tag('li')
+
+    writer.close_tag('ol')

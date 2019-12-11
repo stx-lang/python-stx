@@ -1,16 +1,18 @@
 from os import path, walk
-from typing import Optional, List
 
+from typing import List, Optional
+
+from stx.compiling.state import State
 from stx.compiling.context import Context
-from stx.compiling.numbering import build_numbering
-from stx.compiling.raw_text import compile_paragraph
-from stx.compiling.validator import build_links
-from stx.components.blocks import Block, BComposite, BAttribute, BTitle, \
-    BTableRow, BListItem, BTableCell, BSeparator, BCodeBlock, BLineText, \
-    BElement, BDirective
-from stx.components.content import CContent, CList, CTable, CContainer, \
-    CHeading, CListItem, CTableRow, CTableCell, CCodeBlock, CRawText, \
-    CParagraph, CPlainText, WithCaption, CEmbeddedText
+from stx.components.blocks import Block, BComposite, BAttribute, BTitle
+from stx.components.blocks import BTableRow, BListItem, BTableCell
+from stx.components.blocks import MarkedBlock, BDirective
+from stx.components.blocks import BSeparator, BCodeBlock, BLineText
+from stx.components.content import CContent, CList, CTable, CContainer
+from stx.components.content import CHeading, CListItem, CTableRow
+from stx.components.content import CTableCell, CCodeBlock, CFigure
+from stx.components.content import CEmbeddedText
+
 from stx.parsing.block import parse
 from stx.reader import Reader
 from stx.utils import Stack
@@ -43,17 +45,91 @@ def compile_block(context: Context, block: Block) -> CContent:
     return compile_blocks(context, blocks)
 
 
-def compile_title(context: Context, title: BTitle) -> CHeading:
-    return CHeading(
+def compile_blocks(context: Context, blocks: List[Block]) -> CContent:
+    state = State()
+
+    for block in blocks:
+        if isinstance(block, BDirective):
+            compile_directive(state, context, block)
+        elif isinstance(block, BTitle):
+            compile_title(state, context, block)
+        elif isinstance(block, BListItem):
+            compile_list_item(state, context, block)
+        elif isinstance(block, BTableRow):
+            compile_table_row(state, context, block)
+        elif isinstance(block, BCodeBlock):
+            compile_code_block(state, context, block)
+        elif isinstance(block, MarkedBlock):
+            if block.mark == '>':
+                compile_pre_caption(state, context, block)
+            elif block.mark == '<':
+                compile_post_caption(state, context, block)
+            else:
+                raise NotImplementedError(
+                    f'Not implemented mark {block.mark}')
+        elif isinstance(block, BLineText):
+            state.push_line(block.text)
+        elif isinstance(block, BAttribute):
+            state.push_attribute(block.name, block.values)
+        elif isinstance(block, BSeparator):
+            if block.size >= 2:
+                state.push_separator()
+
+            state.flush_lines()
+        else:
+            raise NotImplementedError()
+
+    contents = state.compile()
+
+    if len(contents) == 1:
+        return contents[0]
+
+    return CContainer(contents)
+
+
+def compile_title(state: State, context: Context, title: BTitle):
+    heading = CHeading(
         content=compile_block(context, title.content),
         level=title.level,
     )
 
+    state.push(heading)
 
-def compile_list_item(context: Context, item: BListItem) -> CListItem:
-    return CListItem(
-        content=compile_block(context, item.content),
-    )
+
+def compile_list_item(state: State, context: Context, block_item: BListItem):
+    last = state.last_content
+
+    if isinstance(last, CFigure):
+        last = last.content
+
+    if isinstance(last, CList) and last.ordered == block_item.ordered:
+        active_list = last
+    else:
+        active_list = CList([], block_item.ordered)
+
+        state.push(active_list)
+
+    item_content = compile_block(context, block_item.content)
+    item = CListItem(content=item_content)
+
+    active_list.items.append(item)
+
+
+def compile_table_row(state: State, context: Context, row: BTableRow):
+    last = state.last_content
+
+    if isinstance(last, CTable):
+        active_table = last
+    else:
+        active_table = CTable([])
+
+        state.push(active_table)
+
+    cells = [compile_table_cell(context, cell) for cell in row.cells]
+
+    row = CTableRow(cells=cells)
+
+    active_table.rows.append(row)
 
 
 def compile_table_cell(context: Context, cell: BTableCell) -> CTableCell:
@@ -69,24 +145,45 @@ def compile_table_cell(context: Context, cell: BTableCell) -> CTableCell:
     return CTableCell(content, header)
 
 
-def compile_table_row(context: Context, row: BTableRow) -> CTableRow:
-    return CTableRow(
-        cells=[compile_table_cell(context, cell) for cell in row.cells],
-    )
+def compile_pre_caption(state: State, context: Context, element: MarkedBlock):
+    state.pending_caption = compile_block(context, element.content)
 
 
-def compile_code_block(
-        context: Context,
-        code: BCodeBlock,
-        caption: Optional[CContent] = None) -> CCodeBlock:
-    return CCodeBlock(
-        text=code.text,
-        caption=caption,
-    )
+def compile_post_caption(state: State, context: Context, element: MarkedBlock):
+    caption = compile_block(context, element.content)
+
+    last = state.last_content
+
+    if isinstance(last, CTable):
+        last.caption = caption
+    else:
+        content = state.pop()
+
+        figure = CFigure(content, caption)
+
+        state.push(figure)
 
 
-def compile_composite(context: Context, composite: BComposite) -> CContent:
-    return compile_blocks(context, composite.blocks)
+def compile_code_block(state: State, context: Context, block: BCodeBlock):
+    content = CCodeBlock(text=block.text)
+
+    state.push(content)
+
+
+def compile_directive(state: State, context: Context, directive: BDirective):
+    if directive.name == 'include':
+        if len(directive.values) != 1:
+            raise Exception('Expected one argument')
+        content = compile_include(context, directive.values[0])
+
+        if content is not None:
+            state.push(content)
+    elif directive.name == 'stylesheet':
+        if len(directive.values) != 1:
+            raise Exception('Expected one argument')
+        compile_stylesheet(context, directive.values[0])
+    else:
+        raise Exception(f'directive not implemented: {directive.name}')
 
 
 def compile_include(context: Context, include_path: str) -> Optional[CContent]:
@@ -126,156 +223,3 @@ def compile_include(context: Context, include_path: str) -> Optional[CContent]:
 
 def compile_stylesheet(context: Context, stylesheet_path: str):
     context.linked_stylesheets.append(stylesheet_path)
-
-
-def compile_directive(
-        context: Context, directive: BDirective) -> Optional[CContent]:
-    if directive.name == 'include':
-        if len(directive.values) != 1:
-            raise Exception('Expected one argument')
-        return compile_include(context, directive.values[0])
-    elif directive.name == 'stylesheet':
-        if len(directive.values) != 1:
-            raise Exception('Expected one argument')
-        compile_stylesheet(context, directive.values[0])
-        return None
-
-    raise Exception(f'directive not implemented: {directive.name}')
-
-
-def compile_blocks(context: Context, blocks: List[Block]) -> CContent:
-    active_list: Optional[CList] = None
-    active_table: Optional[CTable] = None
-    active_raw: Optional[CRawText] = None
-    active_attrs: Optional[dict] = None
-
-    pending_caption = None
-
-    def caption_validation():
-        if pending_caption is not None:
-            raise Exception('floating caption')
-
-    contents = []
-
-    for block in blocks:
-        reset_list = True
-        reset_table = True
-        reset_raw = True
-        validate_caption = True
-
-        if isinstance(block, BTitle):
-            heading = compile_title(context, block)
-            heading.attributes = active_attrs
-            active_attrs = None
-
-            contents.append(heading)
-        elif isinstance(block, BListItem):
-            if (active_list is not None
-                    and active_list.ordered != block.ordered):
-                active_list = None
-
-            item = compile_list_item(context, block)
-
-            if active_list is None:
-                active_list = CList([item], block.ordered)
-                active_list.attributes = active_attrs
-                active_attrs = None
-
-                contents.append(active_list)
-            else:
-                active_list.items.append(item)
-
-            reset_list = False
-        elif isinstance(block, BElement):
-            if block.mark == '>':
-                pending_caption = compile_block(context, block.content)
-            elif block.mark == '<':
-                post_caption = compile_block(context, block.content)
-
-                if len(contents) == 0:
-                    raise Exception('no element to put caption')
-
-                last_content = contents[-1]
-
-                if not isinstance(last_content, WithCaption):
-                    raise Exception('element cannot have caption')
-
-                last_content.caption = post_caption
-            else:
-                raise NotImplementedError(f'not implemented mark {block.mark}')
-
-            validate_caption = False
-        elif isinstance(block, BTableRow):
-            row = compile_table_row(context, block)
-
-            if active_table is None:
-                active_table = CTable([row], caption=pending_caption)
-                active_table.attributes = active_attrs
-                active_attrs = None
-
-                pending_caption = None
-
-                contents.append(active_table)
-            else:
-                active_table.rows.append(row)
-
-            reset_table = False
-        elif isinstance(block, BSeparator):
-            reset_list = block.size >= 2
-            reset_table = block.size >= 2
-            reset_raw = block.size >= 1
-        elif isinstance(block, BCodeBlock):
-            code_block = compile_code_block(context, block, pending_caption)
-            code_block.attributes = active_attrs
-            active_attrs = None
-
-            pending_caption = None
-
-            contents.append(code_block)
-        elif isinstance(block, BLineText):
-            if active_raw is None:
-                active_raw = CRawText([block.text])
-
-                contents.append(active_raw)
-            else:
-                active_raw.lines.append(block.text)
-
-            reset_raw = False
-        elif isinstance(block, BAttribute):
-            if active_attrs is None:
-                active_attrs = {}
-
-            if block.name in active_attrs:
-                raise Exception(f'Attribute already defined: {block.name}')
-
-            active_attrs[block.name] = block.values
-        elif isinstance(block, BDirective):
-            content = compile_directive(context, block)
-
-            if content is not None:
-                contents.append(content)
-        else:
-            raise NotImplementedError()
-
-        if reset_list:
-            active_list = None
-
-        if reset_table:
-            active_table = None
-
-        if reset_raw:
-            active_raw = None
-
-        if validate_caption:
-            caption_validation()
-
-    caption_validation()
-
-    for i in range(0, len(contents)):
-        if isinstance(contents[i], CRawText):
-            contents[i] = compile_paragraph('\n'.join(contents[i].lines))
-
-    if len(contents) == 1:
-        return contents[0]
-
-    return CContainer(contents)

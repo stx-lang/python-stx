@@ -3,26 +3,17 @@ from __future__ import annotations
 from typing import List, Dict, Optional
 
 from stx.compiling.context import Context
-from stx.components.content import CContent, CContainer, CHeading, CTable
+from stx.compiling.index_node import IndexNode
+from stx.components.content import CContent, CContainer, CHeading, CTable, \
+    CFigure
 from stx.utils import Stack
-
-
-class IndexNode:
-
-    def __init__(self, heading: CHeading):
-        self.heading = heading
-        self.level = heading.level
-        self.nodes: List[IndexNode] = []
-
-    def add(self, node: IndexNode):
-        self.nodes.append(node)
 
 
 def build_numbering(context: Context, document: CContent):
     index: List[IndexNode] = []
     stack: Stack[IndexNode] = Stack()
+    figures: List[CFigure] = []
     tables: List[CTable] = []
-    figures = []
 
     for content in document.walk():
         if isinstance(content, CHeading):
@@ -55,11 +46,15 @@ def build_numbering(context: Context, document: CContent):
 
                 stack.push(node)
         elif isinstance(content, CTable):
-            if content.caption is not None:
-                tables.append(content)
+            tables.append(content)
+        elif isinstance(content, CFigure):
+            figures.append(content)
 
     apply_heading_numbers('', index, 3)
     apply_table_numbers(tables)
+    apply_figure_numbers(figures)
+
+    context.index = index
 
     return index
 
@@ -86,5 +81,12 @@ def apply_table_numbers(tables: List[CTable]):
 
     for table in tables:
         table.number = f'Table {count}.'
+        count += 1
 
+
+def apply_figure_numbers(figures: List[CFigure]):
+    count = 1
+
+    for figure in figures:
+        figure.number = f'Figure {count}.'
         count += 1

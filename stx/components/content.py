@@ -37,10 +37,6 @@ class CContent:
                 yield item
 
 
-class WithCaption:
-    caption: Optional[CContent]
-
-
 def get_plain_text_of_contents(contents: List[CContent]):
     items = []
 
@@ -184,11 +180,24 @@ class CTableRow(CContent):
         return self.cells
 
 
-class CTable(CContent, WithCaption):
+class CTable(CContent):
 
-    def __init__(
-            self, rows: List[CTableRow], caption: Optional[CContent] = None):
+    def __init__(self, rows: List[CTableRow]):
         self.rows = rows
+        self.caption = None
+        self.number = None
+
+    def get_plain_text(self) -> List[str]:
+        return get_plain_text_of_contents(self.get_children())
+
+    def get_children(self) -> List[CContent]:
+        return self.rows
+
+
+class CFigure(CContent):
+
+    def __init__(self, content: CContent, caption: CContent):
+        self.content = content
         self.caption = caption
         self.number = None
 
@@ -196,12 +205,7 @@ class CTable(CContent, WithCaption):
         return get_plain_text_of_contents(self.get_children())
 
     def get_children(self) -> List[CContent]:
-        children = list(self.rows)
-
-        if self.caption is not None:
-            children += [self.caption]
-
-        return children
+        return [self.content, self.caption]
 
 
 class CHeading(CContent):
@@ -221,24 +225,15 @@ class CHeading(CContent):
         return f'H{self.level}[{self.content}]'
 
 
-class CCodeBlock(CContent, WithCaption):
+class CCodeBlock(CContent):
 
-    def __init__(self, text: str, caption: Optional[CContent] = None):
+    def __init__(self, text: str):
         self.text = text
-        self.caption = caption
 
     def get_plain_text(self) -> List[str]:
-        items = [self.text]
-
-        if self.caption is not None:
-            items += self.caption.get_plain_text()
-
-        return items
+        return [self.text]
 
     def get_children(self) -> List[CContent]:
-        if self.caption is not None:
-            return [self.caption]
-
         return []
 
 

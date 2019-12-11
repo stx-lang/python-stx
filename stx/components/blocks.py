@@ -44,7 +44,7 @@ class BListItem(Block):
         self.ordered = ordered
 
 
-class BElement(Block):
+class MarkedBlock(Block):
 
     def __init__(self, content: Block, mark: str):
         self.content = content

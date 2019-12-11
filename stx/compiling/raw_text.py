@@ -143,3 +143,7 @@ def compile_paragraph(text: str) -> CParagraph:
     contents = parse_contents(Tape(text), Stack())
 
     return CParagraph(contents)
+
+
+def compile_lines(lines: List[str]) -> Optional[CContent]:
+    return compile_paragraph('\n'.join(lines))
