@@ -2,6 +2,7 @@ from os import path, walk
 from typing import Optional, List
 
 from stx.compiling.context import Context
+from stx.compiling.numbering import build_numbering
 from stx.compiling.raw_text import compile_paragraph
 from stx.compiling.validator import build_links
 from stx.components.blocks import Block, BComposite, BAttribute, BTitle, \
@@ -29,8 +30,6 @@ def from_file(context: Context, file_path: str, encoding='UTF-8') -> CContent:
 def from_reader(context: Context, reader: Reader) -> CContent:
     block = parse(reader, Stack())
     content = compile_block(context, block)
-
-    build_links(context, content)
 
     return content
 

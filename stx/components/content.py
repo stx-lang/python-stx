@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Iterable
 
 
 class CContent:
@@ -29,6 +29,13 @@ class CContent:
     def get_children(self) -> List[CContent]:
         raise NotImplementedError()
 
+    def walk(self) -> Iterable[CContent]:
+        for content in self.get_children():
+            yield content
+
+            for item in content.walk():
+                yield item
+
 
 class WithCaption:
     caption: Optional[CContent]
@@ -55,6 +62,9 @@ class CStyledText(CContent):
     def get_children(self) -> List[CContent]:
         return self.contents
 
+    def __repr__(self):
+        return f'StyledText[{self.style}|{"|".join(str(self.contents))}]'
+
 
 class CLinkText(CContent):
 
@@ -68,6 +78,9 @@ class CLinkText(CContent):
     def get_children(self) -> List[CContent]:
         return self.contents
 
+    def __repr__(self):
+        return f'LinkText[{self.reference}|{"|".join(str(self.contents))}]'
+
 
 class CPlainText(CContent):
 
@@ -79,6 +92,9 @@ class CPlainText(CContent):
 
     def get_children(self) -> List[CContent]:
         return []
+
+    def __repr__(self):
+        return f'PlainText[{self.text}]'
 
 
 class CRawText(CContent):
@@ -92,6 +108,9 @@ class CRawText(CContent):
     def get_children(self) -> List[CContent]:
         return []
 
+    def __repr__(self):
+        return f'RawText[{len(self.lines)} lines]'
+
 
 class CParagraph(CContent):
 
@@ -103,6 +122,9 @@ class CParagraph(CContent):
 
     def get_children(self) -> List[CContent]:
         return self.contents
+
+    def __repr__(self):
+        return f'Paragraph[{self.get_plain_text()}'
 
 
 class CListItem(CContent):
@@ -168,6 +190,7 @@ class CTable(CContent, WithCaption):
             self, rows: List[CTableRow], caption: Optional[CContent] = None):
         self.rows = rows
         self.caption = caption
+        self.number = None
 
     def get_plain_text(self) -> List[str]:
         return get_plain_text_of_contents(self.get_children())
@@ -186,12 +209,16 @@ class CHeading(CContent):
     def __init__(self, content: CContent, level: int):
         self.content = content
         self.level = level
+        self.number: Optional[str] = None
 
     def get_plain_text(self) -> List[str]:
         return self.content.get_plain_text()
 
     def get_children(self) -> List[CContent]:
         return [self.content]
+
+    def __repr__(self):
+        return f'H{self.level}[{self.content}]'
 
 
 class CCodeBlock(CContent, WithCaption):

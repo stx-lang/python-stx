@@ -93,6 +93,10 @@ def render_heading(context: Context, writer: HtmlWriter, heading: CHeading):
 
     writer.open_tag(tag, attrs)
 
+    if heading.number is not None:
+        writer.text(heading.number)
+        writer.text(' ')
+
     render_content(context, writer, heading.content, collapse_paragraph=True)
 
     writer.close_tag(tag)
@@ -103,6 +107,10 @@ def render_table(context: Context, writer: HtmlWriter, table: CTable):
 
     if table.caption is not None:
         writer.open_tag('caption')
+
+        if table.number is not None:
+            writer.text(table.number)
+            writer.text(' ')
 
         render_content(context, writer, table.caption, collapse_paragraph=True)
 
