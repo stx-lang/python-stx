@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, List
+from typing import Optional, List, Dict
 
 
 class CContent:
@@ -7,13 +7,13 @@ class CContent:
     _ids = None
 
     @property
-    def attributes(self) -> dict:
+    def attributes(self) -> Dict[str, list]:
         if self._attributes is None:
             self._attributes = {}
         return self._attributes
 
     @attributes.setter
-    def attributes(self, value: Optional[dict]):
+    def attributes(self, value: Optional[Dict[str, list]]):
         self._attributes = value
 
     @property
@@ -212,6 +212,19 @@ class CCodeBlock(CContent, WithCaption):
         if self.caption is not None:
             return [self.caption]
 
+        return []
+
+
+class CEmbeddedText(CContent):
+
+    def __init__(self, text: str, source: str):
+        self.text = text
+        self.source = source
+
+    def get_plain_text(self) -> List[str]:
+        return []
+
+    def get_children(self) -> List[CContent]:
         return []
 
 

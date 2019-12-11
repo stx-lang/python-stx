@@ -48,7 +48,7 @@ def validate_link(context: Context, link: CLinkText):
     ref_id = get_id(reference)
 
     if ref_id not in context.ids.keys():
-        raise Exception(f'Invalid reference: {reference}')
+        print(f'WARNING: Invalid reference: {reference}')
 
     link.reference = ref_id
 

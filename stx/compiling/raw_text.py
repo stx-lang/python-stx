@@ -109,7 +109,7 @@ def parse_plain_text(tape: Tape, stop_marks: Stack) -> Optional[CPlainText]:
         elif tape.pull('\\'):
             if tape.test(stop_marks.peek()):
                 content += tape.read()
-            if tape.any('*', '_', '`', '[', ']', '(', ')', '\\'):
+            elif tape.any('*', '_', '`', '[', ']', '(', ')', '\\'):
                 content += tape.read()
             else:
                 content += '\\'

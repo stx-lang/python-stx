@@ -1,4 +1,4 @@
-from os import path
+from os import path, walk
 from typing import Optional, List
 
 from stx.compiling.context import Context
@@ -9,16 +9,18 @@ from stx.components.blocks import Block, BComposite, BAttribute, BTitle, \
     BElement, BDirective
 from stx.components.content import CContent, CList, CTable, CContainer, \
     CHeading, CListItem, CTableRow, CTableCell, CCodeBlock, CRawText, \
-    CParagraph, CPlainText, WithCaption
+    CParagraph, CPlainText, WithCaption, CEmbeddedText
 from stx.parsing.block import parse
 from stx.reader import Reader
 from stx.utils import Stack
 
 
-def from_file(file_path: str, encoding='UTF-8') -> CContent:
+def from_file(context: Context, file_path: str, encoding='UTF-8') -> CContent:
     dir_path = path.dirname(file_path)
 
-    context = Context(base_path=dir_path, encoding=encoding)
+    context.base_path = dir_path
+    context.encoding = encoding
+
     reader = Reader.from_file(file_path, encoding)
 
     return from_reader(context, reader)
@@ -88,17 +90,56 @@ def compile_composite(context: Context, composite: BComposite) -> CContent:
     return compile_blocks(context, composite.blocks)
 
 
-def compile_include(context: Context, file_path: str) -> CContent:
-    reader = context.resolve_reader(file_path)
+def compile_include(context: Context, include_path: str) -> Optional[CContent]:
+    file_paths = []
+    target_path = path.join(context.base_path, include_path)
 
-    return from_reader(context, reader)
+    if path.isdir(target_path):
+        for root, dirs, files in walk(target_path):
+            for name in files:
+                file_paths.append(path.join(root, name))
+    else:
+        file_paths.append(target_path)
+
+    contents = []
+
+    for file_path in sorted(file_paths):
+        if file_path.endswith('.stx'):
+            reader = context.resolve_reader(file_path)
+            content = from_reader(context, reader)
+
+            contents.append(content)
+        else:
+            source = path.relpath(file_path, context.base_path)
+
+            with open(file_path, 'r', encoding='UTF-8') as f:
+                content = f.read()
+
+            contents.append(CEmbeddedText(content, source))
+
+    if len(contents) == 0:
+        return None
+    elif len(contents) == 1:
+        return contents[0]
+
+    return CContainer(contents)
 
 
-def compile_directive(context: Context, directive: BDirective) -> CContent:
+def compile_stylesheet(context: Context, stylesheet_path: str):
+    context.linked_stylesheets.append(stylesheet_path)
+
+
+def compile_directive(
+        context: Context, directive: BDirective) -> Optional[CContent]:
     if directive.name == 'include':
         if len(directive.values) != 1:
             raise Exception('Expected one argument')
         return compile_include(context, directive.values[0])
+    elif directive.name == 'stylesheet':
+        if len(directive.values) != 1:
+            raise Exception('Expected one argument')
+        compile_stylesheet(context, directive.values[0])
+        return None
 
     raise Exception(f'directive not implemented: {directive.name}')
 
@@ -138,6 +179,8 @@ def compile_blocks(context: Context, blocks: List[Block]) -> CContent:
 
             if active_list is None:
                 active_list = CList([item], block.ordered)
+                active_list.attributes = active_attrs
+                active_attrs = None
 
                 contents.append(active_list)
             else:
@@ -168,6 +211,9 @@ def compile_blocks(context: Context, blocks: List[Block]) -> CContent:
 
             if active_table is None:
                 active_table = CTable([row], caption=pending_caption)
+                active_table.attributes = active_attrs
+                active_attrs = None
+
                 pending_caption = None
 
                 contents.append(active_table)
@@ -178,9 +224,12 @@ def compile_blocks(context: Context, blocks: List[Block]) -> CContent:
         elif isinstance(block, BSeparator):
             reset_list = block.size >= 2
             reset_table = block.size >= 2
-            reset_raw = block.size >= 2
+            reset_raw = block.size >= 1
         elif isinstance(block, BCodeBlock):
             code_block = compile_code_block(context, block, pending_caption)
+            code_block.attributes = active_attrs
+            active_attrs = None
+
             pending_caption = None
 
             contents.append(code_block)
@@ -202,7 +251,10 @@ def compile_blocks(context: Context, blocks: List[Block]) -> CContent:
 
             active_attrs[block.name] = block.values
         elif isinstance(block, BDirective):
-            contents.append(compile_directive(context, block))
+            content = compile_directive(context, block)
+
+            if content is not None:
+                contents.append(content)
         else:
             raise NotImplementedError()
 

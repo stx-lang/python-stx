@@ -9,10 +9,11 @@ IDsMap = Dict[str, CContent]
 
 class Context:
 
-    def __init__(self, base_path: str, encoding: str):
-        self.base_path = base_path
-        self.encoding = encoding
+    def __init__(self):
+        self.base_path = None
+        self.encoding = None
         self.ids: IDsMap = {}
+        self.linked_stylesheets = []
 
     def resolve_reader(self, file_path: str) -> Reader:
         return Reader.from_file(

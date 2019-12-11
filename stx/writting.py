@@ -1,3 +1,4 @@
+import string
 from typing import TextIO, Optional
 
 
@@ -13,6 +14,12 @@ class Writer:
         self.pretty_print = pretty_print
         self.tab_symbol = tab_symbol or '  '
         self.indentation = 0
+
+    def write_raw(self, chars: Optional[str]):
+        if not chars:
+            return
+
+        self._out.write(chars)
 
     def write(self, chars: Optional[str]):
         if not chars:
@@ -34,16 +41,29 @@ class Writer:
             self.write('\n')
 
 
+def html_escape_char(c: str) -> str:
+    if c not in (string.ascii_letters + string.digits + ' \n.,-/()[]'):
+        code = ord(c)
+
+        return f'&#{code};'
+
+    return c
+
+
+def html_escape(content: str) -> str:
+    return ''.join([html_escape_char(c) for c in content])
+
+
 class HtmlWriter(Writer):
 
     def _write_attributes(self, attributes: Optional[dict]):
         if attributes is not None and len(attributes) > 0:
             for attr_name, attr_value in attributes.items():
                 self.write(' ')
-                self.write(attr_name)  # TODO escape
+                self.write(html_escape(attr_name))
                 self.write('=')
                 self.write('"')
-                self.write(attr_value)  # TODO escape
+                self.write(html_escape(attr_value))
                 self.write('"')
 
     def tag(
@@ -52,7 +72,7 @@ class HtmlWriter(Writer):
             attributes: Optional[dict] = None,
             inline=False):
         self.write('<')
-        self.write(name)  # TODO escape
+        self.write(html_escape(name))
 
         self._write_attributes(attributes)
 
@@ -67,7 +87,7 @@ class HtmlWriter(Writer):
             attributes: Optional[dict] = None,
             inline=False):
         self.write('<')
-        self.write(name)  # TODO escape
+        self.write(html_escape(name))
 
         self._write_attributes(attributes)
 
@@ -90,5 +110,19 @@ class HtmlWriter(Writer):
         if not inline:
             self.write('\n')
 
-    def text(self, content: str):
-        self.write(content)  # TODO escape
+    def text(self, content: str, disable_indentation=False):
+        indentation0 = self.indentation
+
+        if disable_indentation:
+            self.indentation = 0
+
+        self.write(html_escape(content))
+
+        if disable_indentation:
+            self.indentation = indentation0
+
+    def comment(self, content: str):
+        self.break_line()
+        self.write('<!--')
+        self.text(content)
+        self.write('-->\n')

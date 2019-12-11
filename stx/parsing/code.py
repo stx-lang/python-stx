@@ -54,6 +54,9 @@ def parse_text_block(reader: Reader, delimiter: str) -> Optional[str]:
 
     reader.pop_indent()
 
+    if len(content) > 0 and content[-1] == '\n':
+        content.pop()
+
     return ''.join(content)
 
 
