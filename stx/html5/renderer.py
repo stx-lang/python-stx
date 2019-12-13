@@ -14,8 +14,13 @@ def render_document(context: Context, writer: HtmlWriter, content: CContent):
 
     writer.open_tag('head')
 
+    writer.tag('meta', {'author': 'generator', 'content': 'Sergio Pedraza'})
+    writer.tag('meta', {'name': 'generator', 'content': 'STX 0.0.1'})
+
     writer.open_tag('title')
-    writer.text('STX\n')
+
+    writer.text(' '.join(context.index[0].heading.get_plain_text()))
+
     writer.close_tag('title')
 
     for href in context.linked_stylesheets:
@@ -53,15 +58,33 @@ def render_contents(context: Context, writer: HtmlWriter, contents: List[CConten
 def render_code_block(context: Context, writer: HtmlWriter, code: CCodeBlock):
     pre_attributes = {}
 
-    css_classes = code.attributes.pop('source', None)
+    css_classes = code.attributes.get_list('source')
 
-    if css_classes is not None and len(css_classes) > 0:
+    if len(css_classes) > 0:
         pre_attributes['class'] = ' '.join(css_classes)
 
     writer.open_tag('pre', inline=True, attributes=pre_attributes)
     writer.text(code.text, disable_indentation=True)
     writer.close_tag('pre', inline=True)
     writer.break_line()
+
+
+def open_tag(
+        context: Context,
+        writer: HtmlWriter,
+        content: CContent,
+        tag: str,
+        attrs: dict):
+    main_ref = context.links.get_main_ref(content)
+
+    if main_ref is not None:
+        attrs['id'] = main_ref
+
+    writer.open_tag(tag, attrs)
+
+    for other_ref in context.links.get_other_refs(content):
+        writer.open_tag('a', {'id': other_ref}, inline=True)
+        writer.close_tag('a', inline=True)
 
 
 def render_heading(context: Context, writer: HtmlWriter, heading: CHeading):
@@ -75,14 +98,13 @@ def render_heading(context: Context, writer: HtmlWriter, heading: CHeading):
     tag = f'h{level}'
     attrs = {}
 
-    if len(heading.ids) > 0:
-        attrs['id'] = heading.ids[0]
-
-    writer.open_tag(tag, attrs)
+    open_tag(context, writer, heading, tag, attrs)
 
     if heading.number is not None:
+        writer.open_tag('span', inline=True)
         writer.text(heading.number)
         writer.text(' ')
+        writer.close_tag('span', inline=True)
 
     render_content(context, writer, heading.content, collapse_paragraph=True)
 
@@ -147,7 +169,7 @@ def render_list(context: Context, writer: HtmlWriter, lst: CList):
 
 
 def render_paragraph(context: Context, writer: HtmlWriter, paragraph: CParagraph):
-    writer.open_tag('p')
+    open_tag(context, writer, paragraph, 'p', {})
 
     for content in paragraph.contents:
         render_content(context, writer, content)
@@ -183,9 +205,13 @@ def render_styled_text(context: Context, writer: HtmlWriter, styled: CStyledText
 
 
 def render_link_text(context: Context, writer: HtmlWriter, link: CLinkText):
+    if link.internal:
+        href = f'#{link.reference}'
+    else:
+        href = link.reference
+
     writer.open_tag('a', {
-        # TODO external links
-        'href': f'#{link.reference}',
+        'href': href,
     }, inline=True)
 
     render_contents(context, writer, link.contents)
@@ -270,11 +296,16 @@ def render_index_nodes(
     writer.open_tag('ol')
 
     for node in nodes:
+        ref = context.links.get_main_ref(node.heading)
+
+        a_attrs = {}
+
+        if ref is not None:
+            a_attrs['href'] = f'#{ref}'
+
         writer.open_tag('li')
 
-        writer.open_tag('a', {
-            'href': f'#{node.heading.ids[0]}',
-        }, inline=True)
+        writer.open_tag('a', a_attrs, inline=True)
 
         if node.heading.number is not None:
             writer.text(node.heading.number)

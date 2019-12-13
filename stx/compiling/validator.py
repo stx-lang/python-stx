@@ -1,34 +1,29 @@
 import hashlib
+import re
 
 from stx.compiling.context import Context
 from stx.components.content import CContent, CHeading, CLinkText
+from stx.link_map import make_ref
 
 
 def build_links(context: Context, content: CContent):
+    consume_ref_attribute(context, content)
     build_content(context, content)
     validate_content(context, content)
 
 
-def get_id(text: str) -> str:
-    return hashlib.md5(text.encode('UTF-8')).hexdigest()
+def consume_ref_attribute(context: Context, content: CContent):
+    for child in content.walk():
+        refs = child.attributes.get_list('ref')
+
+        for ref in refs:
+            ref = make_ref(ref)
+
+            context.links.register_ref(ref, child)
 
 
 def build_heading(context: Context, heading: CHeading):
-    count = 0
-    text = '\n'.join(heading.get_plain_text())
-
-    while True:
-        default_id = get_id(text + (str(count) if count > 0 else ''))
-
-        if default_id in context.ids.keys():
-            count += 1
-        else:
-            break
-
-    context.ids[default_id] = heading
-
-    if default_id not in heading.ids:
-        heading.ids.append(default_id)
+    context.links.register_content(heading, main=True)
 
 
 def build_content(context: Context, content: CContent):
@@ -40,17 +35,20 @@ def build_content(context: Context, content: CContent):
 
 
 def validate_link(context: Context, link: CLinkText):
+    if link.reference is not None and not link.internal:
+        return
+
     if link.reference is not None:
         reference = link.reference
     else:
         reference = '\n'.join(link.get_plain_text())
 
-    ref_id = get_id(reference)
+    ref = make_ref(reference)
 
-    if ref_id not in context.ids.keys():
+    if not context.links.contains_ref(ref):
         print(f'WARNING: Invalid reference: {reference}')
 
-    link.reference = ref_id
+    link.reference = ref
 
 
 def validate_content(context: Context, content: CContent):

@@ -1,27 +1,19 @@
 from __future__ import annotations
-from typing import Optional, List, Dict, Iterable
+
+import re
+from typing import Optional, List, Iterable
+
+from stx.attributes_map import AttributesMap
 
 
 class CContent:
     _attributes = None
-    _ids = None
 
     @property
-    def attributes(self) -> Dict[str, list]:
+    def attributes(self) -> AttributesMap:
         if self._attributes is None:
-            self._attributes = {}
+            self._attributes = AttributesMap()
         return self._attributes
-
-    @attributes.setter
-    def attributes(self, value: Optional[Dict[str, list]]):
-        self._attributes = value
-
-    @property
-    def ids(self) -> List[str]:
-        if self._ids is None:
-            self._ids = list()
-
-        return self._ids
 
     def get_plain_text(self) -> List[str]:
         raise NotImplementedError()
@@ -67,6 +59,11 @@ class CLinkText(CContent):
     def __init__(self, contents: List[CContent], reference: Optional[str]):
         self.contents = contents
         self.reference = reference
+
+    @property
+    def internal(self) -> bool:
+        # TODO refactor to external
+        return self.reference is not None and not re.match(r'(?i)^([a-z]+:)?//', self.reference)
 
     def get_plain_text(self) -> List[str]:
         return get_plain_text_of_contents(self.contents)
