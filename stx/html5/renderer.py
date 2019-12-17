@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+from stx import logger
 from stx.compiling.context import Context
 from stx.compiling.index_node import IndexNode
 from stx.components.content import CContent, CContainer, CCodeBlock, CHeading, \
@@ -9,6 +10,8 @@ from stx.writting import HtmlWriter
 
 
 def render_document(context: Context, writer: HtmlWriter, content: CContent):
+    logger.info('Rendering HTML document...')
+
     writer.write('<!DOCTYPE html>\n')
     writer.open_tag('html')
 

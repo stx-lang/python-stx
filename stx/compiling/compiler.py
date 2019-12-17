@@ -2,6 +2,7 @@ from os import path, walk
 
 from typing import List, Optional
 
+from stx import logger
 from stx.compiling.state import State
 from stx.compiling.context import Context
 from stx.components.blocks import Block, BComposite, BAttribute, BTitle
@@ -19,6 +20,8 @@ from stx.utils import Stack
 
 
 def from_file(context: Context, file_path: str, encoding='UTF-8') -> CContent:
+    logger.info(f'Loading file {file_path}...')
+
     dir_path = path.dirname(file_path)
 
     context.base_path = dir_path
@@ -30,7 +33,11 @@ def from_file(context: Context, file_path: str, encoding='UTF-8') -> CContent:
 
 
 def from_reader(context: Context, reader: Reader) -> CContent:
+    logger.info('Parsing file...')
+
     block = parse(reader, Stack())
+
+    logger.info('Compiling blocks...')
     content = compile_block(context, block)
 
     return content

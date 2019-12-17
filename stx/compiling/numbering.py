@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import List, Dict, Optional
 
+from stx import logger
 from stx.compiling.context import Context
 from stx.compiling.index_node import IndexNode
 from stx.components.content import CContent, CContainer, CHeading, CTable, \
@@ -10,6 +11,8 @@ from stx.utils import Stack
 
 
 def build_numbering(context: Context, document: CContent):
+    logger.info('Building numbering...')
+
     index: List[IndexNode] = []
     stack: Stack[IndexNode] = Stack()
     figures: List[CFigure] = []
@@ -50,6 +53,7 @@ def build_numbering(context: Context, document: CContent):
         elif isinstance(content, CFigure):
             figures.append(content)
 
+    logger.info('Applying numbering...')
     apply_heading_numbers('', index, 3)
     apply_table_numbers(tables)
     apply_figure_numbers(figures)

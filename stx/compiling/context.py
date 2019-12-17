@@ -1,6 +1,7 @@
 from os import path
 from typing import Dict, List, Optional
 
+from stx import logger
 from stx.compiling.index_node import IndexNode
 from stx.components.content import CContent
 from stx.link_map import LinkMap
@@ -19,5 +20,6 @@ class Context:
         self.index: Optional[List[IndexNode]] = None
 
     def resolve_reader(self, file_path: str) -> Reader:
+        logger.info(f'Resolving file {file_path}...')
         return Reader.from_file(
             path.join(self.base_path, file_path), self.encoding)

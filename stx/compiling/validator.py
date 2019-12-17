@@ -1,14 +1,20 @@
 import hashlib
 import re
 
+from stx import logger
 from stx.compiling.context import Context
 from stx.components.content import CContent, CHeading, CLinkText
 from stx.link_map import make_ref
 
 
 def build_links(context: Context, content: CContent):
+    logger.info('Processing `ref` attributes...')
     consume_ref_attribute(context, content)
+
+    logger.info('Building automatic references...')
     build_content(context, content)
+
+    logger.info('Validating links references...')
     validate_content(context, content)
 
 
