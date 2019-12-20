@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List
 
-from stx.components import Heading
+from stx.design.components import Heading
 
 
 class IndexNode:

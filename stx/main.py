@@ -1,6 +1,6 @@
-from stx.html5.renderer import render_document
-from stx.loaders import from_file
-from stx.html5.writer import HtmlWriter
+from stx.rendering.html5.renderer import render_document
+from stx.loading.loaders import from_file
+from stx.rendering.html5.writer import HtmlWriter
 
 
 def main():

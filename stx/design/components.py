@@ -4,9 +4,9 @@ import re
 from io import StringIO
 from typing import List, Iterable, Optional, TextIO
 
-from stx.attributes_map import AttributesMap
+from stx.design.attributes_map import AttributesMap
 
-from stx.utils import crop_text
+from stx.utils.strs import crop_text
 
 
 class Component:

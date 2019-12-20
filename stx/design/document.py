@@ -1,4 +1,4 @@
-from stx.attributes_map import AttributesMap
+from stx.design.attributes_map import AttributesMap
 
 
 class Document:

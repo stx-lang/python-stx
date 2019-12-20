@@ -1,7 +1,7 @@
 import string
 from typing import Optional
 
-from stx.writting import Writer
+from stx.rendering.writer import Writer
 
 
 def html_escape_char(c: str) -> str:

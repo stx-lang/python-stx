@@ -2,8 +2,9 @@ from __future__ import annotations
 
 from typing import Optional, TextIO, List
 
-from stx import marks
 from stx.errors import ParseError
+
+from . import _marks
 
 
 class Source:
@@ -120,7 +121,7 @@ class Line:
     def consume_block_info(self) -> Optional[str]:
         text = self.get_current_text()
 
-        for mark in marks.reserved_block_marks:
+        for mark in _marks.reserved_block_marks:
             if text.startswith(mark):
                 begin_index = self.indentation + len(mark)
 

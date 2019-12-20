@@ -3,7 +3,8 @@ from __future__ import annotations
 from typing import Optional
 
 from stx.errors import ParseError
-from stx.source import Source
+
+from ._source import Source
 
 
 class Tape:

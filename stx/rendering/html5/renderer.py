@@ -1,12 +1,12 @@
 from typing import List
 
 from stx import logger
-from stx.index_node import IndexNode
-from stx.components import Component, Composite, CodeBlock, Heading, Table, \
+from stx.design.index_node import IndexNode
+from stx.design.components import Component, Composite, CodeBlock, Heading, Table, \
     ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure
-from stx.document import Document
+from stx.design.document import Document
 
-from stx.html5.writer import HtmlWriter
+from stx.rendering.html5.writer import HtmlWriter
 
 
 def render_document(document: Document, writer: HtmlWriter):

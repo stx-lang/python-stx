@@ -1,6 +1,6 @@
 from stx import logger
-from stx.components import Component, Heading, LinkText
-from stx.ref_map import make_ref, RefMap
+from stx.design.components import Component, Heading, LinkText
+from stx.design.ref_map import make_ref, RefMap
 
 
 def link_component(component: Component) -> RefMap:
