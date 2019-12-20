@@ -1,5 +1,5 @@
 from stx.html5.renderer import render_document
-from stx.v2.loaders import from_file
+from stx.loaders import from_file
 from stx.writting import HtmlWriter
 
 

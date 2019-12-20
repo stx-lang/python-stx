@@ -3,8 +3,8 @@ from __future__ import annotations
 from typing import Optional, TextIO, List
 
 from stx.attributes_map import AttributesMap
-from stx.v2 import marks
-from stx.v2.components import Component, Table, Figure
+from stx import marks
+from stx.components import Component, Table, Figure
 
 
 def generate_error_message(message, file_path, line_index, column_index):

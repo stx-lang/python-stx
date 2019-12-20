@@ -1,7 +1,7 @@
 import string
 from typing import Dict, Optional, List
 
-from stx.v2.components import Component
+from stx.components import Component
 
 
 def make_ref(base: str, length_hint=40) -> str:

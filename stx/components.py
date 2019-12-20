@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import re
 from io import StringIO
-from queue import Queue, LifoQueue
-from typing import List, Iterable, Optional, TextIO, Callable, Any
+from typing import List, Iterable, Optional, TextIO
 
 from stx.attributes_map import AttributesMap
 
-from stx.v2.utils import crop_text
+from stx.utils import crop_text
 
 
 class Component:

@@ -2,16 +2,16 @@ from __future__ import annotations
 
 import os
 import string
-from typing import Optional, Iterator, TextIO, List, Tuple
+from typing import Optional, List, Tuple
 
-from stx.utils import Stack
-from stx.v2 import marks
-from stx.v2.components import Composite, Component, TextBlock, Heading, \
+from stx.stack import Stack
+from stx import marks
+from stx.components import Composite, Component, TextBlock, Heading, \
     RawText, CodeBlock, Table, Figure, ListBlock, TableRow, StyledText, \
     LinkText, PlainText
-from stx.v2.document import Document
-from stx.v2.parsing_classes import Source, Tape, Composer
-from stx.v2.utils import resolve_sibling, walk_files, is_escaped, find_str
+from stx.document import Document
+from stx.parsing_classes import Source, Tape, Composer
+from stx.utils import resolve_sibling, walk_files
 
 
 def parse_styled_text(tape: Tape, stop_marks: Stack) -> Optional[StyledText]:

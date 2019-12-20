@@ -1,5 +1,5 @@
 from stx import logger
-from stx.v2.components import Component, Heading, LinkText
+from stx.components import Component, Heading, LinkText
 from stx.link_map import make_ref, RefMap
 
 

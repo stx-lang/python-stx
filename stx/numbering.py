@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from typing import List, Dict, Optional
+from typing import List
 
 from stx import logger
-from stx.compiling.index_node import IndexNode
-from stx.utils import Stack
-from stx.v2.components import Figure, Table, Heading, Component
+from stx.index_node import IndexNode
+from stx.stack import Stack
+from stx.components import Figure, Table, Heading, Component
 
 
 def build_numbering(document: Component) -> List[IndexNode]:

@@ -1,10 +1,10 @@
-from typing import List, Optional
+from typing import List
 
 from stx import logger
-from stx.compiling.index_node import IndexNode
-from stx.v2.components import Component, Composite, CodeBlock, Heading, Table, \
+from stx.index_node import IndexNode
+from stx.components import Component, Composite, CodeBlock, Heading, Table, \
     ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure
-from stx.v2.document import Document
+from stx.document import Document
 
 from stx.writting import HtmlWriter
 
