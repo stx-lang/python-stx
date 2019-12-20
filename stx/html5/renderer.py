@@ -6,7 +6,7 @@ from stx.components import Component, Composite, CodeBlock, Heading, Table, \
     ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure
 from stx.document import Document
 
-from stx.writting import HtmlWriter
+from stx.html5.writer import HtmlWriter
 
 
 def render_document(document: Document, writer: HtmlWriter):

@@ -4,13 +4,15 @@ import os
 import string
 from typing import Optional, List, Tuple
 
+from stx.source import Source
 from stx.stack import Stack
 from stx import marks
 from stx.components import Composite, Component, TextBlock, Heading, \
     RawText, CodeBlock, Table, Figure, ListBlock, TableRow, StyledText, \
     LinkText, PlainText
 from stx.document import Document
-from stx.parsing_classes import Source, Tape, Composer
+from stx.tape import Tape
+from stx.composer import Composer
 from stx.utils import resolve_sibling, walk_files
 
 
