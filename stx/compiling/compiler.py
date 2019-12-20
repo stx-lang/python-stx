@@ -193,40 +193,6 @@ def compile_directive(state: State, context: Context, directive: BDirective):
         raise Exception(f'directive not implemented: {directive.name}')
 
 
-def compile_include(context: Context, include_path: str) -> Optional[CContent]:
-    file_paths = []
-    target_path = path.join(context.base_path, include_path)
-
-    if path.isdir(target_path):
-        for root, dirs, files in walk(target_path):
-            for name in files:
-                file_paths.append(path.join(root, name))
-    else:
-        file_paths.append(target_path)
-
-    contents = []
-
-    for file_path in sorted(file_paths):
-        if file_path.endswith('.stx'):
-            reader = context.resolve_reader(file_path)
-            content = from_reader(context, reader)
-
-            contents.append(content)
-        else:
-            source = path.relpath(file_path, context.base_path)
-
-            with open(file_path, 'r', encoding='UTF-8') as f:
-                content = f.read()
-
-            contents.append(CEmbeddedText(content, source))
-
-    if len(contents) == 0:
-        return None
-    elif len(contents) == 1:
-        return contents[0]
-
-    return CContainer(contents)
-
 
 def compile_stylesheet(context: Context, stylesheet_path: str):
     context.linked_stylesheets.append(stylesheet_path)

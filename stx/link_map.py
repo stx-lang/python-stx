@@ -1,7 +1,7 @@
 import string
 from typing import Dict, Optional, List
 
-from stx.components.content import CContent
+from stx.v2.components import Component
 
 
 def make_ref(base: str, length_hint=40) -> str:
@@ -18,8 +18,8 @@ def make_ref(base: str, length_hint=40) -> str:
     return ''.join(result)
 
 
-def compute_ref(content: CContent, count: Optional[int]) -> str:
-    plain_text = ' '.join(content.get_plain_text()).strip()
+def compute_ref(content: Component, count: Optional[int]) -> str:
+    plain_text = content.get_text().strip()
 
     if count is not None:
         plain_text += f'-{count}'
@@ -27,16 +27,16 @@ def compute_ref(content: CContent, count: Optional[int]) -> str:
     return make_ref(plain_text)
 
 
-class LinkMap:
+class RefMap:
 
     def __init__(self):
-        self._ref_cons: Dict[str, CContent] = {}
-        self._con_refs: Dict[CContent, List[str]] = {}
+        self._ref_cons: Dict[str, Component] = {}
+        self._con_refs: Dict[Component, List[str]] = {}
 
     def contains_ref(self, ref: str):
         return ref in self._ref_cons.keys()
 
-    def register_content(self, content: CContent, main=False) -> str:
+    def register_content(self, content: Component, main=False) -> str:
         count = 0
 
         while True:
@@ -51,7 +51,7 @@ class LinkMap:
 
         return ref
 
-    def register_ref(self, ref: str, content: CContent, main=False):
+    def register_ref(self, ref: str, content: Component, main=False):
         if self.contains_ref(ref):
             raise Exception(f'Link already registered: {ref}')
 
@@ -66,10 +66,10 @@ class LinkMap:
             else:
                 self._con_refs[content].append(ref)
 
-    def get_refs(self, content: CContent) -> List[str]:
+    def get_refs(self, content: Component) -> List[str]:
         return self._con_refs.get(content, [])
 
-    def get_main_ref(self, content: CContent) -> Optional[str]:
+    def get_main_ref(self, content: Component) -> Optional[str]:
         refs = self.get_refs(content)
 
         if len(refs) == 0:
@@ -77,7 +77,7 @@ class LinkMap:
 
         return refs[0]
 
-    def get_other_refs(self, content: CContent) -> List[str]:
+    def get_other_refs(self, content: Component) -> List[str]:
         refs = self.get_refs(content)
 
         if len(refs) <= 1:
@@ -85,5 +85,5 @@ class LinkMap:
 
         return refs[1:]
 
-    def get_content(self, ref: str) -> Optional[CContent]:
+    def get_content(self, ref: str) -> Optional[Component]:
         return self._ref_cons.get(ref, None)

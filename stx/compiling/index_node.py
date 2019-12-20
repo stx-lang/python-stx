@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import List
 
-from stx.components.content import CHeading
+from stx.v2.components import Heading
 
 
 class IndexNode:
 
-    def __init__(self, heading: CHeading):
+    def __init__(self, heading: Heading):
         self.heading = heading
         self.level = heading.level
         self.nodes: List[IndexNode] = []

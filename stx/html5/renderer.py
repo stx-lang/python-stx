@@ -1,15 +1,15 @@
 from typing import List, Optional
 
 from stx import logger
-from stx.compiling.context import Context
 from stx.compiling.index_node import IndexNode
-from stx.components.content import CContent, CContainer, CCodeBlock, CHeading, \
-    CTable, CList, CParagraph, CRawText, CTableRow, CPlainText, CStyledText, \
-    CLinkText, CEmbeddedText, CFigure
+from stx.v2.components import Component, Composite, CodeBlock, Heading, Table, \
+    ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure
+from stx.v2.document import Document
+
 from stx.writting import HtmlWriter
 
 
-def render_document(context: Context, writer: HtmlWriter, content: CContent):
+def render_document(document: Document, writer: HtmlWriter):
     logger.info('Rendering HTML document...')
 
     writer.write('<!DOCTYPE html>\n')
@@ -22,25 +22,27 @@ def render_document(context: Context, writer: HtmlWriter, content: CContent):
 
     writer.open_tag('title')
 
-    writer.text(' '.join(context.index[0].heading.get_plain_text()))
+    # TODO improve this
+    writer.text(document.index[0].heading.get_text())
 
     writer.close_tag('title')
 
-    for href in context.linked_stylesheets:
+    for stylesheet in document.links.get_list('stylesheet'):
         writer.tag('link', {
             'rel': 'stylesheet',
-            'href': href,
+            'type': 'text/css',
+            'href': stylesheet,
         })
 
     writer.close_tag('head')
 
     writer.open_tag('body')
 
-    render_index(context, writer)
+    render_index(document, writer)
 
     writer.open_tag('main')
 
-    render_content(context, writer, content)
+    render_content(document, writer, document.content)
 
     writer.close_tag('main')
 
@@ -49,16 +51,16 @@ def render_document(context: Context, writer: HtmlWriter, content: CContent):
     writer.close_tag('html')
 
 
-def render_container(context: Context, writer: HtmlWriter, container: CContainer):
-    render_contents(context, writer, container.contents)
+def render_container(document: Document, writer: HtmlWriter, container: Composite):
+    render_contents(document, writer, container.components)
 
 
-def render_contents(context: Context, writer: HtmlWriter, contents: List[CContent]):
+def render_contents(document: Document, writer: HtmlWriter, contents: List[Component]):
     for content in contents:
-        render_content(context, writer, content)
+        render_content(document, writer, content)
 
 
-def render_code_block(context: Context, writer: HtmlWriter, code: CCodeBlock):
+def render_code_block(document: Document, writer: HtmlWriter, code: CodeBlock):
     pre_attributes = {}
 
     css_classes = code.attributes.get_list('source')
@@ -67,30 +69,30 @@ def render_code_block(context: Context, writer: HtmlWriter, code: CCodeBlock):
         pre_attributes['class'] = ' '.join(css_classes)
 
     writer.open_tag('pre', inline=True, attributes=pre_attributes)
-    writer.text(code.text, disable_indentation=True)
+    writer.text(code.code, disable_indentation=True)
     writer.close_tag('pre', inline=True)
     writer.break_line()
 
 
 def open_tag(
-        context: Context,
+        document: Document,
         writer: HtmlWriter,
-        content: CContent,
+        content: Component,
         tag: str,
         attrs: dict):
-    main_ref = context.links.get_main_ref(content)
+    main_ref = document.refs.get_main_ref(content)
 
     if main_ref is not None:
         attrs['id'] = main_ref
 
     writer.open_tag(tag, attrs)
 
-    for other_ref in context.links.get_other_refs(content):
+    for other_ref in document.refs.get_other_refs(content):
         writer.open_tag('a', {'id': other_ref}, inline=True)
         writer.close_tag('a', inline=True)
 
 
-def render_heading(context: Context, writer: HtmlWriter, heading: CHeading):
+def render_heading(document: Document, writer: HtmlWriter, heading: Heading):
     level = heading.level
 
     if level < 1:
@@ -101,7 +103,7 @@ def render_heading(context: Context, writer: HtmlWriter, heading: CHeading):
     tag = f'h{level}'
     attrs = {}
 
-    open_tag(context, writer, heading, tag, attrs)
+    open_tag(document, writer, heading, tag, attrs)
 
     if heading.number is not None:
         writer.open_tag('span', inline=True)
@@ -109,15 +111,15 @@ def render_heading(context: Context, writer: HtmlWriter, heading: CHeading):
         writer.text(' ')
         writer.close_tag('span', inline=True)
 
-    render_content(context, writer, heading.content, collapse_paragraph=True)
+    render_content(document, writer, heading.content, collapse_paragraph=True)
 
     writer.close_tag(tag)
 
 
 def render_table(
-        context: Context,
+        document: Document,
         writer: HtmlWriter,
-        table: CTable):
+        table: Table):
     writer.open_tag('table')
 
     if table.caption is not None:
@@ -129,7 +131,7 @@ def render_table(
             writer.close_tag('span', inline=True)
             writer.text(' ')
 
-        render_content(context, writer, table.caption, collapse_paragraph=True)
+        render_content(document, writer, table.caption, collapse_paragraph=True)
 
         writer.close_tag('caption')
 
@@ -144,7 +146,7 @@ def render_table(
         for cell in row.cells:
             writer.open_tag(cell_tag)
 
-            render_content(context, writer, cell.content, collapse_paragraph=True)
+            render_content(document, writer, cell, collapse_paragraph=True)
 
             writer.close_tag(cell_tag)
 
@@ -153,7 +155,7 @@ def render_table(
     writer.close_tag('table')
 
 
-def render_list(context: Context, writer: HtmlWriter, lst: CList):
+def render_list(document: Document, writer: HtmlWriter, lst: ListBlock):
     if lst.ordered:
         tag = 'ol'
     else:
@@ -164,33 +166,31 @@ def render_list(context: Context, writer: HtmlWriter, lst: CList):
     for item in lst.items:
         writer.open_tag('li')
 
-        render_content(context, writer, item.content, collapse_paragraph=True)
+        render_content(document, writer, item, collapse_paragraph=True)
 
         writer.close_tag('li')
 
     writer.close_tag(tag)
 
 
-def render_paragraph(context: Context, writer: HtmlWriter, paragraph: CParagraph):
-    open_tag(context, writer, paragraph, 'p', {})
+def render_paragraph(document: Document, writer: HtmlWriter, paragraph: TextBlock):
+    open_tag(document, writer, paragraph, 'p', {})
 
-    for content in paragraph.contents:
-        render_content(context, writer, content)
+    for content in paragraph.components:
+        render_content(document, writer, content)
 
     writer.close_tag('p')
 
 
-def render_raw(context: Context, writer: HtmlWriter, raw: CRawText):
-    for line in raw.lines:
-        writer.text(line)
-        writer.text('\n')
+def render_raw(document: Document, writer: HtmlWriter, raw: RawText):
+    writer.text(raw.text)  # TODO to delete?
 
 
-def render_plain_text(context: Context, writer: HtmlWriter, plain: CPlainText):
+def render_plain_text(document: Document, writer: HtmlWriter, plain: PlainText):
     writer.text(plain.text)
 
 
-def render_styled_text(context: Context, writer: HtmlWriter, styled: CStyledText):
+def render_styled_text(document: Document, writer: HtmlWriter, styled: StyledText):
     if styled.style == 'strong':
         tag = 'strong'
     elif styled.style == 'emphasized':
@@ -202,12 +202,12 @@ def render_styled_text(context: Context, writer: HtmlWriter, styled: CStyledText
 
     writer.open_tag(tag, inline=True)
 
-    render_contents(context, writer, styled.contents)
+    render_contents(document, writer, styled.contents)
 
     writer.close_tag(tag, inline=True)
 
 
-def render_link_text(context: Context, writer: HtmlWriter, link: CLinkText):
+def render_link_text(document: Document, writer: HtmlWriter, link: LinkText):
     if link.internal:
         href = f'#{link.reference}'
     else:
@@ -217,21 +217,21 @@ def render_link_text(context: Context, writer: HtmlWriter, link: CLinkText):
         'href': href,
     }, inline=True)
 
-    render_contents(context, writer, link.contents)
+    render_contents(document, writer, link.contents)
 
     writer.close_tag('a', inline=True)
 
 
 def render_embedded_text(
-        context: Context, writer: HtmlWriter, embedded: CEmbeddedText):
-    writer.comment(embedded.source)
+        document: Document, writer: HtmlWriter, embedded: RawText):
+    # writer.comment(embedded.source) TODO where is comes?
     writer.write_raw(embedded.text)
 
 
-def render_figure(context: Context, writer: HtmlWriter, figure: CFigure):
+def render_figure(document: Document, writer: HtmlWriter, figure: Figure):
     writer.open_tag('figure')
 
-    render_content(context, writer, figure.content)
+    render_content(document, writer, figure.content)
 
     writer.open_tag('figcaption')
 
@@ -241,7 +241,7 @@ def render_figure(context: Context, writer: HtmlWriter, figure: CFigure):
         writer.close_tag('span', inline=True)
         writer.text(' ')
 
-    render_content(context, writer, figure.caption, collapse_paragraph=True)
+    render_content(document, writer, figure.caption, collapse_paragraph=True)
 
     writer.close_tag('figcaption')
 
@@ -249,57 +249,55 @@ def render_figure(context: Context, writer: HtmlWriter, figure: CFigure):
 
 
 def render_content(
-        context: Context,
+        document: Document,
         writer: HtmlWriter,
-        content: CContent,
+        content: Component,
         collapse_paragraph=False):
-    if collapse_paragraph and isinstance(content, CParagraph):
-        render_contents(context, writer, content.contents)
-    elif isinstance(content, CContainer):
-        render_container(context, writer, content)
-    elif isinstance(content, CCodeBlock):
-        render_code_block(context, writer, content)
-    elif isinstance(content, CHeading):
-        render_heading(context, writer, content)
-    elif isinstance(content, CTable):
-        render_table(context, writer, content)
-    elif isinstance(content, CList):
-        render_list(context, writer, content)
-    elif isinstance(content, CParagraph):
-        render_paragraph(context, writer, content)
-    elif isinstance(content, CPlainText):
-        render_plain_text(context, writer, content)
-    elif isinstance(content, CStyledText):
-        render_styled_text(context, writer, content)
-    elif isinstance(content, CLinkText):
-        render_link_text(context, writer, content)
-    elif isinstance(content, CRawText):
-        render_raw(context, writer, content)
-    elif isinstance(content, CEmbeddedText):
-        render_embedded_text(context, writer, content)
-    elif isinstance(content, CFigure):
-        render_figure(context, writer, content)
+    if collapse_paragraph and isinstance(content, TextBlock):
+        render_contents(document, writer, content.components)
+    elif isinstance(content, Composite):
+        render_container(document, writer, content)
+    elif isinstance(content, CodeBlock):
+        render_code_block(document, writer, content)
+    elif isinstance(content, Heading):
+        render_heading(document, writer, content)
+    elif isinstance(content, Table):
+        render_table(document, writer, content)
+    elif isinstance(content, ListBlock):
+        render_list(document, writer, content)
+    elif isinstance(content, TextBlock):
+        render_paragraph(document, writer, content)
+    elif isinstance(content, PlainText):
+        render_plain_text(document, writer, content)
+    elif isinstance(content, StyledText):
+        render_styled_text(document, writer, content)
+    elif isinstance(content, LinkText):
+        render_link_text(document, writer, content)
+    elif isinstance(content, RawText):
+        render_embedded_text(document, writer, content)
+    elif isinstance(content, Figure):
+        render_figure(document, writer, content)
     else:
         raise NotImplementedError()
 
 
-def render_index(context: Context, writer: HtmlWriter):
+def render_index(document: Document, writer: HtmlWriter):
     writer.open_tag('nav', {'class': 'toc'})
 
-    render_index_nodes(context, writer, context.index)
+    render_index_nodes(document, writer, document.index)
 
     writer.close_tag('nav')
 
 
 def render_index_nodes(
-        context: Context, writer: HtmlWriter, nodes: List[IndexNode]):
+        document: Document, writer: HtmlWriter, nodes: List[IndexNode]):
     if len(nodes) == 0:
         return
 
     writer.open_tag('ol')
 
     for node in nodes:
-        ref = context.links.get_main_ref(node.heading)
+        ref = document.refs.get_main_ref(node.heading)
 
         a_attrs = {}
 
@@ -315,12 +313,12 @@ def render_index_nodes(
             writer.text(' ')
 
         render_content(
-            context, writer, node.heading.content, collapse_paragraph=True)
+            document, writer, node.heading.content, collapse_paragraph=True)
 
         writer.close_tag('a', inline=True)
         writer.break_line()
 
-        render_index_nodes(context, writer, node.nodes)
+        render_index_nodes(document, writer, node.nodes)
 
         writer.close_tag('li')
 

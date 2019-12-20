@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 from stx import logger
 from stx.compiling.index_node import IndexNode
 from stx.components.content import CContent
-from stx.link_map import LinkMap
+from stx.link_map import RefMap
 from stx.reader import Reader
 
 IDsMap = Dict[str, CContent]
@@ -15,7 +15,7 @@ class Context:
     def __init__(self):
         self.base_path = None
         self.encoding = None
-        self.links = LinkMap()
+        self.links = RefMap()
         self.linked_stylesheets = []
         self.index: Optional[List[IndexNode]] = None
 
