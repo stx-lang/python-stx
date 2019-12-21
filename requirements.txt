@@ -1,1 +1,1 @@
-pytest
+Click==7.0
