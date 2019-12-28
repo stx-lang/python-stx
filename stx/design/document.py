@@ -7,6 +7,7 @@ class Document:
         self.title = None
         self.author = None
         self.content = None
+        self.format = None
         self.refs = None
         self.index = None
         self.links = AttributesMap()

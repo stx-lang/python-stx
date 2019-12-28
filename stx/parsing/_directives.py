@@ -28,9 +28,18 @@ def process_author(document: Document, values: list):
     document.author = values[0]
 
 
+def process_format(document: Document, values: list):
+    if len(values) != 1:
+        raise Exception('Expected format')
+
+    document.format = values[0]
+
+
 def process_directive(name: str, values: List[str], document: Document, source: Source, composer: Composer):
     if name == 'link':
         process_link(document, values)
+    elif name == 'format':
+        process_format(document, values)
     elif name == 'title':
         process_title(document, values)
     elif name == 'author':
