@@ -1,6 +1,6 @@
 from typing import List
 
-from stx import logger
+from stx import logger, app
 from stx.design.index_node import IndexNode
 from stx.design.components import Component, Composite, CodeBlock, Heading, Table, \
     ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure
@@ -17,15 +17,17 @@ def render_document(document: Document, writer: HtmlWriter):
 
     writer.open_tag('head')
 
-    writer.tag('meta', {'author': 'generator', 'content': 'Sergio Pedraza'})
-    writer.tag('meta', {'name': 'generator', 'content': 'STX 0.0.1'})
+    writer.tag('meta', {'name': 'generator', 'content': app.title})
 
-    writer.open_tag('title')
+    if document.author:
+        writer.tag('meta', {'author': 'generator', 'content': document.author})
 
-    # TODO improve this
-    writer.text(document.index[0].heading.get_text())
+    if document.title:
+        writer.open_tag('title')
 
-    writer.close_tag('title')
+        writer.text(document.title)
+
+        writer.close_tag('title')
 
     for stylesheet in document.links.get_list('stylesheet'):
         writer.tag('link', {

@@ -1,18 +1,12 @@
-from stx.rendering.html5.renderer import render_document
-from stx.loading.loaders import from_file
-from stx.rendering.html5.writer import HtmlWriter
-
-
-def main():
-    file_path = '/Users/sergio/bm/docs/src/index.stx'
-
-    document = from_file(file_path)
-
-    with open("/Users/sergio/bm/docs/docs/index.html", "w", encoding="utf-8") as f:
-        render_document(document, HtmlWriter(f))
-
-    print(document)
+from stx.__main__ import main
 
 
 if __name__ == '__main__':
-    main()
+    main(
+        input_file='/Users/sergio/bm/docs/src/index.stx',
+        output_file='/Users/sergio/bm/docs/docs/index.html',
+        output_encoding='utf-8',
+        output_format='html5'
+
+    )
+

@@ -10,6 +10,7 @@ from stx.design.components import Composite, Component, TextBlock, Heading, \
     LinkText, PlainText
 from stx.design.document import Document
 from stx.utils.files import resolve_sibling, walk_files
+from ._directives import process_directive
 
 from ._source import Source
 from ._tape import Tape
@@ -208,26 +209,15 @@ def parse_name_values(tape: Tape) -> Tuple[str, List[str]]:
     return name, values
 
 
-def process_link(document: Document, source: Source, values: list, composer: Composer):
-    if len(values) < 2:
-        raise Exception('Expected rel and files')
-
-    rel = values[0]
-
-    document.links.add_values(rel, values[1:])
-
-
 def parse_directive(document: Document, source: Source, composer: Composer):
     tape = Tape(source)
 
     name, values = parse_name_values(tape)
 
-    if name == 'link':
-        process_link(document, source, values, composer)
-    elif name == 'include':
+    if name == 'include':
         process_include(document, source, values, composer)
     else:
-        raise Exception(f'Not implemented directive: {name}')
+        process_directive(name, values, document, source, composer)
 
 
 def parse_attribute(document: Document, source: Source, composer: Composer):
