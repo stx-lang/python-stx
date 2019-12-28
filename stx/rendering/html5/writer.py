@@ -1,20 +1,7 @@
-import string
 from typing import Optional
 
+from stx.rendering.html5.escaping import html_escape
 from stx.rendering.writer import Writer
-
-
-def html_escape_char(c: str) -> str:
-    if c not in (string.ascii_letters + string.digits + ' \n.,-/()[]'):
-        code = ord(c)
-
-        return f'&#{code};'
-
-    return c
-
-
-def html_escape(content: str) -> str:
-    return ''.join([html_escape_char(c) for c in content])
 
 
 class HtmlWriter(Writer):
