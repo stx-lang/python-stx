@@ -295,17 +295,17 @@ def render_index_nodes(
     if len(nodes) == 0:
         return
 
-    writer.open_tag('ol')
+    writer.open_tag('ul')
 
     for node in nodes:
+        writer.open_tag('li')
+
         ref = document.refs.get_main_ref(node.heading)
 
         a_attrs = {}
 
         if ref is not None:
             a_attrs['href'] = f'#{ref}'
-
-        writer.open_tag('li')
 
         writer.open_tag('a', a_attrs, inline=True)
 
@@ -319,8 +319,9 @@ def render_index_nodes(
         writer.close_tag('a', inline=True)
         writer.break_line()
 
-        render_index_nodes(document, writer, node.nodes)
+        if len(node.nodes) > 0:
+            render_index_nodes(document, writer, node.nodes)
 
         writer.close_tag('li')
 
-    writer.close_tag('ol')
+    writer.close_tag('ul')
