@@ -184,10 +184,6 @@ def render_paragraph(document: Document, writer: HtmlWriter, paragraph: TextBloc
     writer.close_tag('p')
 
 
-def render_raw(document: Document, writer: HtmlWriter, raw: RawText):
-    writer.text(raw.text)  # TODO to delete?
-
-
 def render_plain_text(document: Document, writer: HtmlWriter, plain: PlainText):
     writer.text(plain.text)
 
