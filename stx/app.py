@@ -16,14 +16,17 @@ name = 'STX'
 title = f'{name} {version}'
 
 
-def main(input_file, output_file, output_encoding):
+def main(input_file, output_file):
     document = from_file(input_file)
 
     if document.format is None:
         document.format = 'html5'
 
+    if document.encoding is None:
+        document.encoding = 'UTF-8'
+
     if document.format == 'html5':
-        with open(output_file, 'w', encoding=output_encoding) as f:
+        with open(output_file, 'w', encoding=document.encoding) as f:
             render_document(document, HtmlWriter(f))
     else:
         raise Exception(f'Not implemented output format: {document.format}')

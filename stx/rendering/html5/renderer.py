@@ -17,10 +17,13 @@ def render_document(document: Document, writer: HtmlWriter):
 
     writer.open_tag('head')
 
-    writer.tag('meta', {'name': 'generator', 'content': app.title})
+    if document.encoding:
+        writer.tag('meta', {'charset': document.encoding})
 
     if document.author:
-        writer.tag('meta', {'author': 'generator', 'content': document.author})
+        writer.tag('meta', {'name': 'author', 'content': document.author})
+
+    writer.tag('meta', {'name': 'generator', 'content': app.title})
 
     if document.title:
         writer.open_tag('title')
