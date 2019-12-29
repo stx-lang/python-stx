@@ -19,6 +19,8 @@ from . import _marks
 
 
 def parse_styled_text(tape: Tape, stop_marks: Stack) -> Optional[StyledText]:
+    begin_location = tape.source.location
+
     if tape.test('*'):
         style = 'strong'
     elif tape.test('_'):
@@ -37,7 +39,7 @@ def parse_styled_text(tape: Tape, stop_marks: Stack) -> Optional[StyledText]:
     stop_marks.pop()
 
     if not tape.pull(delimiter):
-        raise Exception('styled text not closed')
+        raise tape.source.error(f'Styled text `{style}` was not closed (started at {begin_location.position}).')
 
     return StyledText(contents, style)
 
@@ -161,7 +163,7 @@ def parse_name_values(tape: Tape) -> Tuple[str, List[str]]:
     tape.skip(' ')
 
     if not tape.test(string.ascii_letters):
-        raise tape.error('Expected to read a name.')
+        raise tape.source.error('Expected to read a name.')
 
     name = tape.read()
 
@@ -196,7 +198,7 @@ def parse_name_values(tape: Tape) -> Tuple[str, List[str]]:
                 value += tape.read()
 
         if not tape.pull(']'):
-            raise tape.error('Expected to read a `]`')
+            raise tape.source.error('Expected to read a `]`')
 
         if value:
             values.append(value)
@@ -204,7 +206,7 @@ def parse_name_values(tape: Tape) -> Tuple[str, List[str]]:
     tape.skip(' \n')
 
     if tape.alive():
-        raise tape.error('Unexpected content')
+        raise tape.source.error('Unexpected content')
 
     return name, values
 

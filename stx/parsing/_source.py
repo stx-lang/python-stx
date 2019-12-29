@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Optional, TextIO, List
 
-from stx.errors import ParseError
-
 from . import _marks
+from ._location import Location
+from ._error import ParseError
 
 
 class Source:
@@ -70,13 +70,23 @@ class Source:
     def pop_begin_index(self):
         self._begin_index_stack.pop()
 
+    @property
+    def location(self) -> Location:
+        line = self.try_line()
+
+        if line is not None:
+            line_index = line.index
+            column_index = line.indentation
+        else:
+            line_index = self._next_index - 1
+            column_index = self.peek_begin_index()
+
+        return Location(line_index, column_index, self.file_path)
+
     def error(self, message: str) -> ParseError:
-        return ParseError(
-            message=message,
-            file_path=self.file_path,
-            line_index=self._next_index - 1,
-            column_index=self.peek_begin_index(),
-        )
+        location = self.location
+
+        return ParseError(message, location)
 
 
 class Line:
@@ -136,11 +146,3 @@ class Line:
                 return mark
 
         return None
-
-    def error(self, message: str, column_index: int) -> ParseError:
-        return ParseError(
-            message=message,
-            file_path=self.source.file_path,
-            line_index=self.index,
-            column_index=column_index,
-        )
