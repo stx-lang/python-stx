@@ -37,6 +37,8 @@ class Composer:
     def compile(self) -> List[Component]:
         if self.pending_caption is not None:
             raise Exception('pending cation')
+        elif len(self.attributes) > 0:
+            raise Exception('floating attributes')
 
         return [c for c in self.contents if c is not None]
 
@@ -46,7 +48,7 @@ class Composer:
 
         return self.contents[-1]
 
-    def push_separator(self):  # TODO still valid?
+    def push_separator(self):
         self.contents.append(None)
 
     def push_attribute(self, name: str, values: List[str]):

@@ -9,6 +9,9 @@ class AttributesMap:
         self._data: Dict[str, List[str]] = {}
         self._read: Dict[str, bool] = {}
 
+    def __len__(self):
+        return len(self._data)
+
     def update(self, other_map: AttributesMap):
         self._data = dict(other_map._data)
         self._read.clear()

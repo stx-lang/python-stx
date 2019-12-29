@@ -120,9 +120,10 @@ def parse_text_block(document: Document, source: Source, composer: Composer, sto
 
     components = parse_inline_text(Tape(source), stop_marks)
 
-    # TODO
-
-    composer.push(TextBlock(components))
+    if len(components) == 0:
+        composer.push_separator()
+    else:
+        composer.push(TextBlock(components))
 
 
 def parse_heading_block(document: Document, source: Source, level: int, composer: Composer):
@@ -257,7 +258,15 @@ def parse_pre_caption(document: Document, source: Source, composer: Composer):
 def parse_post_caption(document: Document, source: Source, composer: Composer):
     caption = parse_component(document, source)
 
-    last = composer.get_last_content()
+    last = None
+
+    while len(composer.contents) > 0:
+        last = composer.get_last_content()
+
+        if last is not None:
+            break
+
+        composer.contents.pop()
 
     if isinstance(last, Table):
         last.caption = caption
