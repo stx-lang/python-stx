@@ -121,6 +121,13 @@ def render_heading(document: Document, writer: HtmlWriter, heading: Heading):
     writer.close_tag(tag)
 
 
+def render_number(writer: HtmlWriter, number: str, css_class: str):
+    writer.open_tag('span', {'class': css_class}, inline=True)
+    writer.text(number)
+    writer.close_tag('span', inline=True)
+    writer.text(' ')
+
+
 def render_table(
         document: Document,
         writer: HtmlWriter,
@@ -131,10 +138,7 @@ def render_table(
         writer.open_tag('caption')
 
         if table.number is not None:
-            writer.open_tag('span', {'class': 'stx-number'}, inline=True)
-            writer.text(table.number)
-            writer.close_tag('span', inline=True)
-            writer.text(' ')
+            render_number(writer, table.number, 'table-number')
 
         render_content(document, writer, table.caption, collapse_paragraph=True)
 
@@ -237,10 +241,7 @@ def render_figure(document: Document, writer: HtmlWriter, figure: Figure):
     writer.open_tag('figcaption')
 
     if figure.number is not None:
-        writer.open_tag('span', {'class': 'stx-number'}, inline=True)
-        writer.text(figure.number)
-        writer.close_tag('span', inline=True)
-        writer.text(' ')
+        render_number(writer, figure.number, 'figure-number')
 
     render_content(document, writer, figure.caption, collapse_paragraph=True)
 
@@ -310,8 +311,7 @@ def render_index_nodes(
         writer.open_tag('a', a_attrs, inline=True)
 
         if node.heading.number is not None:
-            writer.text(node.heading.number)
-            writer.text(' ')
+            render_number(writer, node.heading.number, 'node-number')
 
         render_content(
             document, writer, node.heading.content, collapse_paragraph=True)
