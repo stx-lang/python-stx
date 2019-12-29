@@ -118,7 +118,8 @@ def parse_text_block(document: Document, source: Source, composer: Composer, sto
     if stop_mark is not None:
         stop_marks.push(stop_mark)
 
-    components = parse_inline_text(Tape(source), stop_marks)
+    with Tape(source) as tape:
+        components = parse_inline_text(tape, stop_marks)
 
     if len(components) == 0:
         composer.push_separator()
@@ -213,22 +214,20 @@ def parse_name_values(tape: Tape) -> Tuple[str, List[str]]:
 
 
 def parse_directive(document: Document, source: Source, composer: Composer):
-    tape = Tape(source)
+    with Tape(source) as tape:
+        name, values = parse_name_values(tape)
 
-    name, values = parse_name_values(tape)
-
-    if name == 'include':
-        process_include(document, source, values, composer)
-    else:
-        process_directive(name, values, document, source, composer)
+        if name == 'include':
+            process_include(document, source, values, composer)
+        else:
+            process_directive(name, values, document, source, composer)
 
 
 def parse_attribute(document: Document, source: Source, composer: Composer):
-    tape = Tape(source)
+    with Tape(source) as tape:
+        name, values = parse_name_values(tape)
 
-    name, values = parse_name_values(tape)
-
-    composer.push_attribute(name, values)
+        composer.push_attribute(name, values)
 
 
 def parse_code_block(document: Document, source: Source, composer: Composer):

@@ -10,19 +10,28 @@ class Tape:
     def __init__(self, source: Source):
         self.source = source
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        line = self.source.try_line()
+
+        if line is not None and line.indentation >= line.raw_length:
+            self.source.flush_line()
+
     def _read(self, move: bool) -> Optional[str]:
         line = self.source.try_line()
 
-        if line is not None:
-            if line.is_empty:
-                self.source.flush_line()
-                return None
-            elif line.indentation >= line.raw_length:
-                self.source.flush_line()
-                line = self.source.try_line()
-
         if line is None:
             return None
+        elif line.is_empty:
+            if move:
+                self.source.flush_line()
+            return None
+        elif line.indentation >= line.raw_length:
+            if move:
+                self.source.flush_line()
+            return '\n'
 
         text = line.get_current_text()
 
@@ -58,7 +67,12 @@ class Tape:
         return c
 
     def read(self) -> str:
-        return self._read(True)
+        c = self._read(True)
+
+        if c is None:
+            raise self.source.error('Expected to read a char.')
+
+        return c
 
     def alive(self) -> bool:
         return self._read(False) is not None
