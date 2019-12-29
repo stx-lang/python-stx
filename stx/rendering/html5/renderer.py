@@ -2,8 +2,10 @@ from typing import List
 
 from stx import logger, app
 from stx.design.index_node import IndexNode
-from stx.design.components import Component, Composite, CodeBlock, Heading, Table, \
-    ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure
+from stx.design.components import Component, Composite, CodeBlock, Heading, \
+    Table, \
+    ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure, \
+    Placeholder
 from stx.design.document import Document
 
 from stx.rendering.html5.writer import HtmlWriter
@@ -41,15 +43,31 @@ def render_document(document: Document, writer: HtmlWriter):
 
     writer.close_tag('head')
 
-    writer.open_tag('body')
+    writer.open_tag('body', {'data-type': 'book'})
 
-    render_index(document, writer)
+    if document.header is not None or document.title is not None:
+        writer.open_tag('header')
 
-    writer.open_tag('main')
+        if document.title is not None:
+            writer.open_tag('h1', inline=True)
+            writer.text(document.title)
+            writer.close_tag('h1', inline=True)
+
+        if document.header is not None:
+            render_content(document, writer, document.header)
+
+        writer.close_tag('header')
+
+    writer.open_tag('div')
 
     render_content(document, writer, document.content)
 
-    writer.close_tag('main')
+    writer.close_tag('div')
+
+    if document.footer is not None:
+        writer.open_tag('footer')
+        render_content(document, writer, document.footer)
+        writer.close_tag('footer')
 
     writer.close_tag('body')
 
@@ -250,6 +268,13 @@ def render_figure(document: Document, writer: HtmlWriter, figure: Figure):
     writer.close_tag('figure')
 
 
+def render_placeholder(document: Document, writer: HtmlWriter, content: Placeholder):
+    if content.name == 'toc':
+        render_index(document, writer)
+    else:
+        raise Exception(f'Not implemented placeholder: {content.name}')
+
+
 def render_content(
         document: Document,
         writer: HtmlWriter,
@@ -279,6 +304,8 @@ def render_content(
         render_embedded_text(document, writer, content)
     elif isinstance(content, Figure):
         render_figure(document, writer, content)
+    elif isinstance(content, Placeholder):
+        render_placeholder(document, writer, content)
     else:
         raise NotImplementedError()
 

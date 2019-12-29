@@ -326,6 +326,32 @@ def parse_table_row(document: Document, source: Source, composer: Composer, head
     active_table.rows.append(TableRow(cells, header))
 
 
+def merge_component(base: Optional[Component], component: Component) -> Component:
+    if base is None:
+        return component
+    elif isinstance(base, Composite):
+        base.components.append(component)
+
+    return Composite([base, component])
+
+
+def parse_content_box(document: Document, source: Source, composer: Composer):
+    content = parse_component(document, source)
+
+    composer.consume_attributes(content)
+
+    position = content.attributes.get_value('position')
+
+    if position == 'header':
+        document.header = merge_component(document.header, content)
+    elif position == 'footer':
+        document.footer = merge_component(document.footer, content)
+    elif position is not None:
+        raise Exception(f'Unknown position: `{position}`')
+    else:
+        composer.push(content)
+
+
 def parse_component(document: Document, source: Source, stop_mark: Optional[str] = None) -> Component:
     composer = Composer()
 
@@ -365,6 +391,8 @@ def parse_component(document: Document, source: Source, stop_mark: Optional[str]
                 parse_table_row(document, source, composer, False)
             elif block_mark == _marks.table_h_row_mark:
                 parse_table_row(document, source, composer, False)
+            elif block_mark == _marks.content_box_mark:
+                parse_content_box(document, source, composer)
             else:
                 raise source.error(f'Not implemented block mark: {block_mark}')
 

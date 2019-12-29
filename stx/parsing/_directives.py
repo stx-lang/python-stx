@@ -1,5 +1,6 @@
 from typing import List
 
+from stx.design.components import Placeholder
 from stx.design.document import Document
 from stx.parsing._composer import Composer
 from stx.parsing._source import Source
@@ -42,6 +43,10 @@ def process_encoding(document: Document, values: list):
     document.encoding = values[0]
 
 
+def process_toc(document: Document, values: list, composer: Composer):
+    composer.push(Placeholder('toc'))
+
+
 def process_directive(name: str, values: List[str], document: Document, source: Source, composer: Composer):
     if name == 'link':
         process_link(document, values)
@@ -53,5 +58,7 @@ def process_directive(name: str, values: List[str], document: Document, source: 
         process_title(document, values)
     elif name == 'author':
         process_author(document, values)
+    elif name == 'toc':
+        process_toc(document, values, composer)
     else:
         raise Exception(f'Not implemented directive: {name}')

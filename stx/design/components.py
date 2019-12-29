@@ -247,3 +247,18 @@ class TextBlock(Component):
 
     def get_children(self) -> List[Component]:
         return self.components
+
+
+class Placeholder(Component):
+
+    def __init__(self, name: str):
+        self.name = name
+
+    def write_text(self, output: TextIO):
+        pass
+
+    def get_children(self) -> List[Component]:
+        return []
+
+    def __repr__(self):
+        pass

@@ -13,18 +13,25 @@ class Composer:
         self.contents: List[Optional[Component]] = []
         self.pending_caption: Optional[Component] = None
 
-    def push(self, content: Component):
+    def consume_attributes(self, component: Component):
+        component.attributes.update(self.attributes)
+        self.attributes.clear()
+
+    def consume_caption(self, component: Component):
         if self.pending_caption is not None:
-            if isinstance(content, Table):
-                content.caption = self.pending_caption
+            if isinstance(component, Table):
+                component.caption = self.pending_caption
             else:
-                content = Figure(content, self.pending_caption)
+                component = Figure(component, self.pending_caption)
 
             self.pending_caption = None
 
-        # Take buffered attributes
-        content.attributes.update(self.attributes)
-        self.attributes.clear()
+        return component
+
+    def push(self, content: Component):
+        content = self.consume_caption(content)
+
+        self.consume_attributes(content)
 
         self.contents.append(content)
 

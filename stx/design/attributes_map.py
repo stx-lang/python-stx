@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Set
 
 
 class AttributesMap:
@@ -11,6 +11,11 @@ class AttributesMap:
 
     def __len__(self):
         return len(self._data)
+
+    def get_unread_attributes(self) -> Set[str]:
+        total_keys = set(self._data.keys())
+        read_keys = set([key for key, read in self._read.items() if read])
+        return total_keys - read_keys
 
     def update(self, other_map: AttributesMap):
         self._data = dict(other_map._data)

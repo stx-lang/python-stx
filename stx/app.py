@@ -2,6 +2,7 @@ from stx.loading.loaders import from_file
 from stx.rendering.html5.renderer import render_document
 from stx.rendering.html5.writer import HtmlWriter
 from stx.utils.files import resolve_sibling
+from stx.validations.attributes import validate_attributes
 
 
 def read_version() -> str:
@@ -30,3 +31,5 @@ def main(input_file, output_file):
             render_document(document, HtmlWriter(f))
     else:
         raise Exception(f'Not implemented output format: {document.format}')
+
+    validate_attributes(document)

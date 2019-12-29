@@ -11,7 +11,7 @@ table_d_row_mark = '|-'
 table_cell_mark = '|'
 pre_caption_mark = '>'
 post_caption_mark = '<'
-content_box_mark = '%%%'
+content_box_mark = '!'
 code_block_mark = '```'
 comment_block_mark = '///'
 attribute_mark = '@'
@@ -30,7 +30,6 @@ heading_marks = [
 ]
 
 flat_block_marks = [
-    content_box_mark,
     code_block_mark,
     comment_block_mark,
 ]
