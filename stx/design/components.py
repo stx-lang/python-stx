@@ -261,4 +261,23 @@ class Placeholder(Component):
         return []
 
     def __repr__(self):
-        pass
+        return f'Placeholder<{self.name}>'
+
+
+class Section(Component):
+
+    def __init__(self, heading: Heading, components: List[Component]):
+        self.heading = heading
+        self.components = components
+
+    def __repr__(self):
+        return f'Section<{len(self.components)} component(s)>'
+
+    def write_text(self, output: TextIO):
+        self.heading.write_text(output)
+
+        for component in self.components:
+            component.write_text(output)
+
+    def get_children(self) -> List[Component]:
+        return [self.heading, *self.components]

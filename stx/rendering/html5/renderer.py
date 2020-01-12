@@ -5,7 +5,7 @@ from stx.design.index_node import IndexNode
 from stx.design.components import Component, Composite, CodeBlock, Heading, \
     Table, \
     ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure, \
-    Placeholder
+    Placeholder, Section
 from stx.design.document import Document
 
 from stx.rendering.html5.writer import HtmlWriter
@@ -58,11 +58,11 @@ def render_document(document: Document, writer: HtmlWriter):
 
         writer.close_tag('header')
 
-    writer.open_tag('div')
+    writer.open_tag('section')
 
     render_content(document, writer, document.content)
 
-    writer.close_tag('div')
+    writer.close_tag('section')
 
     if document.footer is not None:
         writer.open_tag('footer')
@@ -270,9 +270,20 @@ def render_figure(document: Document, writer: HtmlWriter, figure: Figure):
 
 def render_placeholder(document: Document, writer: HtmlWriter, content: Placeholder):
     if content.name == 'toc':
-        render_index(document, writer)
+        render_toc(document, writer, content)
     else:
         raise Exception(f'Not implemented placeholder: {content.name}')
+
+
+def render_section(document: Document, writer: HtmlWriter, section: Section):
+    writer.open_tag('section')
+
+    render_heading(document, writer, section.heading)
+
+    for component in section.components:
+        render_content(document, writer, component)
+
+    writer.close_tag('section')
 
 
 def render_content(
@@ -304,14 +315,23 @@ def render_content(
         render_embedded_text(document, writer, content)
     elif isinstance(content, Figure):
         render_figure(document, writer, content)
+    elif isinstance(content, Section):
+        render_section(document, writer, content)
     elif isinstance(content, Placeholder):
         render_placeholder(document, writer, content)
     else:
         raise NotImplementedError()
 
 
-def render_index(document: Document, writer: HtmlWriter):
-    writer.open_tag('nav', {'class': 'toc'})
+def render_toc(document: Document, writer: HtmlWriter, content: Placeholder):
+    writer.open_tag('nav', {'data-type': 'toc'})
+
+    title = content.attributes.get_value('title')
+
+    if title is not None:
+        writer.open_tag('h1', inline=True)
+        writer.text(title)
+        writer.close_tag('h1')
 
     render_index_nodes(document, writer, document.index)
 
@@ -323,7 +343,7 @@ def render_index_nodes(
     if len(nodes) == 0:
         return
 
-    writer.open_tag('ul')
+    writer.open_tag('ol')
 
     for node in nodes:
         writer.open_tag('li')
@@ -351,4 +371,4 @@ def render_index_nodes(
 
         writer.close_tag('li')
 
-    writer.close_tag('ul')
+    writer.close_tag('ol')

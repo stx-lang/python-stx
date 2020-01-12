@@ -2,7 +2,7 @@ from stx.loading.loaders import from_file
 from stx.rendering.html5.renderer import render_document
 from stx.rendering.html5.writer import HtmlWriter
 from stx.utils.files import resolve_sibling
-from stx.validations.attributes import validate_attributes
+from stx.loading.validations import validate_attributes
 
 
 def read_version() -> str:
