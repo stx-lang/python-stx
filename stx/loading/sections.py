@@ -1,6 +1,9 @@
 from typing import List
 
-from stx.design.components import Component, Heading, Section, Composite
+from stx.design.components import Component, Heading, Section, Composite, \
+    Separator
+
+SECTIONS = ['sect1', 'sect2', 'sect3', 'sect4', 'sect5']
 
 
 def make_sections(component: Component) -> Component:
@@ -12,7 +15,23 @@ def make_sections(component: Component) -> Component:
     if len(result) == 1:
         return result[0]
 
+    for item in result:
+        if isinstance(item, Section):
+            if item.type is None:
+                item.type = 'chapter'
+
+            apply_sections(item)
+
     return Composite(result)
+
+
+def apply_sections(section: Section, index=0):
+    for item in section.components:
+        if isinstance(item, Section) and item.type is None:
+            item.type = SECTIONS[index]
+
+            if index < len(SECTIONS):
+                apply_sections(item, index + 1)
 
 
 def add_component(result: List[Component], section_stack: List[Section], component: Component):
@@ -34,13 +53,17 @@ def make_sections_loop(result: List[Component], section_stack: List[Section], co
     if isinstance(component, Composite):
         for component in component.components:
             if isinstance(component, Heading):
-                section = Section(component, [])
+                section = Section(component, [], None)
 
                 normalize_level(section_stack, section)
 
                 add_component(result, section_stack, section)
 
                 section_stack.append(section)
+            elif isinstance(component, Separator):
+                for i in range(component.level):
+                    if len(section_stack) > 0:
+                        section_stack.pop()
             else:
                 make_sections_loop(result, section_stack, component)
     else:

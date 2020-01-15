@@ -266,9 +266,10 @@ class Placeholder(Component):
 
 class Section(Component):
 
-    def __init__(self, heading: Heading, components: List[Component]):
+    def __init__(self, heading: Heading, components: List[Component], type: Optional[str]):
         self.heading = heading
         self.components = components
+        self.type = type
 
     def __repr__(self):
         return f'Section<{len(self.components)} component(s)>'
@@ -281,3 +282,18 @@ class Section(Component):
 
     def get_children(self) -> List[Component]:
         return [self.heading, *self.components]
+
+
+class Separator(Component):
+
+    def __init__(self):
+        self.level = 0
+
+    def __repr__(self):
+        return f'Separator<{self.level}>'
+
+    def write_text(self, output: TextIO):
+        pass
+
+    def get_children(self) -> List[Component]:
+        return []

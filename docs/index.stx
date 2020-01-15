@@ -1,5 +1,24 @@
+#title[STX Documentation]
+
 = STX
 
 #link[stylesheet, assets/style.css]
 
 STX is a simple markup language for creating documents.
+
+= asdf
+
+asdf
+
+== asdf
+
+asdfasdf
+
+=== asdf
+
+asdfasdfasdf
+
+
+
+
+#toc

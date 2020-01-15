@@ -13,7 +13,7 @@ class HtmlWriter(Writer):
                 self.write(html_escape(attr_name))
                 self.write('=')
                 self.write('"')
-                self.write(html_escape(attr_value))
+                self.write(html_escape(str(attr_value)))
                 self.write('"')
 
     def tag(

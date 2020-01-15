@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional, List
 
 from stx.design.attributes_map import AttributesMap
-from stx.design.components import Component, Table, Figure
+from stx.design.components import Component, Table, Figure, Separator
 
 
 class Composer:
@@ -47,7 +47,22 @@ class Composer:
         elif len(self.attributes) > 0:
             raise Exception('floating attributes')
 
-        return [c for c in self.contents if c is not None]
+        result = []
+
+        for c in self.contents:
+            if c is None:
+                if len(result) > 0 and isinstance(result[-1], Separator):
+                    separator = result[-1]
+                else:
+                    separator = Separator()
+
+                    result.append(separator)
+
+                separator.level += 1
+            else:
+                result.append(c)
+
+        return result
 
     def get_last_content(self) -> Optional[Component]:
         if len(self.contents) == 0:

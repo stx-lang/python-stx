@@ -5,10 +5,20 @@ from stx.design.index_node import IndexNode
 from stx.design.components import Component, Composite, CodeBlock, Heading, \
     Table, \
     ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure, \
-    Placeholder, Section
+    Placeholder, Section, Separator
 from stx.design.document import Document
 
 from stx.rendering.html5.writer import HtmlWriter
+
+
+TYPE_H_TAGS = {
+    'chapter': 'h1',
+    'sect1': 'h1',
+    'sect2': 'h2',
+    'sect3': 'h3',
+    'sect4': 'h4',
+    'sect5': 'h5',
+}
 
 
 def render_document(document: Document, writer: HtmlWriter):
@@ -45,24 +55,21 @@ def render_document(document: Document, writer: HtmlWriter):
 
     writer.open_tag('body', {'data-type': 'book'})
 
-    if document.header is not None or document.title is not None:
-        writer.open_tag('header')
+    if document.title is not None:
+        writer.open_tag('h1', inline=True)
+        writer.text(document.title)
+        writer.close_tag('h1', inline=True)
+        writer.break_line()
 
-        if document.title is not None:
-            writer.open_tag('h1', inline=True)
-            writer.text(document.title)
-            writer.close_tag('h1', inline=True)
+    if document.header is not None:
+        writer.open_tag('header')
 
         if document.header is not None:
             render_content(document, writer, document.header)
 
         writer.close_tag('header')
 
-    writer.open_tag('section')
-
     render_content(document, writer, document.content)
-
-    writer.close_tag('section')
 
     if document.footer is not None:
         writer.open_tag('footer')
@@ -115,15 +122,17 @@ def open_tag(
         writer.close_tag('a', inline=True)
 
 
-def render_heading(document: Document, writer: HtmlWriter, heading: Heading):
-    level = heading.level
+def render_heading(document: Document, writer: HtmlWriter, heading: Heading, tag=None):
+    if tag is None:
+        level = heading.level
 
-    if level < 1:
-        level = 1
-    elif level > 6:
-        level = 6
+        if level < 1:
+            level = 1
+        elif level > 6:
+            level = 6
 
-    tag = f'h{level}'
+        tag = f'h{level}'
+
     attrs = {}
 
     open_tag(document, writer, heading, tag, attrs)
@@ -276,14 +285,28 @@ def render_placeholder(document: Document, writer: HtmlWriter, content: Placehol
 
 
 def render_section(document: Document, writer: HtmlWriter, section: Section):
-    writer.open_tag('section')
+    section_attrs = {}
 
-    render_heading(document, writer, section.heading)
+    if section.type is not None:
+        section_attrs['data-type'] = section.type
+
+    writer.open_tag('section', section_attrs)
+
+    if section.type in TYPE_H_TAGS:
+        h_tag = TYPE_H_TAGS[section.type]
+    else:
+        h_tag = None
+
+    render_heading(document, writer, section.heading, h_tag)
 
     for component in section.components:
         render_content(document, writer, component)
 
     writer.close_tag('section')
+
+
+def render_separator(document: Document, writer: HtmlWriter, separator: Separator):
+    writer.tag('hr', {'data-level': separator.level})
 
 
 def render_content(
@@ -319,6 +342,8 @@ def render_content(
         render_section(document, writer, content)
     elif isinstance(content, Placeholder):
         render_placeholder(document, writer, content)
+    elif isinstance(content, Separator):
+        render_separator(document, writer, content)
     else:
         raise NotImplementedError()
 
