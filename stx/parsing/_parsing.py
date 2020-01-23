@@ -7,7 +7,7 @@ from typing import Optional, List, Tuple
 from stx.utils.stack import Stack
 from stx.design.components import Composite, Component, TextBlock, Heading, \
     RawText, CodeBlock, Table, Figure, ListBlock, TableRow, StyledText, \
-    LinkText, PlainText
+    LinkText, PlainText, ContentBox
 from stx.design.document import Document
 from stx.utils.files import resolve_sibling, walk_files
 from ._directives import process_directive
@@ -338,18 +338,13 @@ def merge_component(base: Optional[Component], component: Component) -> Componen
 def parse_content_box(document: Document, source: Source, composer: Composer):
     content = parse_component(document, source)
 
-    composer.consume_attributes(content)
+    box = ContentBox(content)
 
-    position = content.attributes.get_value('position')
+    composer.consume_attributes(box)
 
-    if position == 'header':
-        document.header = merge_component(document.header, content)
-    elif position == 'footer':
-        document.footer = merge_component(document.footer, content)
-    elif position is not None:
-        raise Exception(f'Unknown position: `{position}`')
-    else:
-        composer.push(content)
+    box.type = box.attributes.get_value('type')
+
+    composer.push(box)
 
 
 def parse_component(document: Document, source: Source, stop_mark: Optional[str] = None) -> Component:

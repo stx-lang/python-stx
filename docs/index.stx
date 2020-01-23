@@ -1,24 +1,113 @@
 #title[STX Documentation]
 
-= STX
+@title[Table of Contents]
+#toc
 
-#link[stylesheet, assets/style.css]
+= STX
 
 STX is a simple markup language for creating documents.
 
-= asdf
+= Syntax
+
+The STX files are parsed line by line; if a line starts with a [reserved mark],
+all the subsequent lines which have the indentation aligned to the first
+non-space character after the mark are be considered the inner content of the
+element that represents the given mark, this content is parsed in the same way
+line by line, but considering the indentation.
+
+When the indentation is broken, the inner content is broken as well closing
+the element and starting again the parsing line by line.
+This mechanism allows to create nested elements.
+
+When a line doesn't start with a reserved mark, it is considered a paragraph;
+the paragraphs are broken by one empty line.
+Two or more empty lines result in exiting from a section or just a separation
+when there is no section to exit.
+
+== Text
 
 asdf
 
-== asdf
+== Paragraph
 
-asdfasdf
+== Heading
 
-=== asdf
+Starts with a `=`.
 
-asdfasdfasdf
+== Lists
 
+== Table
 
+```stx
 
+```
 
+== Code
+
+== Figure
+
+== Content Box
+
+@type[warning]
+! = Warning
+
+  This is a warning box.
+
+== Attributes
+
+== Directives
+
+=== Meta-Information
+
+|= Directive   | Description
+|- `#title`    | asdf
+|- `#format`   | asdf
+|- `#author`   | asdf
+|- `#encoding` | asdf
+
+=== Table of Contents
+
+```stx
 #toc
+```
+
+=== Includes
+
+=== Links
+
+== Comments
+
+= References
+
+= Numbering
+
+= Rendering
+
+== HTMLBook
+
+= Appendix
+
+@id[reserved mark]
+== Reserved Marks
+
+|- `======` | heading6 mark
+|- `=====` | heading5 mark
+|- `====` | heading4 mark
+|- `===` | heading3 mark
+|- `==` | heading2 mark
+|- `=` | heading1 mark
+|- `-` | unordered list item mark
+|- `.` | ordered list item mark
+|- `|-` | table d row mark
+|- `|=` | table h row mark
+|- `|` | table cell mark
+|- `>` | pre caption mark
+|- `<` | post caption mark
+|- `@` | attribute mark
+|- `#` | directive mark
+|- `\`\`\`` | code block mark
+|- `!` | content box mark
+|- `///` | comment block mark
+
+#link[stylesheet, assets/style.css]
+#include[assets/scripts.html]

@@ -1,0 +1,11 @@
+{
+  "name": "stx",
+  "keywords": [],
+  "rules": [
+    {
+      "id": "heading",
+      "starts": "=+",
+      "ends": "\n"
+    }
+  ]
+}

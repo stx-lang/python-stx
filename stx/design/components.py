@@ -297,3 +297,19 @@ class Separator(Component):
 
     def get_children(self) -> List[Component]:
         return []
+
+
+class ContentBox(Component):
+
+    def __init__(self, content: Component):
+        self.content = content
+        self.type = None
+
+    def __repr__(self):
+        return f'ContentBox'
+
+    def write_text(self, output: TextIO):
+        self.content.write_text(output)
+
+    def get_children(self) -> List[Component]:
+        return [self.content]

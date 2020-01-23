@@ -1,0 +1,11 @@
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@4/dist/gumshoe.polyfills.min.js"></script>
+<script type="text/javascript">
+    (() => {
+        $('body').append('<div id="layout-content"></div>');
+        $('#layout-content').append($('body > :not(#layout-content)'));
+        $('<div id="layout-start"></div>').insertBefore($('#layout-content'));
+        $('#layout-start').append($('[data-type=toc]'));
+        new Gumshoe('#toc a');
+    })();
+</script>

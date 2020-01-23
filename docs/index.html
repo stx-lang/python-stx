@@ -10,61 +10,467 @@
   </head>
   <body data-type="book">
     <h1>STX Documentation</h1>
-    <section data-type="chapter">
-      <h1 id="stx">
-        <span>1. </span>STX
-      </h1>
-      <p>
-        STX is a simple markup language for creating documents.
-      </p>
-    </section>
-    <section data-type="chapter">
-      <h1 id="asdf">
-        <span>2. </span>asdf
+    <nav id="toc" data-type="toc">
+      <h1>Table of Contents
+    </h1>
+    <ol>
+      <li>
+        <a href="#stx" data-number="1.">STX
+        </a>
+      </li>
+      <li>
+        <a href="#syntax" data-number="2.">Syntax
+        </a>
+        <ol>
+          <li>
+            <a href="#text" data-number="2.1.">Text
+            </a>
+          </li>
+          <li>
+            <a href="#paragraph" data-number="2.2.">Paragraph
+            </a>
+          </li>
+          <li>
+            <a href="#heading" data-number="2.3.">Heading
+            </a>
+          </li>
+          <li>
+            <a href="#lists" data-number="2.4.">Lists
+            </a>
+          </li>
+          <li>
+            <a href="#table" data-number="2.5.">Table
+            </a>
+          </li>
+          <li>
+            <a href="#code" data-number="2.6.">Code
+            </a>
+          </li>
+          <li>
+            <a href="#figure" data-number="2.7.">Figure
+            </a>
+          </li>
+          <li>
+            <a href="#content-box" data-number="2.8.">Content Box
+            </a>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#warning" data-number="3.">Warning
+        </a>
+        <ol>
+          <li>
+            <a href="#attributes" data-number="3.1.">Attributes
+            </a>
+          </li>
+          <li>
+            <a href="#directives" data-number="3.2.">Directives
+            </a>
+            <ol>
+              <li>
+                <a href="#meta-information" data-number="3.2.1.">Meta-Information
+                </a>
+              </li>
+              <li>
+                <a href="#table-of-contents" data-number="3.2.2.">Table of Contents
+                </a>
+              </li>
+              <li>
+                <a href="#includes" data-number="3.2.3.">Includes
+                </a>
+              </li>
+              <li>
+                <a href="#links" data-number="3.2.4.">Links
+                </a>
+              </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#comments" data-number="3.3.">Comments
+            </a>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#references" data-number="4.">References
+        </a>
+      </li>
+      <li>
+        <a href="#numbering" data-number="5.">Numbering
+        </a>
+      </li>
+      <li>
+        <a href="#rendering" data-number="6.">Rendering
+        </a>
+        <ol>
+          <li>
+            <a href="#htmlbook" data-number="6.1.">HTMLBook
+            </a>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#appendix" data-number="7.">Appendix
+        </a>
+        <ol>
+          <li>
+            <a href="#reserved-marks" data-number="7.1.">Reserved Marks
+            </a>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </nav>
+  <section data-type="chapter" id="stx">
+    <h1 data-number="1.">
+      STX
+    </h1>
+    <p>
+      STX is a simple markup language for creating documents.
+    </p>
+  </section>
+  <section data-type="chapter" id="syntax">
+    <h1 data-number="2.">
+      Syntax
+    </h1>
+    <p>
+      The STX files are parsed line by line; if a line starts with a <a href="#reserved-mark" data-type="xref">reserved mark</a>,
+      all the subsequent lines which have the indentation aligned to the first
+      non-space character after the mark are be considered the inner content of the
+      element that represents the given mark, this content is parsed in the same way
+      line by line, but considering the indentation.
+    </p>
+    <p>
+      When the indentation is broken, the inner content is broken as well closing
+      the element and starting again the parsing line by line.
+      This mechanism allows to create nested elements.
+    </p>
+    <p>
+      When a line doesn&apos;t start with a reserved mark, it is considered a paragraph;
+      the paragraphs are broken by one empty line.
+      Two or more empty lines result in exiting from a section or just a separation
+      when there is no section to exit.
+    </p>
+    <section data-type="sect1" id="text">
+      <h1 data-number="2.1.">
+        Text
       </h1>
       <p>
         asdf
       </p>
-      <section data-type="sect1">
-        <h1 id="asdf-1">
-          <span>2.1. </span>asdf
+    </section>
+    <section data-type="sect1" id="paragraph">
+      <h1 data-number="2.2.">
+        Paragraph
+      </h1>
+    </section>
+    <section data-type="sect1" id="heading">
+      <h1 data-number="2.3.">
+        Heading
+      </h1>
+      <p>
+        Starts with a <code>=</code>.
+      </p>
+    </section>
+    <section data-type="sect1" id="lists">
+      <h1 data-number="2.4.">
+        Lists
+      </h1>
+    </section>
+    <section data-type="sect1" id="table">
+      <h1 data-number="2.5.">
+        Table
+      </h1>
+      <pre data-type="programlisting" data-code-language="stx"></pre>
+    </section>
+    <section data-type="sect1" id="code">
+      <h1 data-number="2.6.">
+        Code
+      </h1>
+    </section>
+    <section data-type="sect1" id="figure">
+      <h1 data-number="2.7.">
+        Figure
+      </h1>
+    </section>
+    <section data-type="sect1" id="content-box">
+      <h1 data-number="2.8.">
+        Content Box
+      </h1>
+      <div data-type="warning">
+        <h1 data-number="3.">
+          Warning
         </h1>
         <p>
-          asdfasdf
+          This is a warning box.
         </p>
-        <section data-type="sect2">
-          <h2 id="asdf-2">
-            <span>2.1.1. </span>asdf
-          </h2>
-          <p>
-            asdfasdfasdf
-          </p>
-        </section>
+      </div>
+    </section>
+    <section data-type="sect1" id="attributes">
+      <h1 data-number="3.1.">
+        Attributes
+      </h1>
+    </section>
+    <section data-type="sect1" id="directives">
+      <h1 data-number="3.2.">
+        Directives
+      </h1>
+      <section data-type="sect2" id="meta-information">
+        <h2 data-number="3.2.1.">
+          Meta-Information
+        </h2>
+        <table>
+          <tr>
+            <td>
+              Directive   
+            </td>
+            <td>
+               Description
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>#title</code>    
+            </td>
+            <td>
+               asdf
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>#format</code>   
+            </td>
+            <td>
+               asdf
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>#author</code>   
+            </td>
+            <td>
+               asdf
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>#encoding</code> 
+            </td>
+            <td>
+               asdf
+            </td>
+          </tr>
+        </table>
+      </section>
+      <section data-type="sect2" id="table-of-contents">
+        <h2 data-number="3.2.2.">
+          Table of Contents
+        </h2>
+        <pre data-type="programlisting" data-code-language="stx">#toc</pre>
+      </section>
+      <section data-type="sect2" id="includes">
+        <h2 data-number="3.2.3.">
+          Includes
+        </h2>
+      </section>
+      <section data-type="sect2" id="links">
+        <h2 data-number="3.2.4.">
+          Links
+        </h2>
       </section>
     </section>
-    <nav data-type="toc">
-      <ol>
-        <li>
-          <a href="#stx"><span class="node-number">1.</span> STX
-          </a>
-        </li>
-        <li>
-          <a href="#asdf"><span class="node-number">2.</span> asdf
-          </a>
-          <ol>
-            <li>
-              <a href="#asdf-1"><span class="node-number">2.1.</span> asdf
-              </a>
-              <ol>
-                <li>
-                  <a href="#asdf-2"><span class="node-number">2.1.1.</span> asdf
-                  </a>
-                </li>
-              </ol>
-            </li>
-          </ol>
-        </li>
-      </ol>
-    </nav>
-  </body>
+    <section data-type="sect1" id="comments">
+      <h1 data-number="3.3.">
+        Comments
+      </h1>
+    </section>
+  </section>
+  <section data-type="chapter" id="references">
+    <h1 data-number="4.">
+      References
+    </h1>
+  </section>
+  <section data-type="chapter" id="numbering">
+    <h1 data-number="5.">
+      Numbering
+    </h1>
+  </section>
+  <section data-type="chapter" id="rendering">
+    <h1 data-number="6.">
+      Rendering
+    </h1>
+    <section data-type="sect1" id="htmlbook">
+      <h1 data-number="6.1.">
+        HTMLBook
+      </h1>
+    </section>
+  </section>
+  <section data-type="chapter" id="appendix">
+    <h1 data-number="7.">
+      Appendix
+    </h1>
+    <section data-type="sect1" id="reserved-marks">
+      <h1 data-number="7.1.">
+        Reserved Marks
+      </h1>
+      <table>
+        <tr>
+          <td>
+            <code>======</code> 
+          </td>
+          <td>
+             heading6 mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>=====</code> 
+          </td>
+          <td>
+             heading5 mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>====</code> 
+          </td>
+          <td>
+             heading4 mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>===</code> 
+          </td>
+          <td>
+             heading3 mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>==</code> 
+          </td>
+          <td>
+             heading2 mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>=</code> 
+          </td>
+          <td>
+             heading1 mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>-</code> 
+          </td>
+          <td>
+             unordered list item mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>.</code> 
+          </td>
+          <td>
+             ordered list item mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>|-</code> 
+          </td>
+          <td>
+             table d row mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>|=</code> 
+          </td>
+          <td>
+             table h row mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>|</code> 
+          </td>
+          <td>
+             table cell mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>&gt;</code> 
+          </td>
+          <td>
+             pre caption mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>&lt;</code> 
+          </td>
+          <td>
+             post caption mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>@</code> 
+          </td>
+          <td>
+             attribute mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>#</code> 
+          </td>
+          <td>
+             directive mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>```</code> 
+          </td>
+          <td>
+             code block mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>!</code> 
+          </td>
+          <td>
+             content box mark
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>///</code> 
+          </td>
+          <td>
+             comment block mark
+          </td>
+        </tr>
+      </table>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@4/dist/gumshoe.polyfills.min.js"></script>
+<script type="text/javascript">
+    (() => {
+        $('body').append('<div id="layout-content"></div>');
+        $('#layout-content').append($('body > :not(#layout-content)'));
+        $('<div id="layout-start"></div>').insertBefore($('#layout-content'));
+        $('#layout-start').append($('[data-type=toc]'));
+        new Gumshoe('#toc a');
+    })();
+</script>    </section>
+  </section>
+</body>
 </html>

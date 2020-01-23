@@ -5,7 +5,7 @@ from stx.design.index_node import IndexNode
 from stx.design.components import Component, Composite, CodeBlock, Heading, \
     Table, \
     ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure, \
-    Placeholder, Section, Separator
+    Placeholder, Section, Separator, ContentBox
 from stx.design.document import Document
 
 from stx.rendering.html5.writer import HtmlWriter
@@ -91,12 +91,10 @@ def render_contents(document: Document, writer: HtmlWriter, contents: List[Compo
 
 
 def render_code_block(document: Document, writer: HtmlWriter, code: CodeBlock):
-    pre_attributes = {}
+    pre_attributes = {'data-type': 'programlisting'}
 
-    css_classes = code.attributes.get_list('source')
-
-    if len(css_classes) > 0:
-        pre_attributes['class'] = ' '.join(css_classes)
+    if code.flavor is not None:
+        pre_attributes['data-code-language'] = code.flavor
 
     writer.open_tag('pre', inline=True, attributes=pre_attributes)
     writer.text(code.code, disable_indentation=True)
@@ -133,15 +131,12 @@ def render_heading(document: Document, writer: HtmlWriter, heading: Heading, tag
 
         tag = f'h{level}'
 
-    attrs = {}
-
-    open_tag(document, writer, heading, tag, attrs)
+    h_attrs = {}
 
     if heading.number is not None:
-        writer.open_tag('span', inline=True)
-        writer.text(heading.number)
-        writer.text(' ')
-        writer.close_tag('span', inline=True)
+        h_attrs['data-number'] = heading.number
+
+    writer.open_tag(tag, h_attrs)
 
     render_content(document, writer, heading.content, collapse_paragraph=True)
 
@@ -240,14 +235,15 @@ def render_styled_text(document: Document, writer: HtmlWriter, styled: StyledTex
 
 
 def render_link_text(document: Document, writer: HtmlWriter, link: LinkText):
-    if link.internal:
-        href = f'#{link.reference}'
-    else:
-        href = link.reference
+    a_attrs = {}
 
-    writer.open_tag('a', {
-        'href': href,
-    }, inline=True)
+    if link.internal:
+        a_attrs['href'] = f'#{link.reference}'
+        a_attrs['data-type'] = 'xref'
+    else:
+        a_attrs['href'] = link.reference
+
+    writer.open_tag('a', a_attrs, inline=True)
 
     render_contents(document, writer, link.contents)
 
@@ -290,6 +286,11 @@ def render_section(document: Document, writer: HtmlWriter, section: Section):
     if section.type is not None:
         section_attrs['data-type'] = section.type
 
+    h_id = document.refs.get_main_ref(section.heading)
+
+    if h_id is not None:
+        section_attrs['id'] = h_id
+
     writer.open_tag('section', section_attrs)
 
     if section.type in TYPE_H_TAGS:
@@ -307,6 +308,12 @@ def render_section(document: Document, writer: HtmlWriter, section: Section):
 
 def render_separator(document: Document, writer: HtmlWriter, separator: Separator):
     writer.tag('hr', {'data-level': separator.level})
+
+
+def render_box(document: Document, writer: HtmlWriter, box: ContentBox):
+    writer.open_tag('div', {'data-type': box.type})
+    render_content(document, writer, box.content)
+    writer.close_tag('div')
 
 
 def render_content(
@@ -344,12 +351,14 @@ def render_content(
         render_placeholder(document, writer, content)
     elif isinstance(content, Separator):
         render_separator(document, writer, content)
+    elif isinstance(content, ContentBox):
+        render_box(document, writer, content)
     else:
         raise NotImplementedError()
 
 
 def render_toc(document: Document, writer: HtmlWriter, content: Placeholder):
-    writer.open_tag('nav', {'data-type': 'toc'})
+    writer.open_tag('nav', {'id': 'toc', 'data-type': 'toc'})
 
     title = content.attributes.get_value('title')
 
@@ -380,10 +389,10 @@ def render_index_nodes(
         if ref is not None:
             a_attrs['href'] = f'#{ref}'
 
-        writer.open_tag('a', a_attrs, inline=True)
-
         if node.heading.number is not None:
-            render_number(writer, node.heading.number, 'node-number')
+            a_attrs['data-number'] = node.heading.number
+
+        writer.open_tag('a', a_attrs, inline=True)
 
         render_content(
             document, writer, node.heading.content, collapse_paragraph=True)

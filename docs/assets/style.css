@@ -1,3 +1,33 @@
-nav.toc ol{
+[data-type=toc] ol{
     list-style-type: none;
+    padding: 0;
+}
+
+[data-type=toc] li > ol{
+    padding-left: 1em;
+}
+
+[data-type=toc] li.active > a {
+    font-weight: bold;
+    color: red;
+}
+
+[data-number]::before{
+  content: attr(data-number) ' ';
+}
+
+body {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+}
+
+[data-type=toc]{
+  position: sticky;
+  top: 0;
+}
+
+#layout-content{
+    width: 210mm;
+    padding-bottom: 100vh;
 }
