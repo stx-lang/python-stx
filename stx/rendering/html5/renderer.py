@@ -2,7 +2,7 @@ from typing import List
 
 from stx import logger, app
 from stx.design.index_node import IndexNode
-from stx.design.components import Component, Composite, CodeBlock, Heading, \
+from stx.components import Component, Composite, CodeBlock, Heading, \
     Table, \
     ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure, \
     Placeholder, Section, Separator, ContentBox

@@ -5,6 +5,7 @@ from typing import Optional, TextIO, List
 from . import _marks
 from ._location import Location
 from ._error import ParseError
+from ..utils.stx_error import StxError
 
 
 class Source:
@@ -44,7 +45,7 @@ class Source:
         line = self.try_line()
 
         if line is None:
-            raise self.error('Expected to read a line.')
+            raise StxError('Expected to read a line.')
 
         return line
 

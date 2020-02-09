@@ -1,4 +1,4 @@
-from stx.design.components import Component
+from stx.components import Component
 from stx.design.document import Document
 
 from ._parsing import parse_component

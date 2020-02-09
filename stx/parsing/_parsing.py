@@ -5,7 +5,7 @@ import string
 from typing import Optional, List, Tuple
 
 from stx.utils.stack import Stack
-from stx.design.components import Composite, Component, TextBlock, Heading, \
+from stx.components import Composite, Component, TextBlock, Heading, \
     RawText, CodeBlock, Table, Figure, ListBlock, TableRow, StyledText, \
     LinkText, PlainText, ContentBox
 from stx.design.document import Document
@@ -367,7 +367,7 @@ def parse_component(document: Document, source: Source, stop_mark: Optional[str]
                 source.push_begin_index(line.indentation)
 
             if block_mark in _marks.heading_marks:
-                parse_heading_block(document, source, _marks.get_heading_level(block_mark), composer)
+                parse_heading_block(document, source, _marks.get_section_level(block_mark), composer)
             elif block_mark == _marks.directive_mark:
                 parse_directive(document, source, composer)
             elif block_mark == _marks.attribute_mark:

@@ -1,6 +1,6 @@
 from typing import List
 
-from stx.design.components import Component, Heading, Section, Composite, \
+from stx.components import Component, Heading, Section, Composite, \
     Separator
 
 SECTIONS = ['sect1', 'sect2', 'sect3', 'sect4', 'sect5']

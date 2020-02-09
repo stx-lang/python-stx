@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional, List
 
 from stx.design.attributes_map import AttributesMap
-from stx.design.components import Component, Table, Figure, Separator
+from stx.components import Component, Table, Figure, Separator
 
 
 class Composer:

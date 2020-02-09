@@ -1,3 +1,5 @@
+from typing import List, Dict, Optional
+
 heading6_mark = '======'
 heading5_mark = '====='
 heading4_mark = '===='
@@ -56,6 +58,15 @@ reserved_block_marks = [
     comment_block_mark,
 ]
 
+
+def get_matching_mark(text: str) -> Optional[str]:
+    for mark in reserved_block_marks:
+        if text.startswith(mark):
+            return mark
+
+    return None
+
+
 strong_mark = '*'
 emphasis_mark = '_'
 code_mark = '`'
@@ -71,7 +82,7 @@ reserved_text_marks = [
 ]
 
 
-def get_heading_level(mark):
+def get_section_level(mark):
     if mark not in heading_marks:
         raise Exception(f'`{mark}` is not a heading mark.')
     return heading_marks.index(mark) + 1

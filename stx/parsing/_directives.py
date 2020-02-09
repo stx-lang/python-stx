@@ -1,6 +1,6 @@
 from typing import List
 
-from stx.design.components import Placeholder
+from stx.components import Placeholder
 from stx.design.document import Document
 from stx.parsing._composer import Composer
 from stx.parsing._source import Source

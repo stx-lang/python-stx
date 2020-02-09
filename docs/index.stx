@@ -1,6 +1,6 @@
-#title[STX Documentation]
+#title: "STX Documentation"
 
-@title[Table of Contents]
+@title: "Table of Contents"
 #toc
 
 = STX
@@ -48,7 +48,7 @@ Starts with a `=`.
 
 == Content Box
 
-@type[warning]
+@type:warning
 ! = Warning
 
   This is a warning box.
@@ -87,7 +87,7 @@ Starts with a `=`.
 
 = Appendix
 
-@id[reserved mark]
+@id:"reserved mark"
 == Reserved Marks
 
 |- `======` | heading6 mark
@@ -109,5 +109,5 @@ Starts with a `=`.
 |- `!` | content box mark
 |- `///` | comment block mark
 
-#link[stylesheet, assets/style.css]
-#include[assets/scripts.html]
+#link:['stylesheet', 'assets/style.css']
+#include:'assets/scripts.html'

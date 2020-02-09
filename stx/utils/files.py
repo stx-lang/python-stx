@@ -1,5 +1,5 @@
 from os import path, walk
-from typing import Iterator
+from typing import Iterator, List, Iterable
 
 
 def resolve_path(base_path: str, relative_path: str) -> str:
@@ -19,3 +19,13 @@ def walk_files(dir_path: str) -> Iterator[str]:
     for root, dirs, files in walk(dir_path):
         for name in files:
             yield path.join(root, name)
+
+
+def resolve_include_files(include_path: str, source_path: str) -> Iterable[str]:
+    target_path = resolve_sibling(source_path, include_path)
+
+    if path.isdir(target_path):
+        for file_path in sorted(walk_files(target_path)):
+            yield file_path
+    else:
+        yield target_path

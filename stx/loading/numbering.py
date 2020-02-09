@@ -5,7 +5,7 @@ from typing import List
 from stx import logger
 from stx.design.index_node import IndexNode
 from stx.utils.stack import Stack
-from stx.design.components import Figure, Table, Heading, Component
+from stx.components import Figure, Table, Heading, Component
 
 
 def build_numbering(document: Component) -> List[IndexNode]:
