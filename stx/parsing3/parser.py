@@ -40,7 +40,8 @@ def process_include(
         doc: Document,
         source: Source,
         composer: Composer,
-        value: Any):
+        value: Any,
+        parent_section: Optional[Section]):
     if isinstance(value, list):
         include_paths = value
     elif isinstance(value, str):
@@ -55,10 +56,14 @@ def process_include(
             print(f'Processing: {file_path}...')
             if file_path.endswith('.stx'):
                 with Source.from_file(file_path) as include_source:
-                    component = parse_component(
-                        doc, include_source, composer, indentation=0, breakable=False)
-
-                    composer.add(component)
+                    parse_component(
+                        doc,
+                        include_source,
+                        composer,
+                        indentation=0,
+                        breakable=False,
+                        parent_section=parent_section,
+                        do_push=False)
             else:
                 # TODO add support for more extensions
                 with open(file_path, 'r', encoding='UTF-8') as f:
@@ -67,7 +72,11 @@ def process_include(
                 composer.add(RawText(content))
 
 
-def parse_directive(doc: Document, source: Source, composer: Composer):
+def parse_directive(
+        doc: Document,
+        source: Source,
+        composer: Composer,
+        parent_section: Optional[Section]):
     key, value = parse_entry(source)
 
     if key == 'title':
@@ -91,7 +100,7 @@ def parse_directive(doc: Document, source: Source, composer: Composer):
         # TODO handle links
         pass
     elif key == 'include':
-        process_include(doc, source, composer, value)
+        process_include(doc, source, composer, value, parent_section)
     else:
         raise StxError(f'Unsupported directive: {key}')
 
@@ -244,9 +253,13 @@ def parse_component(
         source: Source,
         composer: Composer,
         indentation: int,
+        do_push=True,
         breakable=True,
         parent_section: Optional[Section] = None) -> Component:
-    composer.push()
+    if do_push:
+        composer.push()
+    else:
+        print('continuing')
 
     while source.alive(indentation):
         source.checkout_position()
@@ -269,7 +282,7 @@ def parse_component(
             if mark in heading_marks:
                 section_level = get_section_level(mark)
 
-                if parent_section is not None and section_level >= parent_section.level:
+                if parent_section is not None and parent_section.level >= section_level:
                     source.rollback_position()
                     break
                 else:
@@ -282,7 +295,7 @@ def parse_component(
                 source.commit_position()
 
                 if mark == directive_mark:
-                    parse_directive(doc, source, composer)
+                    parse_directive(doc, source, composer, parent_section)
                 elif mark == attribute_mark:
                     parse_attribute(doc, source, composer)
                 elif mark == code_block_mark:
@@ -308,7 +321,8 @@ def parse_component(
                 else:
                     raise StxError(f'Unsupported mark: `{mark}`')
 
-    return composer.pop()
+    if do_push:
+        return composer.pop()
 
 
 def parse_document(source: Source) -> Document:

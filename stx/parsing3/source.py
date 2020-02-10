@@ -162,6 +162,8 @@ class Source:
         for i in range(len(mark)):
             self.move_next()
 
+        self.read_while([' '])
+
         return mark
 
     def read_text(self, indentation: int) -> Optional[str]:

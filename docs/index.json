@@ -1,0 +1,669 @@
+{
+  "title": "STX Documentation",
+  "author": null,
+  "content": {
+    "type": "composite",
+    "components": [
+      {
+        "type": "placeholder",
+        "name": "toc"
+      },
+      {
+        "type": "section",
+        "level": 1,
+        "heading": {
+          "type": "plain-text",
+          "content": "STX\n"
+        },
+        "content": {
+          "type": "plain-text",
+          "content": "STX is a simple markup language for creating documents.\n"
+        }
+      },
+      {
+        "type": "section",
+        "level": 1,
+        "heading": {
+          "type": "plain-text",
+          "content": "Syntax\n"
+        },
+        "content": {
+          "type": "composite",
+          "components": [
+            {
+              "type": "plain-text",
+              "content": "The STX files are parsed line by line; if a line starts with a [reserved mark],\nall the subsequent lines which have the indentation aligned to the first\nnon-space character after the mark are be considered the inner content of the\nelement that represents the given mark, this content is parsed in the same way\nline by line, but considering the indentation.\n"
+            },
+            {
+              "type": "plain-text",
+              "content": "When the indentation is broken, the inner content is broken as well closing\nthe element and starting again the parsing line by line.\nThis mechanism allows to create nested elements.\n"
+            },
+            {
+              "type": "plain-text",
+              "content": "When a line doesn't start with a reserved mark, it is considered a paragraph;\nthe paragraphs are broken by one empty line.\nTwo or more empty lines result in exiting from a section or just a separation\nwhen there is no section to exit.\n"
+            },
+            {
+              "type": "section",
+              "level": 2,
+              "heading": {
+                "type": "plain-text",
+                "content": "Text\n"
+              },
+              "content": {
+                "type": "plain-text",
+                "content": "asdf\n"
+              }
+            },
+            {
+              "type": "section",
+              "level": 2,
+              "heading": {
+                "type": "plain-text",
+                "content": "Paragraph\n"
+              },
+              "content": {
+                "type": "composite",
+                "components": []
+              }
+            },
+            {
+              "type": "section",
+              "level": 2,
+              "heading": {
+                "type": "plain-text",
+                "content": "Heading\n"
+              },
+              "content": {
+                "type": "plain-text",
+                "content": "Starts with a `=`.\n"
+              }
+            },
+            {
+              "type": "section",
+              "level": 2,
+              "heading": {
+                "type": "plain-text",
+                "content": "Lists\n"
+              },
+              "content": {
+                "type": "composite",
+                "components": []
+              }
+            },
+            {
+              "type": "section",
+              "level": 2,
+              "heading": {
+                "type": "plain-text",
+                "content": "Table\n"
+              },
+              "content": {
+                "type": "code-block",
+                "lang": "stx",
+                "content": ""
+              }
+            },
+            {
+              "type": "section",
+              "level": 2,
+              "heading": {
+                "type": "plain-text",
+                "content": "Code\n"
+              },
+              "content": {
+                "type": "composite",
+                "components": []
+              }
+            },
+            {
+              "type": "section",
+              "level": 2,
+              "heading": {
+                "type": "plain-text",
+                "content": "Figure\n"
+              },
+              "content": {
+                "type": "composite",
+                "components": []
+              }
+            },
+            {
+              "type": "section",
+              "level": 2,
+              "heading": {
+                "type": "plain-text",
+                "content": "Content Box\n"
+              },
+              "content": {
+                "type": "box",
+                "style": "warning",
+                "content": {
+                  "type": "section",
+                  "level": 1,
+                  "heading": {
+                    "type": "plain-text",
+                    "content": "Warning\n"
+                  },
+                  "content": {
+                    "type": "plain-text",
+                    "content": "This is a warning box.\n"
+                  }
+                }
+              }
+            },
+            {
+              "type": "section",
+              "level": 2,
+              "heading": {
+                "type": "plain-text",
+                "content": "Attributes\n"
+              },
+              "content": {
+                "type": "composite",
+                "components": []
+              }
+            },
+            {
+              "type": "section",
+              "level": 2,
+              "heading": {
+                "type": "plain-text",
+                "content": "Directives\n"
+              },
+              "content": {
+                "type": "composite",
+                "components": [
+                  {
+                    "type": "section",
+                    "level": 3,
+                    "heading": {
+                      "type": "plain-text",
+                      "content": "Meta-Information\n"
+                    },
+                    "content": {
+                      "type": "table",
+                      "caption": null,
+                      "number": null,
+                      "rows": [
+                        {
+                          "header": true,
+                          "cells": [
+                            {
+                              "type": "plain-text",
+                              "content": "Directive   "
+                            },
+                            {
+                              "type": "plain-text",
+                              "content": "Description"
+                            }
+                          ]
+                        },
+                        {
+                          "header": true,
+                          "cells": [
+                            {
+                              "type": "plain-text",
+                              "content": "`#title`    "
+                            },
+                            {
+                              "type": "plain-text",
+                              "content": "asdf"
+                            }
+                          ]
+                        },
+                        {
+                          "header": true,
+                          "cells": [
+                            {
+                              "type": "plain-text",
+                              "content": "`#format`   "
+                            },
+                            {
+                              "type": "plain-text",
+                              "content": "asdf"
+                            }
+                          ]
+                        },
+                        {
+                          "header": true,
+                          "cells": [
+                            {
+                              "type": "plain-text",
+                              "content": "`#author`   "
+                            },
+                            {
+                              "type": "plain-text",
+                              "content": "asdf"
+                            }
+                          ]
+                        },
+                        {
+                          "header": true,
+                          "cells": [
+                            {
+                              "type": "plain-text",
+                              "content": "`#encoding` "
+                            },
+                            {
+                              "type": "plain-text",
+                              "content": "asdf"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "section",
+                    "level": 3,
+                    "heading": {
+                      "type": "plain-text",
+                      "content": "Table of Contents\n"
+                    },
+                    "content": {
+                      "type": "code-block",
+                      "lang": "stx",
+                      "content": "#toc\n"
+                    }
+                  },
+                  {
+                    "type": "section",
+                    "level": 3,
+                    "heading": {
+                      "type": "plain-text",
+                      "content": "Includes\n"
+                    },
+                    "content": {
+                      "type": "composite",
+                      "components": []
+                    }
+                  },
+                  {
+                    "type": "section",
+                    "level": 3,
+                    "heading": {
+                      "type": "plain-text",
+                      "content": "Links\n"
+                    },
+                    "content": {
+                      "type": "composite",
+                      "components": []
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "section",
+              "level": 2,
+              "heading": {
+                "type": "plain-text",
+                "content": "Comments\n"
+              },
+              "content": {
+                "type": "composite",
+                "components": []
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "level": 1,
+        "heading": {
+          "type": "plain-text",
+          "content": "References\n"
+        },
+        "content": {
+          "type": "composite",
+          "components": []
+        }
+      },
+      {
+        "type": "section",
+        "level": 1,
+        "heading": {
+          "type": "plain-text",
+          "content": "Numbering\n"
+        },
+        "content": {
+          "type": "composite",
+          "components": []
+        }
+      },
+      {
+        "type": "section",
+        "level": 1,
+        "heading": {
+          "type": "plain-text",
+          "content": "Rendering\n"
+        },
+        "content": {
+          "type": "section",
+          "level": 2,
+          "heading": {
+            "type": "plain-text",
+            "content": "HTMLBook\n"
+          },
+          "content": {
+            "type": "composite",
+            "components": []
+          }
+        }
+      },
+      {
+        "type": "section",
+        "level": 1,
+        "heading": {
+          "type": "plain-text",
+          "content": "Appendix\n"
+        },
+        "content": {
+          "type": "section",
+          "level": 2,
+          "heading": {
+            "type": "plain-text",
+            "content": "Reserved Marks\n"
+          },
+          "content": {
+            "type": "composite",
+            "components": [
+              {
+                "type": "table",
+                "caption": null,
+                "number": null,
+                "rows": [
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`======` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "heading6 mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`=====` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "heading5 mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`====` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "heading4 mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`===` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "heading3 mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`==` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "heading2 mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`=` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "heading1 mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`-` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "unordered list item mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`.` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "ordered list item mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "composite",
+                        "components": [
+                          {
+                            "type": "plain-text",
+                            "content": "`"
+                          },
+                          {
+                            "type": "table",
+                            "caption": null,
+                            "number": null,
+                            "rows": [
+                              {
+                                "header": true,
+                                "cells": [
+                                  {
+                                    "type": "plain-text",
+                                    "content": "` "
+                                  },
+                                  {
+                                    "type": "plain-text",
+                                    "content": "table d row mark"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "composite",
+                        "components": [
+                          {
+                            "type": "plain-text",
+                            "content": "`"
+                          },
+                          {
+                            "type": "table",
+                            "caption": null,
+                            "number": null,
+                            "rows": [
+                              {
+                                "header": true,
+                                "cells": [
+                                  {
+                                    "type": "plain-text",
+                                    "content": "` "
+                                  },
+                                  {
+                                    "type": "plain-text",
+                                    "content": "table h row mark"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`"
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "table cell mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`>` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "pre caption mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`<` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "post caption mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`@` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "attribute mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`#` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "directive mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`\\`\\`\\`` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "code block mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`!` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "content box mark"
+                      }
+                    ]
+                  },
+                  {
+                    "header": true,
+                    "cells": [
+                      {
+                        "type": "plain-text",
+                        "content": "`///` "
+                      },
+                      {
+                        "type": "plain-text",
+                        "content": "comment block mark"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "embedded-block",
+                "content": "<script src=\"https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js\"></script>\n<script src=\"https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@4/dist/gumshoe.polyfills.min.js\"></script>\n<script type=\"text/javascript\">\n    (() => {\n        $('body').append('<div id=\"layout-content\"></div>');\n        $('#layout-content').append($('body > :not(#layout-content)'));\n        $('<div id=\"layout-start\"></div>').insertBefore($('#layout-content'));\n        $('#layout-start').append($('[data-type=toc]'));\n        new Gumshoe('#toc a');\n    })();\n</script>"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
