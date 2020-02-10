@@ -1,11 +1,11 @@
 from io import StringIO
 from typing import Any, Optional
 
-from stx.components import Component, Composite, Separator, Section, \
+from stx.components import Component, Separator, Section, \
     PlainText, Placeholder, CodeBlock, ContentBox, Table, TableRow, RawText, \
-    Figure, ListBlock
+    ListBlock
 from stx.design.document import Document
-from stx.parsing._marks import heading1_mark, heading_marks, get_section_level, \
+from stx.parsing3.marks import heading_marks, get_section_level, \
     directive_mark, attribute_mark, code_block_mark, content_box_mark, \
     table_h_row_mark, table_d_row_mark, table_cell_mark, pre_caption_mark, \
     post_caption_mark, ordered_list_item_mark, unordered_list_item_mark

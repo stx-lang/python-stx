@@ -2,7 +2,7 @@ import re
 from io import StringIO
 from typing import Optional, List
 
-from stx.parsing._marks import get_matching_mark
+from stx.parsing3.marks import get_matching_mark
 from stx.utils.stx_error import StxError
 from stx.utils.thread_context import context
 

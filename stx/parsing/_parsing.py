@@ -15,7 +15,7 @@ from ._directives import process_directive
 from ._source import Source
 from ._tape import Tape
 from ._composer import Composer
-from . import _marks
+from ..parsing3 import marks
 
 
 def parse_styled_text(tape: Tape, stop_marks: Stack) -> Optional[StyledText]:
@@ -242,7 +242,7 @@ def parse_code_block(document: Document, source: Source, composer: Composer):
     while True:
         line = source.pop_line()
 
-        if line.test_current_text(_marks.code_block_mark):
+        if line.test_current_text(marks.code_block_mark):
             break
 
         lines.append(line.raw_text[begin_index:])
@@ -307,7 +307,7 @@ def parse_table_row(document: Document, source: Source, composer: Composer, head
 
     cells = []
 
-    stop_mark = _marks.table_cell_mark
+    stop_mark = marks.table_cell_mark
 
     while True:
         cell = parse_component(document, source, stop_mark)
@@ -361,32 +361,32 @@ def parse_component(document: Document, source: Source, stop_mark: Optional[str]
         if block_mark is None:
             parse_text_block(document, source, composer, stop_mark)
         else:
-            is_flat = block_mark in _marks.flat_block_marks
+            is_flat = block_mark in marks.flat_block_marks
 
             if not is_flat:
                 source.push_begin_index(line.indentation)
 
-            if block_mark in _marks.heading_marks:
-                parse_heading_block(document, source, _marks.get_section_level(block_mark), composer)
-            elif block_mark == _marks.directive_mark:
+            if block_mark in marks.heading_marks:
+                parse_heading_block(document, source, marks.get_section_level(block_mark), composer)
+            elif block_mark == marks.directive_mark:
                 parse_directive(document, source, composer)
-            elif block_mark == _marks.attribute_mark:
+            elif block_mark == marks.attribute_mark:
                 parse_attribute(document, source, composer)
-            elif block_mark == _marks.code_block_mark:
+            elif block_mark == marks.code_block_mark:
                 parse_code_block(document, source, composer)
-            elif block_mark == _marks.pre_caption_mark:
+            elif block_mark == marks.pre_caption_mark:
                 parse_pre_caption(document, source, composer)
-            elif block_mark == _marks.post_caption_mark:
+            elif block_mark == marks.post_caption_mark:
                 parse_post_caption(document, source, composer)
-            elif block_mark == _marks.unordered_list_item_mark:
+            elif block_mark == marks.unordered_list_item_mark:
                 parse_list_item(document, source, composer, False)
-            elif block_mark == _marks.ordered_list_item_mark:
+            elif block_mark == marks.ordered_list_item_mark:
                 parse_list_item(document, source, composer, True)
-            elif block_mark == _marks.table_d_row_mark:
+            elif block_mark == marks.table_d_row_mark:
                 parse_table_row(document, source, composer, False)
-            elif block_mark == _marks.table_h_row_mark:
+            elif block_mark == marks.table_h_row_mark:
                 parse_table_row(document, source, composer, False)
-            elif block_mark == _marks.content_box_mark:
+            elif block_mark == marks.content_box_mark:
                 parse_content_box(document, source, composer)
             else:
                 raise source.error(f'Not implemented block mark: {block_mark}')
