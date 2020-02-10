@@ -5,7 +5,7 @@ from typing import List
 from stx import logger
 from stx.design.index_node import IndexNode
 from stx.utils.stack import Stack
-from stx.components import Figure, Table, Heading, Component
+from stx.components import Figure, Table, Section, Component
 
 
 def build_numbering(document: Component) -> List[IndexNode]:
@@ -17,7 +17,7 @@ def build_numbering(document: Component) -> List[IndexNode]:
     tables: List[Table] = []
 
     for content in document.walk():
-        if isinstance(content, Heading):
+        if isinstance(content, Section):
             node = IndexNode(content)
             level = content.level
 

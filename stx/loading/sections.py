@@ -1,6 +1,6 @@
 from typing import List
 
-from stx.components import Component, Heading, Section, Composite, \
+from stx.components import Component, Section, Composite, \
     Separator
 
 SECTIONS = ['sect1', 'sect2', 'sect3', 'sect4', 'sect5']
@@ -52,7 +52,7 @@ def normalize_level(section_stack: List[Section], section: Section):
 def make_sections_loop(result: List[Component], section_stack: List[Section], component: Component) -> List[Component]:
     if isinstance(component, Composite):
         for component in component.components:
-            if isinstance(component, Heading):
+            if isinstance(component, Section):
                 section = Section(component, [], None)
 
                 normalize_level(section_stack, section)

@@ -1,5 +1,5 @@
 from stx import logger
-from stx.components import Component, Heading, LinkText
+from stx.components import Component, LinkText, Section
 from stx.design.ref_map import make_ref, RefMap
 
 
@@ -26,12 +26,12 @@ def consume_ref_attribute(ref_map: RefMap, component: Component):
             ref_map.register_ref(ref, child)
 
 
-def build_heading(ref_map: RefMap, heading: Heading):
+def build_heading(ref_map: RefMap, heading: Section):
     ref_map.register_content(heading, main=True)
 
 
 def build_content(ref_map: RefMap, content: Component):
-    if isinstance(content, Heading):
+    if isinstance(content, Section):
         build_heading(ref_map, content)
 
     for child in content.get_children():

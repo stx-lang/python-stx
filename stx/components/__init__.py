@@ -3,7 +3,6 @@ from ._component import Component
 from ._composite import Composite
 from ._content_box import ContentBox
 from ._figure import Figure
-from ._heading import Heading
 from ._link_text import LinkText
 from ._list_block import ListBlock
 from ._placeholder import Placeholder

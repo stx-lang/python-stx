@@ -1,6 +1,6 @@
 from typing import Optional
 
-from stx.components import Component, Composite, CodeBlock, Heading, Table, \
+from stx.components import Component, Composite, CodeBlock, Table, \
     ListBlock, TextBlock, PlainText, StyledText, LinkText, RawText, Figure, \
     Section, Placeholder, Separator, ContentBox
 from stx.design.document import Document
@@ -23,10 +23,6 @@ def code_block_to_json(code_block: CodeBlock) -> dict:
         'lang': code_block.lang,
         'content': code_block.content,
     }
-
-
-def heading_to_json(content) -> dict:
-    raise StxError('not implemented')
 
 
 def table_to_json(table: Table) -> dict:
@@ -152,8 +148,6 @@ def component_to_json(content: Optional[Component]) -> Optional[dict]:
         return composite_to_json(content)
     elif isinstance(content, CodeBlock):
         return code_block_to_json(content)
-    elif isinstance(content, Heading):
-        return heading_to_json(content)
     elif isinstance(content, Table):
         return table_to_json(content)
     elif isinstance(content, ListBlock):

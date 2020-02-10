@@ -2,7 +2,7 @@ from typing import List
 
 from stx import logger, app
 from stx.design.index_node import IndexNode
-from stx.components import Component, Composite, CodeBlock, Heading, \
+from stx.components import Component, Composite, CodeBlock, \
     Table, \
     ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure, \
     Placeholder, Section, Separator, ContentBox
@@ -120,7 +120,7 @@ def open_tag(
         writer.close_tag('a', inline=True)
 
 
-def render_heading(document: Document, writer: HtmlWriter, heading: Heading, tag=None):
+def render_heading(document: Document, writer: HtmlWriter, heading: Section, tag=None):
     if tag is None:
         level = heading.level
 
@@ -327,8 +327,6 @@ def render_content(
         render_container(document, writer, content)
     elif isinstance(content, CodeBlock):
         render_code_block(document, writer, content)
-    elif isinstance(content, Heading):
-        render_heading(document, writer, content)
     elif isinstance(content, Table):
         render_table(document, writer, content)
     elif isinstance(content, ListBlock):

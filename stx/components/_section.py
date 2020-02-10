@@ -18,6 +18,7 @@ class Section(Component):
         self.content = content
         self.level = level
         self.type = None
+        self.number = None
 
     def __repr__(self):
         return f'Section<{len(self.components)} component(s)>'
