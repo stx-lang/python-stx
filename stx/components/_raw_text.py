@@ -15,13 +15,13 @@ from ..utils.stx_error import StxError
 class RawText(Component):
 
     def __init__(self, text: str):
-        self.text = text
+        self.content = text
 
     def __repr__(self):
-        return f'RawText<{crop_text(self.text, 10)}>'
+        return f'RawText<{crop_text(self.content, 10)}>'
 
     def write_text(self, output: TextIO):
-        output.write(self.text)
+        output.write(self.content)
 
     def get_children(self) -> List[Component]:
         return []

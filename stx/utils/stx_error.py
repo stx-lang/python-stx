@@ -4,6 +4,9 @@ from stx.utils.thread_context import context
 def generate_error_message(message):
     source = context.source
 
+    if source is None:
+        return message
+
     return (
         f'{source.file_path}@{source._line + 1},{source._column + 1}:\n'
         f'  {message}'

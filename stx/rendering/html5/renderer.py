@@ -93,11 +93,11 @@ def render_contents(document: Document, writer: HtmlWriter, contents: List[Compo
 def render_code_block(document: Document, writer: HtmlWriter, code: CodeBlock):
     pre_attributes = {'data-type': 'programlisting'}
 
-    if code.flavor is not None:
-        pre_attributes['data-code-language'] = code.flavor
+    if code.lang is not None:
+        pre_attributes['data-code-language'] = code.lang
 
     writer.open_tag('pre', inline=True, attributes=pre_attributes)
-    writer.text(code.code, disable_indentation=True)
+    writer.text(code.content, disable_indentation=True)
     writer.close_tag('pre', inline=True)
     writer.break_line()
 
@@ -214,7 +214,7 @@ def render_paragraph(document: Document, writer: HtmlWriter, paragraph: TextBloc
 
 
 def render_plain_text(document: Document, writer: HtmlWriter, plain: PlainText):
-    writer.text(plain.text)
+    writer.text(plain.content)
 
 
 def render_styled_text(document: Document, writer: HtmlWriter, styled: StyledText):
@@ -253,7 +253,7 @@ def render_link_text(document: Document, writer: HtmlWriter, link: LinkText):
 def render_embedded_text(
         document: Document, writer: HtmlWriter, embedded: RawText):
     # writer.comment(embedded.source) TODO where is comes?
-    writer.write_raw(embedded.text)
+    writer.write_raw(embedded.content)
 
 
 def render_figure(document: Document, writer: HtmlWriter, figure: Figure):
@@ -311,7 +311,7 @@ def render_separator(document: Document, writer: HtmlWriter, separator: Separato
 
 
 def render_box(document: Document, writer: HtmlWriter, box: ContentBox):
-    writer.open_tag('div', {'data-type': box.type})
+    writer.open_tag('div', {'data-type': box.style})
     render_content(document, writer, box.content)
     writer.close_tag('div')
 

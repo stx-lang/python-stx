@@ -13,19 +13,19 @@ from ._component import Component
 
 class CodeBlock(Component):
 
-    def __init__(self, code: str, flavor: str):
-        self.code = code
-        self.flavor = flavor  # TODO rename to lang
+    def __init__(self, content: str, lang):
+        self.content = content
+        self.lang = lang
 
     def __repr__(self):
-        return f'CodeBlock<{crop_text(self.code, 10)}>'
+        return f'CodeBlock<{crop_text(self.content, 10)}>'
 
     def write_text(self, output: TextIO):
-        output.write(self.code)
+        output.write(self.content)
 
     def get_children(self) -> List[Component]:
         return []
 
     def pop_attributes(self, attributes: dict):
-        self.flavor = attributes.pop('lang')
+        self.lang = attributes.pop('lang')
 

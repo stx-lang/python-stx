@@ -342,7 +342,7 @@ def parse_content_box(document: Document, source: Source, composer: Composer):
 
     composer.consume_attributes(box)
 
-    box.type = box.attributes.get_value('type')
+    box.style = box.attributes.get_value('type')
 
     composer.push(box)
 

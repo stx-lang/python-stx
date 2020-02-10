@@ -16,7 +16,7 @@ class ContentBox(Component):
 
     def __init__(self, content: Component):
         self.content = content
-        self.type = None
+        self.style = None
 
     def __repr__(self):
         return f'ContentBox'
@@ -28,4 +28,4 @@ class ContentBox(Component):
         return [self.content]
 
     def pop_attributes(self, attributes: dict):
-        self.type = attributes.pop('type', None)
+        self.style = attributes.pop('type', None)
