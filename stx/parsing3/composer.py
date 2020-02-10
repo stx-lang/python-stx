@@ -14,6 +14,16 @@ class Composer:
     def push(self):
         self.stack.append([])
 
+    def pop(self) -> Component:
+        components = self.stack.pop()
+
+        # TODO add case for len(result) == 0 ?
+
+        if len(components) == 1:
+            return components[0]
+
+        return Composite(components)
+
     @property
     def components(self) -> List[Component]:
         if len(self.stack) == 0:
@@ -39,16 +49,6 @@ class Composer:
                 self.components.append(figure)
         else:
             self.components.append(component)
-
-    def pop(self) -> Component:
-        components = self.stack.pop()
-
-        # TODO add case for len(result) == 0 ?
-
-        if len(components) == 1:
-            return components[0]
-
-        return Composite(components)
 
     def push_attribute(self, key: str, value: Any):
         if key in self.attributes_buffer:

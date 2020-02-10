@@ -1,0 +1,24 @@
+{
+  "title": null,
+  "author": null,
+  "content": {
+    "type": "section",
+    "level": 1,
+    "heading": {
+      "type": "plain-text",
+      "content": "Section 1\n"
+    },
+    "content": {
+      "type": "section",
+      "level": 2,
+      "heading": {
+        "type": "plain-text",
+        "content": "Section 1.1\n"
+      },
+      "content": {
+        "type": "composite",
+        "components": []
+      }
+    }
+  }
+}
