@@ -1,5 +1,5 @@
-from stx.parsing3.source import Source
-from stx.parsing3.values import parse_value
+from stx.compiling.source import Source
+from stx.compiling.values import parse_value
 
 
 def parse(text: str) -> str:

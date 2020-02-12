@@ -1,9 +1,11 @@
+from abc import ABC
+
 from stx.components import Table, TableRow
-from stx.parsing3.marks import table_cell_mark
-from stx.parsing3.parsers.base import BaseParser
+from stx.compiling.marks import table_cell_mark
+from stx.compiling.parsing.abstract import AbstractParser
 
 
-class TableParser(BaseParser):
+class TableParser(AbstractParser, ABC):
 
     def parse_table_row(
             self,
@@ -39,10 +41,10 @@ class TableParser(BaseParser):
 
             table.rows.append(row)
 
-        self.source.stop_mark = table_cell_mark
+        self.stop_mark = table_cell_mark
 
-        cell = self.capture_component(indentation)
+        cell = self.capture_component(indentation, True)
 
-        self.source.stop_mark = None
+        self.stop_mark = None
 
         row.cells.append(cell)

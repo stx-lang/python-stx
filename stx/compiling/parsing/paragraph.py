@@ -1,8 +1,10 @@
+from abc import ABC
+
 from stx.components import PlainText
-from stx.parsing3.parsers.base import BaseParser
+from stx.compiling.parsing.abstract import AbstractParser
 
 
-class ParagraphParser(BaseParser):
+class ParagraphParser(AbstractParser, ABC):
 
     def parse_paragraph(self, text: str):
         self.composer.add(PlainText(text))  # TODO parse styled text

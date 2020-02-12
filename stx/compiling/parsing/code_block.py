@@ -1,33 +1,33 @@
+from abc import ABC
 from io import StringIO
 
 from stx.components import PlainText, CodeBlock
-from stx.parsing3.marks import code_block_mark
-from stx.parsing3.parsers.base import BaseParser
-from stx.parsing3.values import parse_name, NAME_BEGIN_CHARS
+from stx.compiling.marks import code_block_mark
+from stx.compiling.parsing.abstract import AbstractParser
+from stx.compiling.values import parse_name, NAME_BEGIN_CHARS
 from stx.utils.stx_error import StxError
 
 
-class CodeBlockParser(BaseParser):
-
-    def parse_paragraph(self, text: str):
-        self.composer.add(PlainText(text))  # TODO parse styled text
+class CodeBlockParser(AbstractParser, ABC):
 
     def parse_code_block(
             self,
             root_indentation: int):
-        c = self.source.peek()
+        content = self.get_content()
+
+        c = content.peek()
 
         if c in NAME_BEGIN_CHARS:
-            lang = parse_name(self.source)
+            lang = parse_name(content)
         else:
             lang = None
 
-        self.source.expect_end_of_line()
+        content.expect_end_of_line()
 
         out = StringIO()
 
         while True:
-            line = self.source.read_line(root_indentation)
+            line = content.read_line(root_indentation)
 
             if line is None:
                 raise StxError('Unexpected end of block.')

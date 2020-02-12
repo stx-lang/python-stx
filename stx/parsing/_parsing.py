@@ -15,7 +15,7 @@ from ._directives import process_directive
 from ._source import Source
 from ._tape import Tape
 from ._composer import Composer
-from ..parsing3 import marks
+from ..compiling import marks
 
 
 def parse_styled_text(tape: Tape, stop_marks: Stack) -> Optional[StyledText]:

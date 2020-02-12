@@ -4,32 +4,31 @@ import threading
 class _ThreadContext:
 
     def __init__(self):
-        self.local = threading.local()
+        self._local = threading.local()
 
     @property
-    def source_stack(self):
-        stack = getattr(self.local, 'source_stack', None)
-
-        if stack is None:
-            stack = []
-            setattr(self.local, 'source_stack', stack)
-
-        return stack
-
-    @property
-    def source(self):
-        stack = self.source_stack
+    def reader(self):
+        stack = self._get_reader_stack()
 
         if len(stack) == 0:
             return None
 
         return stack[-1]
 
-    def push_source(self, source):
-        self.source_stack.append(source)
+    def _get_reader_stack(self):
+        stack = getattr(self._local, 'reader_stack', None)
 
-    def pop_source(self):
-        self.source_stack.pop()
+        if stack is None:
+            stack = []
+            setattr(self._local, 'reader_stack', stack)
+
+        return stack
+
+    def push_reader(self, source):
+        self._get_reader_stack().append(source)
+
+    def pop_reader(self):
+        self._get_reader_stack().pop()
 
 
 context = _ThreadContext()

@@ -21,11 +21,10 @@ def walk_files(dir_path: str) -> Iterator[str]:
             yield path.join(root, name)
 
 
-def resolve_include_files(include_path: str, source_path: str) -> Iterable[str]:
+def resolve_include_files(include_path: str, source_path: str) -> List[str]:
     target_path = resolve_sibling(source_path, include_path)
 
     if path.isdir(target_path):
-        for file_path in sorted(walk_files(target_path)):
-            yield file_path
-    else:
-        yield target_path
+        return [file_path for file_path in sorted(walk_files(target_path))]
+
+    return [target_path]

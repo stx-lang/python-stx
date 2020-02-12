@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional, TextIO, List
 
-from ..parsing3 import marks
+from ..compiling import marks
 from ._location import Location
 from ._error import ParseError
 from ..utils.stx_error import StxError

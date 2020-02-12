@@ -25,6 +25,3 @@ class RawText(Component):
 
     def get_children(self) -> List[Component]:
         return []
-
-    def pop_attributes(self, attributes: dict):
-        raise StxError('not implemented')

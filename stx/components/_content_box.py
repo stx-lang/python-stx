@@ -26,6 +26,3 @@ class ContentBox(Component):
 
     def get_children(self) -> List[Component]:
         return [self.content]
-
-    def pop_attributes(self, attributes: dict):
-        self.style = attributes.pop('type', None)

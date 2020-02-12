@@ -27,6 +27,3 @@ class TableRow(Component):
 
     def get_children(self) -> List[Component]:
         return self.cells
-
-    def pop_attributes(self, attributes: dict):
-        raise StxError('not implemented')

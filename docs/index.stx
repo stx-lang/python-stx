@@ -30,7 +30,7 @@ asdf
 
 == Paragraph
 
-== Heading
+== Section
 
 Starts with a `=`.
 
@@ -48,7 +48,7 @@ Starts with a `=`.
 
 == Content Box
 
-@type:warning
+@style:warning
 ! = Warning
 
   This is a warning box.
@@ -87,7 +87,7 @@ Starts with a `=`.
 
 = Appendix
 
-@id:"reserved mark"
+@ref:"reserved mark"
 == Reserved Marks
 
 |- `======` | heading6 mark

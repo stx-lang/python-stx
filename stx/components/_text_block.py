@@ -26,8 +26,3 @@ class TextBlock(Component):
 
     def get_children(self) -> List[Component]:
         return self.components
-
-    def pop_attributes(self, attributes: dict):
-        raise StxError('not implemented')
-
-

@@ -31,9 +31,3 @@ class Section(Component):
 
     def get_children(self) -> List[Component]:
         return [self.heading, *self.components]
-
-    def pop_attributes(self, attributes: dict):
-        section_id = attributes.pop('id', None)
-        section_id = attributes.pop('ref', None)
-
-        # TODO handle IDS & refs

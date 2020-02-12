@@ -2,13 +2,15 @@ from stx.utils.thread_context import context
 
 
 def generate_error_message(message):
-    source = context.source
+    reader = context.reader
 
-    if source is None:
+    if reader is None:
         return message
 
+    content = reader.get_content()
+
     return (
-        f'{source.file_path}@{source._line + 1},{source._column + 1}:\n'
+        f'{content.file_path}@{content.line + 1},{content.column + 1}:\n'
         f'  {message}'
     )
 

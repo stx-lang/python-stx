@@ -1,6 +1,6 @@
 from typing import List
 
-from stx.components import Placeholder
+from stx.components import TableOfContents
 from stx.design.document import Document
 from stx.parsing._composer import Composer
 from stx.parsing._source import Source
@@ -44,7 +44,7 @@ def process_encoding(document: Document, values: list):
 
 
 def process_toc(document: Document, values: list, composer: Composer):
-    composer.push(Placeholder('toc'))
+    composer.push(TableOfContents())
 
 
 def process_directive(name: str, values: List[str], document: Document, source: Source, composer: Composer):

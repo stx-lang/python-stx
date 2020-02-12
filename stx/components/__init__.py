@@ -5,7 +5,6 @@ from ._content_box import ContentBox
 from ._figure import Figure
 from ._link_text import LinkText
 from ._list_block import ListBlock
-from ._placeholder import Placeholder
 from ._plain_text import PlainText
 from ._raw_text import RawText
 from ._section import Section
@@ -14,3 +13,4 @@ from ._styled_text import StyledText
 from ._table import Table
 from ._table_row import TableRow
 from ._text_block import TextBlock
+from ._toc import TableOfContents

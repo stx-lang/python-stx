@@ -5,8 +5,8 @@
     "type": "composite",
     "components": [
       {
-        "type": "placeholder",
-        "name": "toc"
+        "type": "toc",
+        "title": "Table of Contents"
       },
       {
         "type": "section",
@@ -71,7 +71,7 @@
               "level": 2,
               "heading": {
                 "type": "plain-text",
-                "content": "Heading\n"
+                "content": "Section\n"
               },
               "content": {
                 "type": "plain-text",
@@ -138,18 +138,27 @@
                 "type": "box",
                 "style": "warning",
                 "content": {
-                  "type": "section",
-                  "level": 1,
-                  "heading": {
-                    "type": "plain-text",
-                    "content": "Warning\n"
-                  },
-                  "content": {
-                    "type": "plain-text",
-                    "content": "This is a warning box.\n"
-                  }
+                  "type": "composite",
+                  "components": []
                 }
               }
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "level": 1,
+        "heading": {
+          "type": "plain-text",
+          "content": "Warning\n"
+        },
+        "content": {
+          "type": "composite",
+          "components": [
+            {
+              "type": "plain-text",
+              "content": "  This is a warning box.\n"
             },
             {
               "type": "section",
@@ -199,7 +208,7 @@
                           ]
                         },
                         {
-                          "header": true,
+                          "header": false,
                           "cells": [
                             {
                               "type": "plain-text",
@@ -212,7 +221,7 @@
                           ]
                         },
                         {
-                          "header": true,
+                          "header": false,
                           "cells": [
                             {
                               "type": "plain-text",
@@ -225,7 +234,7 @@
                           ]
                         },
                         {
-                          "header": true,
+                          "header": false,
                           "cells": [
                             {
                               "type": "plain-text",
@@ -238,7 +247,7 @@
                           ]
                         },
                         {
-                          "header": true,
+                          "header": false,
                           "cells": [
                             {
                               "type": "plain-text",
@@ -367,298 +376,292 @@
             "content": "Reserved Marks\n"
           },
           "content": {
-            "type": "composite",
-            "components": [
+            "type": "table",
+            "caption": {
+              "type": "plain-text",
+              "content": "/script>"
+            },
+            "number": null,
+            "rows": [
               {
-                "type": "table",
-                "caption": null,
-                "number": null,
-                "rows": [
+                "header": false,
+                "cells": [
                   {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`======` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "heading6 mark"
-                      }
-                    ]
+                    "type": "plain-text",
+                    "content": "`======` "
                   },
                   {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`=====` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "heading5 mark"
-                      }
-                    ]
+                    "type": "plain-text",
+                    "content": "heading6 mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`=====` "
                   },
                   {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`====` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "heading4 mark"
-                      }
-                    ]
+                    "type": "plain-text",
+                    "content": "heading5 mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`====` "
                   },
                   {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`===` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "heading3 mark"
-                      }
-                    ]
+                    "type": "plain-text",
+                    "content": "heading4 mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`===` "
                   },
                   {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`==` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "heading2 mark"
-                      }
-                    ]
+                    "type": "plain-text",
+                    "content": "heading3 mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`==` "
                   },
                   {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`=` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "heading1 mark"
-                      }
-                    ]
+                    "type": "plain-text",
+                    "content": "heading2 mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`=` "
                   },
                   {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`-` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "unordered list item mark"
-                      }
-                    ]
+                    "type": "plain-text",
+                    "content": "heading1 mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`-` "
                   },
                   {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`.` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "ordered list item mark"
-                      }
-                    ]
+                    "type": "plain-text",
+                    "content": "unordered list item mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`.` "
                   },
                   {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "composite",
-                        "components": [
-                          {
-                            "type": "plain-text",
-                            "content": "`"
-                          },
-                          {
-                            "type": "table",
-                            "caption": null,
-                            "number": null,
-                            "rows": [
-                              {
-                                "header": true,
-                                "cells": [
-                                  {
-                                    "type": "plain-text",
-                                    "content": "` "
-                                  },
-                                  {
-                                    "type": "plain-text",
-                                    "content": "table d row mark"
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
+                    "type": "plain-text",
+                    "content": "ordered list item mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
                   {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "composite",
-                        "components": [
-                          {
-                            "type": "plain-text",
-                            "content": "`"
-                          },
-                          {
-                            "type": "table",
-                            "caption": null,
-                            "number": null,
-                            "rows": [
-                              {
-                                "header": true,
-                                "cells": [
-                                  {
-                                    "type": "plain-text",
-                                    "content": "` "
-                                  },
-                                  {
-                                    "type": "plain-text",
-                                    "content": "table h row mark"
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "header": true,
-                    "cells": [
+                    "type": "composite",
+                    "components": [
                       {
                         "type": "plain-text",
                         "content": "`"
                       },
                       {
-                        "type": "plain-text",
-                        "content": "` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "table cell mark"
-                      }
-                    ]
-                  },
-                  {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`>` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "pre caption mark"
-                      }
-                    ]
-                  },
-                  {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`<` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "post caption mark"
-                      }
-                    ]
-                  },
-                  {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`@` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "attribute mark"
-                      }
-                    ]
-                  },
-                  {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`#` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "directive mark"
-                      }
-                    ]
-                  },
-                  {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`\\`\\`\\`` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "code block mark"
-                      }
-                    ]
-                  },
-                  {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`!` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "content box mark"
-                      }
-                    ]
-                  },
-                  {
-                    "header": true,
-                    "cells": [
-                      {
-                        "type": "plain-text",
-                        "content": "`///` "
-                      },
-                      {
-                        "type": "plain-text",
-                        "content": "comment block mark"
+                        "type": "table",
+                        "caption": null,
+                        "number": null,
+                        "rows": [
+                          {
+                            "header": false,
+                            "cells": [
+                              {
+                                "type": "plain-text",
+                                "content": "` "
+                              },
+                              {
+                                "type": "plain-text",
+                                "content": "table d row mark"
+                              }
+                            ]
+                          }
+                        ]
                       }
                     ]
                   }
                 ]
               },
               {
-                "type": "embedded-block",
-                "content": "<script src=\"https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js\"></script>\n<script src=\"https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@4/dist/gumshoe.polyfills.min.js\"></script>\n<script type=\"text/javascript\">\n    (() => {\n        $('body').append('<div id=\"layout-content\"></div>');\n        $('#layout-content').append($('body > :not(#layout-content)'));\n        $('<div id=\"layout-start\"></div>').insertBefore($('#layout-content'));\n        $('#layout-start').append($('[data-type=toc]'));\n        new Gumshoe('#toc a');\n    })();\n</script>"
+                "header": false,
+                "cells": [
+                  {
+                    "type": "composite",
+                    "components": [
+                      {
+                        "type": "plain-text",
+                        "content": "`"
+                      },
+                      {
+                        "type": "table",
+                        "caption": null,
+                        "number": null,
+                        "rows": [
+                          {
+                            "header": true,
+                            "cells": [
+                              {
+                                "type": "plain-text",
+                                "content": "` "
+                              },
+                              {
+                                "type": "plain-text",
+                                "content": "table h row mark"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`"
+                  },
+                  {
+                    "type": "plain-text",
+                    "content": "` "
+                  },
+                  {
+                    "type": "plain-text",
+                    "content": "table cell mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`>` "
+                  },
+                  {
+                    "type": "plain-text",
+                    "content": "pre caption mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`<` "
+                  },
+                  {
+                    "type": "plain-text",
+                    "content": "post caption mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`@` "
+                  },
+                  {
+                    "type": "plain-text",
+                    "content": "attribute mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`#` "
+                  },
+                  {
+                    "type": "plain-text",
+                    "content": "directive mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`\\`\\`\\`` "
+                  },
+                  {
+                    "type": "plain-text",
+                    "content": "code block mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`!` "
+                  },
+                  {
+                    "type": "plain-text",
+                    "content": "content box mark"
+                  }
+                ]
+              },
+              {
+                "header": false,
+                "cells": [
+                  {
+                    "type": "plain-text",
+                    "content": "`///` "
+                  },
+                  {
+                    "type": "plain-text",
+                    "content": "comment block mark"
+                  }
+                ]
               }
             ]
           }

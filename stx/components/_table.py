@@ -37,8 +37,3 @@ class Table(Component):
         if len(self.rows) > 0:
             return self.rows[-1]
         return None
-
-    def pop_attributes(self, attributes: dict):
-        raise StxError('not implemented')
-
-

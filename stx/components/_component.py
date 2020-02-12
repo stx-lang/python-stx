@@ -1,22 +1,14 @@
 from __future__ import annotations
 
-import re
 from io import StringIO
-from typing import List, Iterable, Optional, TextIO
+from typing import List, Iterable, TextIO, Union
 
-from stx.design.attributes_map import AttributesMap
-
-from stx.utils.strs import crop_text
+from stx.utils.stx_error import StxError
+from stx.utils.debug import see
 
 
 class Component:
-    _attributes = None
-
-    @property
-    def attributes(self) -> AttributesMap:
-        if self._attributes is None:
-            self._attributes = AttributesMap()
-        return self._attributes
+    ref: Union[str, List[str], None] = None
 
     def get_text(self) -> str:
         output = StringIO()
@@ -38,8 +30,11 @@ class Component:
     def get_children(self) -> List[Component]:
         raise NotImplementedError()
 
-    def __repr__(self):
-        raise NotImplementedError()
+    def apply_attributes(self, attributes: dict):
+        for key, value in attributes.items():
+            if not hasattr(self, key):
+                raise StxError(
+                    f'Component {see(self)} does not'
+                    f' support the attribute {see(key)}.')
 
-    def pop_attributes(self, attributes: dict):
-        raise NotImplementedError()
+            setattr(self, key, value)

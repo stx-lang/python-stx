@@ -2,7 +2,7 @@ from typing import Optional
 
 from stx.components import Component, Composite, CodeBlock, Table, \
     ListBlock, TextBlock, PlainText, StyledText, LinkText, RawText, Figure, \
-    Section, Placeholder, Separator, ContentBox
+    Section, Separator, ContentBox, TableOfContents
 from stx.design.document import Document
 from stx.utils.stx_error import StxError
 
@@ -119,10 +119,10 @@ def section_to_json(section: Section) -> dict:
     }
 
 
-def placeholder_to_json(placeholder: Placeholder) -> dict:
+def toc_to_json(toc: TableOfContents) -> dict:
     return {
-        'type': 'placeholder',
-        'name': placeholder.name,
+        'type': 'toc',
+        'title': toc.title,
     }
 
 
@@ -166,8 +166,8 @@ def component_to_json(content: Optional[Component]) -> Optional[dict]:
         return figure_to_json(content)
     elif isinstance(content, Section):
         return section_to_json(content)
-    elif isinstance(content, Placeholder):
-        return placeholder_to_json(content)
+    elif isinstance(content, TableOfContents):
+        return toc_to_json(content)
     elif isinstance(content, Separator):
         return separator_to_json(content)
     elif isinstance(content, ContentBox):

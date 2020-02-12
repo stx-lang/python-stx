@@ -5,7 +5,7 @@ from stx.design.index_node import IndexNode
 from stx.components import Component, Composite, CodeBlock, \
     Table, \
     ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure, \
-    Placeholder, Section, Separator, ContentBox
+    Section, Separator, ContentBox, TableOfContents
 from stx.design.document import Document
 
 from stx.rendering.html5.writer import HtmlWriter
@@ -273,13 +273,6 @@ def render_figure(document: Document, writer: HtmlWriter, figure: Figure):
     writer.close_tag('figure')
 
 
-def render_placeholder(document: Document, writer: HtmlWriter, content: Placeholder):
-    if content.name == 'toc':
-        render_toc(document, writer, content)
-    else:
-        raise Exception(f'Not implemented placeholder: {content.name}')
-
-
 def render_section(document: Document, writer: HtmlWriter, section: Section):
     section_attrs = {}
 
@@ -345,8 +338,8 @@ def render_content(
         render_figure(document, writer, content)
     elif isinstance(content, Section):
         render_section(document, writer, content)
-    elif isinstance(content, Placeholder):
-        render_placeholder(document, writer, content)
+    elif isinstance(content, TableOfContents):
+        render_toc(document, writer, content)
     elif isinstance(content, Separator):
         render_separator(document, writer, content)
     elif isinstance(content, ContentBox):
@@ -355,10 +348,10 @@ def render_content(
         raise NotImplementedError()
 
 
-def render_toc(document: Document, writer: HtmlWriter, content: Placeholder):
+def render_toc(document: Document, writer: HtmlWriter, toc: TableOfContents):
     writer.open_tag('nav', {'id': 'toc', 'data-type': 'toc'})
 
-    title = content.attributes.get_value('title')
+    title = toc.title
 
     if title is not None:
         writer.open_tag('h1', inline=True)

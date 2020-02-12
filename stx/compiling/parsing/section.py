@@ -1,10 +1,11 @@
+from abc import ABC
 from typing import List
 
 from stx.components import Section
-from stx.parsing3.parsers.base import BaseParser
+from stx.compiling.parsing.abstract import AbstractParser
 
 
-class SectionParser(BaseParser):
+class SectionParser(AbstractParser, ABC):
 
     def parse_section(
             self,
@@ -17,9 +18,7 @@ class SectionParser(BaseParser):
 
         self.section_stack.append(section)
 
-        section.heading = self.capture_component(
-            mark_indentation)
-        section.content = self.capture_component(
-            root_indentation)
+        section.heading = self.capture_component(mark_indentation, True)
+        section.content = self.capture_component(root_indentation, True)
 
         self.section_stack.pop()

@@ -25,8 +25,3 @@ class PlainText(Component):
 
     def get_children(self) -> List[Component]:
         return []
-
-    def pop_attributes(self, attributes: dict):
-        # TODO implement refs in a global way
-        attributes.pop('ref', None)
-

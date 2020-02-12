@@ -1,8 +1,10 @@
+from abc import ABC
+
 from stx.components import ListBlock
-from stx.parsing3.parsers.base import BaseParser
+from stx.compiling.parsing.abstract import AbstractParser
 
 
-class ListBlockParser(BaseParser):
+class ListBlockParser(AbstractParser, ABC):
 
     def parse_list_item(
             self,
@@ -15,7 +17,6 @@ class ListBlockParser(BaseParser):
 
             self.composer.add(list_block)
 
-        list_item = self.capture_component(indentation)
+        list_item = self.capture_component(indentation, True)
 
         list_block.items.append(list_item)
-

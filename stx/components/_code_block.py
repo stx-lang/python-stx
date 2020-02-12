@@ -25,7 +25,3 @@ class CodeBlock(Component):
 
     def get_children(self) -> List[Component]:
         return []
-
-    def pop_attributes(self, attributes: dict):
-        self.lang = attributes.pop('lang')
-

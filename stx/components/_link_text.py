@@ -32,6 +32,3 @@ class LinkText(Component):
     def internal(self) -> bool:
         # TODO refactor to external
         return self.reference is not None and not re.match(r'(?i)^([a-z]+:)?//', self.reference)
-
-    def pop_attributes(self, attributes: dict):
-        raise StxError('not implemented')

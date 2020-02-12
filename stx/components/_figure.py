@@ -28,6 +28,3 @@ class Figure(Component):
 
     def get_children(self) -> List[Component]:
         return [self.caption, self.content]
-
-    def pop_attributes(self, attributes: dict):
-        raise StxError('not implemented')

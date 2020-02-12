@@ -2,7 +2,7 @@ from typing import List, Any, Optional
 
 from stx.components import Component, Composite, Figure, Table
 from stx.utils.stx_error import StxError
-
+from stx.utils.debug import see
 
 class Composer:
 
@@ -33,12 +33,8 @@ class Composer:
 
     def add(self, component: Component):
         if len(self.attributes_buffer) > 0:
-            component.pop_attributes(self.attributes_buffer)
-
-            if len(self.attributes_buffer) > 0:
-                keys = ','.join(self.attributes_buffer.keys())
-                raise StxError(f'Unknown attributes {keys}'
-                                f' for {type(component)}')
+            component.apply_attributes(self.attributes_buffer)
+            self.attributes_buffer.clear()
 
         if len(self.pre_captions) > 0:
             if isinstance(component, Table):
@@ -52,7 +48,7 @@ class Composer:
 
     def push_attribute(self, key: str, value: Any):
         if key in self.attributes_buffer:
-            raise StxError(f'Attribute already defined: {key}')
+            raise StxError(f'The attribute {see(key)} was already defined.')
 
         self.attributes_buffer[key] = value
 
