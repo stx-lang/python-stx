@@ -5,6 +5,7 @@ from stx.compiling.reading.location import Location
 from stx.components import RawText, TableOfContents
 from stx.compiling.parsing.abstract import AbstractParser
 from stx.compiling.values import parse_entry
+from stx.utils.converter import to_list_str, to_str
 from stx.utils.files import resolve_include_files
 from stx.utils.stx_error import StxError
 
@@ -23,30 +24,17 @@ class DirectiveParser(AbstractParser, ABC):
         content.skip_empty_line()
 
         if key == 'title':
-            if not isinstance(value, str):
-                raise StxError('Expected a string for the title')
-
-            self.document.title = value
+            self.document.title = to_str(value)
         elif key == 'author':
-            if not isinstance(value, str):
-                raise StxError('Expected a string for the author')
-
-            self.document.author = value
+            self.document.author = to_str(value)
         elif key == 'format':
-            if not isinstance(value, str):
-                raise StxError('Expected a string for the format')
-
-            self.document.format = value
+            self.document.format = to_str(value)
         elif key == 'encoding':
-            if not isinstance(value, str):
-                raise StxError('Expected a string for the encoding')
-
-            self.document.encoding = value
+            self.document.encoding = to_str(value)
         elif key == 'toc':
             self.composer.add(TableOfContents(location))
-        elif key == 'link':
-            # TODO handle links
-            pass
+        elif key == 'stylesheets':
+            self.document.stylesheets = to_list_str(value)
         elif key == 'include':
             self.process_import(location, file_path, value, parse=True)
         elif key == 'embed':

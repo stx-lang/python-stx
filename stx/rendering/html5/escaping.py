@@ -1,5 +1,5 @@
 import string
-
+from typing import TextIO
 
 entities = {
     # Main Entities
@@ -49,20 +49,16 @@ entities = {
 }
 
 
-def html_escape_char(c: str) -> str:
-    code = ord(c)
-    entity = entities.get(code)
+def write_text(text: str, out: TextIO) -> str:
+    for c in text:
+        code = ord(c)
+        entity = entities.get(code)
 
-    if entity is not None:
-        return entity
+        if entity is not None:
+            return entity
 
-    # Non-text control codes
-    if code not in [9, 10, 13] and (code <= 31 or (127 <= code <= 159)):
-        return f'&#{code};'
-
-    return c
-
-
-def html_escape(content: str) -> str:
-    return ''.join([html_escape_char(c) for c in content])
-
+        # Non-text control codes
+        if code not in [9, 10, 13] and (code <= 31 or (127 <= code <= 159)):
+            out.write(f'&#{code};')
+        else:
+            out.write(c)

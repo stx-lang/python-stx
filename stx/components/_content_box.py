@@ -6,7 +6,7 @@ from ._component import Component
 from ..compiling.reading.location import Location
 
 
-class ContentBox(Component):
+class ContentBox(Component):  # TODO rename to box
 
     def __init__(self, location: Location):
         self.location = location

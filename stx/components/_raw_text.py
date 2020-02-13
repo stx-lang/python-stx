@@ -6,9 +6,10 @@ from ._component import Component
 from ..compiling.reading.location import Location
 
 
-class RawText(Component):
+class RawText(Component):  # TODO rename to embedded block
 
     def __init__(self, location: Location, text: str):
+        # TODO add origin
         self.location = location
         self.content = text
 

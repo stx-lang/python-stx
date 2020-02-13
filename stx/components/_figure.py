@@ -13,6 +13,7 @@ class Figure(Component):
             location: Location,
             content: Component,
             caption: Component):
+        # TODO add flag for caption first or last
         self.location = location
         self.content = content
         self.caption = caption
