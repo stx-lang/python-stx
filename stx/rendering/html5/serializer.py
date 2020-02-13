@@ -233,7 +233,8 @@ def generate_section(parent: Tag, section: Section):
     if section_id is not None:
         section_tag['id'] = section_id
 
-    section_tag['data-type'] = section.type
+    if section.type is not None:
+        section_tag['data-type'] = section.type
 
     if section.type in TYPE_H_TAGS:
         h_tag_name = TYPE_H_TAGS[section.type]

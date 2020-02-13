@@ -49,16 +49,15 @@ entities = {
 }
 
 
-def write_text(text: str, out: TextIO) -> str:
+def write_text(text: str, out: TextIO):
     for c in text:
         code = ord(c)
         entity = entities.get(code)
 
         if entity is not None:
-            return entity
-
+            out.write(entity)
         # Non-text control codes
-        if code not in [9, 10, 13] and (code <= 31 or (127 <= code <= 159)):
+        elif code not in [9, 10, 13] and (code <= 31 or (127 <= code <= 159)):
             out.write(f'&#{code};')
         else:
             out.write(c)
