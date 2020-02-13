@@ -27,6 +27,14 @@ class Component:
 
         return refs[0]
 
+    def get_other_refs(self) -> List[str]:
+        refs = self.get_refs()
+
+        if len(refs) > 0:
+            refs.pop(0)
+
+        return refs
+
     def add_ref(self, ref):
         refs = self.get_refs()
         if ref not in refs:

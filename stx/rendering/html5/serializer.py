@@ -120,7 +120,8 @@ def generate_components(parent: Tag, components: List[Component]):
 
 
 def generate_code_block(parent: Tag, code_block: CodeBlock):
-    pre = parent.append_tag('pre')
+    pre = append_component_tag(parent, code_block, 'pre')
+
     pre.preserve_spaces = True
 
     pre['data-type'] = 'programlisting'
@@ -132,7 +133,7 @@ def generate_code_block(parent: Tag, code_block: CodeBlock):
 
 
 def generate_table(parent: Tag, table: Table):
-    table_tag = parent.append_tag('table')
+    table_tag = append_component_tag(parent, table, 'table')
 
     if table.caption is not None:
         caption_tag = table_tag.append_tag('caption')
@@ -163,7 +164,7 @@ def generate_list_block(parent: Tag, list_block: ListBlock):
     else:
         list_tag_name = 'ul'
 
-    list_tag = parent.append_tag(list_tag_name)
+    list_tag = append_component_tag(parent, list_block, list_tag_name)
 
     for item in list_block.items:
         item_tag = list_tag.append_tag('li')
@@ -172,7 +173,7 @@ def generate_list_block(parent: Tag, list_block: ListBlock):
 
 
 def generate_paragraph(parent: Tag, paragraph: Paragraph):
-    p_tag = parent.append_tag('p')
+    p_tag = append_component_tag(parent, paragraph, 'p')
 
     generate_components(p_tag, paragraph.contents)
 
@@ -191,13 +192,13 @@ def generate_styled_text(parent: Tag, styled_text: StyledText):
     else:
         tag_name = 'span'
 
-    styled_tag = parent.append_tag(tag_name)
+    styled_tag = append_component_tag(parent, styled_text, tag_name)
 
     generate_components(styled_tag, styled_text.contents)
 
 
 def generate_link_text(parent: Tag, link_text: LinkText):
-    a_tag = parent.append_tag('a')
+    a_tag = append_component_tag(parent, link_text, 'a')
 
     if link_text.is_internal():
         a_tag['href'] = f'#{link_text.reference}'
@@ -213,7 +214,7 @@ def generate_embedded_block(parent: Tag, embedded_block: RawText):
 
 
 def generate_figure(parent: Tag, figure: Figure):
-    figure_tag = parent.append_tag('figure')
+    figure_tag = append_component_tag(parent, figure, 'figure')
 
     generate_component(figure_tag, figure.content)
 
@@ -226,12 +227,7 @@ def generate_figure(parent: Tag, figure: Figure):
 
 
 def generate_section(parent: Tag, section: Section):
-    section_tag = parent.append_tag('section')
-
-    section_id = section.get_main_ref()
-
-    if section_id is not None:
-        section_tag['id'] = section_id
+    section_tag = append_component_tag(parent, section, 'section')
 
     if section.type is not None:
         section_tag['data-type'] = section.type
@@ -259,7 +255,8 @@ def generate_section(parent: Tag, section: Section):
 
 
 def generate_toc(parent: Tag, toc: TableOfContents):
-    nav_tag = parent.append_tag('nav', {'data-type': 'toc'})
+    nav_tag = append_component_tag(parent, toc, 'nav')
+    nav_tag['data-type'] = 'toc'
 
     if toc.title is not None:
         nav_tag.append_tag('h1', text=toc.title)
@@ -288,9 +285,30 @@ def generate_toc_elements(parent: Tag, elements: List[ElementReference]):
 
 
 def generate_separator(parent: Tag, separator: Separator):
-    parent.append_tag('hr', {'data-level': separator.level})
+    sep = append_component_tag(parent, separator, 'hr')
+    sep['data-level'] = separator.level
 
 
 def generate_box(parent: Tag, box: ContentBox):
-    box_tag = parent.append_tag('div', {'data-type': box.style})
+    box_tag = append_component_tag(parent, box, 'div')
+
+    if box.style is not None:
+        box_tag['data-type'] = box.style
+
     generate_component(box_tag, box.content)
+
+
+def append_component_tag(
+        parent: Tag, component: Component, tag_name: str) -> Tag:
+    for other_id in reversed(component.get_other_refs()):
+        parent.append_tag('a', {'id': other_id}, text='')
+
+    tag = parent.append_tag(tag_name)
+
+    tag_id = component.get_main_ref()
+
+    if tag_id is not None:
+        tag['id'] = tag_id
+
+    return tag
+
