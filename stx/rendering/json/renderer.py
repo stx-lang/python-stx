@@ -1,7 +1,7 @@
 import json
 from typing import TextIO
 
-from stx.design.document import Document
+from stx.document import Document
 from stx.rendering.json.serializer import document_to_json
 
 

@@ -1,5 +1,6 @@
 from typing import List, Any, Optional
 
+from stx.compiling.reading.location import Location
 from stx.components import Component, Composite, Figure, Table
 from stx.utils.stx_error import StxError
 from stx.utils.debug import see
@@ -14,15 +15,15 @@ class Composer:
     def push(self):
         self.stack.append([])
 
-    def pop(self) -> Component:
+    def pop(self) -> Optional[Component]:
         components = self.stack.pop()
 
-        # TODO add case for len(result) == 0 ?
-
-        if len(components) == 1:
+        if len(components) == 0:
+            return None
+        elif len(components) == 1:
             return components[0]
 
-        return Composite(components)
+        return Composite(components[0].location, components)
 
     @property
     def components(self) -> List[Component]:
@@ -40,7 +41,8 @@ class Composer:
             if isinstance(component, Table):
                 component.caption = self.pre_captions.pop()
             else:
-                figure = Figure(component, self.pre_captions.pop())
+                figure = Figure(
+                    component.location, component, self.pre_captions.pop())
 
                 self.components.append(figure)
         else:
@@ -74,6 +76,6 @@ class Composer:
         if isinstance(component, Table):
             component.caption = caption
         else:
-            figure = Figure(component, caption)
+            figure = Figure(component.location, component, caption)
 
             comps[-1] = figure

@@ -1,24 +1,19 @@
 from __future__ import annotations
 
-import re
-from io import StringIO
-from typing import List, Iterable, Optional, TextIO
-
-from stx.design.attributes_map import AttributesMap
-
-from stx.utils.strs import crop_text
+from typing import List, Optional, TextIO
 
 from ._component import Component
-from ..utils.stx_error import StxError
+from ..compiling.reading.location import Location
 
 
 class Composite(Component):
 
-    def __init__(self, components: List[Component]):
-        self.components = components
-
-    def __repr__(self):
-        return f'Composite<{len(self.components)} component(s)>'
+    def __init__(
+            self,
+            location: Location,
+            components: Optional[List[Component]] = None):
+        self.location = location
+        self.components = components if components is not None else []
 
     def write_text(self, output: TextIO):
         for component in self.components:

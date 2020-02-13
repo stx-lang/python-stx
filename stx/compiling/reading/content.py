@@ -1,10 +1,12 @@
 import re
-from collections import namedtuple
 from io import StringIO
 from typing import List, Optional
 
+from stx import logger
 from stx.compiling.marks import get_matching_mark
+from stx.compiling.reading.location import Location
 from stx.utils.stx_error import StxError
+from stx.utils.debug import see
 
 LF_CHAR = '\n'  # Line Feed
 
@@ -28,6 +30,8 @@ class Content:
         self._line = 0
         self._column = 0
         self._trx = []
+
+        logger.info(f'Loading file {see(file_path, None)}...')
 
         with open(self._file_path, mode='r') as stream:
             self._content = stream.read()
@@ -280,3 +284,6 @@ class Content:
                 self.commit()
             else:
                 self.rollback()
+
+    def get_location(self) -> Location:
+        return Location(self.file_path, self.line, self.column)

@@ -1,5 +1,5 @@
 from stx.compiling.reading.content import Content
-from stx.components import Separator, Component
+from stx.components import Separator, Component, Composite
 from stx.compiling.marks import heading_marks, get_section_level, \
     directive_mark, attribute_mark, code_block_mark, content_box_mark, \
     table_h_row_mark, table_d_row_mark, table_cell_mark, pre_caption_mark, \
@@ -34,13 +34,21 @@ class Parser(
             self,
             indentation: int,
             breakable=True) -> Component:
+        location = self.get_location()
+
         self.composer.push()
 
         self.parse_components(
             indentation,
             breakable)
 
-        return self.composer.pop()
+        component = self.composer.pop()
+
+        if component is None:
+            # TODO implement empty component
+            return Composite(location)
+
+        return component
 
     def capture(self):
         self.document.content = self.capture_component(
@@ -58,6 +66,7 @@ class Parser(
                 break
 
             with content:
+                location = content.get_location()
                 mark = content.read_mark(self.stop_mark)
 
                 if mark is None:
@@ -66,18 +75,22 @@ class Parser(
                     text = content.read_text(content.column, self.stop_mark)
 
                     if len(text) > 0:
-                        self.parse_paragraph(text)
+                        self.parse_paragraph(location, text)
                         continue
                     elif breakable:
                         break  # TODO
 
-                    self.composer.add(Separator())
+                    self.composer.add(Separator(location))
                     continue
                 elif mark in heading_marks:
                     section_level = get_section_level(mark)
-                    parent_section = self.section_stack[-1] if len(self.section_stack) > 0 else None
+                    parent_section = (
+                        self.section_stack[-1]
+                        if len(self.section_stack) > 0 else None
+                    )
 
-                    if parent_section is not None and parent_section.level >= section_level:
+                    if (parent_section is not None
+                            and parent_section.level >= section_level):
                         content.rollback()
                         break
 
@@ -92,28 +105,33 @@ class Parser(
 
             if parse_section:
                 self.parse_section(
-                    section_level, mark_indentation, root_indentation)
+                    location, section_level,
+                    mark_indentation, root_indentation)
             elif mark == directive_mark:
-                self.parse_directive()
+                self.parse_directive(location)
             elif mark == attribute_mark:
-                self.parse_attribute()
+                self.parse_attribute(location)
             elif mark == code_block_mark:
-                self.parse_code_block(root_indentation)
+                self.parse_code_block(location, root_indentation)
             elif mark == content_box_mark:
-                self.parse_content_box(mark_indentation)
+                self.parse_content_box(location, mark_indentation)
             elif mark == table_h_row_mark:
-                self.parse_table_row(mark_indentation, header=True)
+                self.parse_table_row(
+                    location, mark_indentation, header=True)
             elif mark == table_d_row_mark:
-                self.parse_table_row(mark_indentation, header=False)
+                self.parse_table_row(
+                    location, mark_indentation, header=False)
             elif mark == table_cell_mark:
-                self.parse_table_cell(mark_indentation)
+                self.parse_table_cell(location, mark_indentation)
             elif mark == pre_caption_mark:
-                self.parse_pre_caption(mark_indentation)
+                self.parse_pre_caption(location, mark_indentation)
             elif mark == post_caption_mark:
-                self.parse_post_caption(mark_indentation)
+                self.parse_post_caption(location, mark_indentation)
             elif mark == unordered_list_item_mark:
-                self.parse_list_item(mark_indentation, ordered=False)
+                self.parse_list_item(
+                    location, mark_indentation, ordered=False)
             elif mark == ordered_list_item_mark:
-                self.parse_list_item(mark_indentation, ordered=True)
+                self.parse_list_item(
+                    location, mark_indentation, ordered=True)
             else:
                 raise StxError(f'Unsupported mark: `{mark}`')

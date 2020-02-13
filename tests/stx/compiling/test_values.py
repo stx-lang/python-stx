@@ -1,9 +1,9 @@
-from stx.compiling.source import Source
+from stx.compiling.reading.content import Content
 from stx.compiling.values import parse_value
 
 
 def parse(text: str) -> str:
-    source = Source(text, 'test')
+    source = Content(text, 'test')
 
     return parse_value(source)
 

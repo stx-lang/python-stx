@@ -1,6 +1,7 @@
 from abc import ABC
 from typing import List
 
+from stx.compiling.reading.location import Location
 from stx.components import Section
 from stx.compiling.parsing.abstract import AbstractParser
 
@@ -9,10 +10,11 @@ class SectionParser(AbstractParser, ABC):
 
     def parse_section(
             self,
+            location: Location,
             level: int,
             mark_indentation: int,
             root_indentation: int):
-        section = Section(None, None, level)
+        section = Section(location, level)
 
         self.composer.add(section)
 

@@ -1,26 +1,22 @@
 from __future__ import annotations
 
-import re
-from io import StringIO
-from typing import List, Iterable, Optional, TextIO
-
-from stx.design.attributes_map import AttributesMap
-
-from stx.utils.strs import crop_text
+from typing import List, TextIO
 
 from ._component import Component
-from ..utils.stx_error import StxError
+from ..compiling.reading.location import Location
 
 
 class Figure(Component):
 
-    def __init__(self, content: Component, caption: Component):
+    def __init__(
+            self,
+            location: Location,
+            content: Component,
+            caption: Component):
+        self.location = location
         self.content = content
         self.caption = caption
         self.number = None
-
-    def __repr__(self):
-        return f'Figure<{crop_text(self.caption.get_text(), 10)}>'
 
     def write_text(self, output: TextIO):
         self.caption.write_text(output)

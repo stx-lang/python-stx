@@ -4,9 +4,9 @@ from stx import logger, app
 from stx.design.index_node import IndexNode
 from stx.components import Component, Composite, CodeBlock, \
     Table, \
-    ListBlock, TextBlock, RawText, PlainText, StyledText, LinkText, Figure, \
+    ListBlock, Paragraph, RawText, PlainText, StyledText, LinkText, Figure, \
     Section, Separator, ContentBox, TableOfContents
-from stx.design.document import Document
+from stx.document import Document
 
 from stx.rendering.html5.writer import HtmlWriter
 
@@ -204,10 +204,10 @@ def render_list(document: Document, writer: HtmlWriter, lst: ListBlock):
     writer.close_tag(tag)
 
 
-def render_paragraph(document: Document, writer: HtmlWriter, paragraph: TextBlock):
+def render_paragraph(document: Document, writer: HtmlWriter, paragraph: Paragraph):
     open_tag(document, writer, paragraph, 'p', {})
 
-    for content in paragraph.components:
+    for content in paragraph.contents:
         render_content(document, writer, content)
 
     writer.close_tag('p')
@@ -314,8 +314,8 @@ def render_content(
         writer: HtmlWriter,
         content: Component,
         collapse_paragraph=False):
-    if collapse_paragraph and isinstance(content, TextBlock):
-        render_contents(document, writer, content.components)
+    if collapse_paragraph and isinstance(content, Paragraph):
+        render_contents(document, writer, content.contents)
     elif isinstance(content, Composite):
         render_container(document, writer, content)
     elif isinstance(content, CodeBlock):
@@ -324,7 +324,7 @@ def render_content(
         render_table(document, writer, content)
     elif isinstance(content, ListBlock):
         render_list(document, writer, content)
-    elif isinstance(content, TextBlock):
+    elif isinstance(content, Paragraph):
         render_paragraph(document, writer, content)
     elif isinstance(content, PlainText):
         render_plain_text(document, writer, content)

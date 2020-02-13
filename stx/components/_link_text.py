@@ -1,25 +1,26 @@
 from __future__ import annotations
 
 import re
-from io import StringIO
-from typing import List, Iterable, Optional, TextIO
-
-from stx.design.attributes_map import AttributesMap
-
-from stx.utils.strs import crop_text
+from typing import List, Optional, TextIO
 
 from ._component import Component
-from ..utils.stx_error import StxError
+from ..compiling.reading.location import Location
+
+
+def is_url(ref: str) -> bool:
+    return bool(re.match(r'(?i)^([a-z]+:)?//', ref))
 
 
 class LinkText(Component):
 
-    def __init__(self, contents: List[Component], reference: Optional[str]):
+    def __init__(
+            self,
+            location: Location,
+            contents: List[Component],
+            reference: Optional[str]):
+        self.location = location
         self.contents = contents
         self.reference = reference
-
-    def __repr__(self):
-        return f'LinkText<{crop_text(self.get_text(), 10)}>'
 
     def write_text(self, output: TextIO):
         for content in self.contents:
@@ -28,7 +29,8 @@ class LinkText(Component):
     def get_children(self) -> List[Component]:
         return self.contents
 
-    @property
-    def internal(self) -> bool:
-        # TODO refactor to external
-        return self.reference is not None and not re.match(r'(?i)^([a-z]+:)?//', self.reference)
+    def is_internal(self) -> bool:
+        return self.reference is not None and not is_url(self.reference)
+
+    def is_external(self) -> bool:
+        return self.reference is not None and is_url(self.reference)

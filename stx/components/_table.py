@@ -1,27 +1,19 @@
 from __future__ import annotations
 
-import re
-from io import StringIO
-from typing import List, Iterable, Optional, TextIO
-
-from stx.design.attributes_map import AttributesMap
-
-from stx.utils.strs import crop_text
-from ._table_row import TableRow
+from typing import List, Optional, TextIO
 
 from ._component import Component
-from ..utils.stx_error import StxError
+from ._table_row import TableRow
+from ..compiling.reading.location import Location
 
 
 class Table(Component):
 
-    def __init__(self, rows: List[TableRow]):
-        self.rows = rows
-        self.caption = None
-        self.number = None
-
-    def __repr__(self):
-        return f'Table<{len(self.rows)} row(s)>'
+    def __init__(self, location: Location):
+        self.location = location
+        self.rows: List[TableRow] = []
+        self.caption: Optional[Component] = None
+        self.number: Optional[str] = None
 
     def write_text(self, output: TextIO):
         for row in self.rows:

@@ -1,4 +1,6 @@
-from stx.design.attributes_map import AttributesMap
+from typing import Optional
+
+from stx.components import Component
 
 
 class Document:
@@ -7,10 +9,9 @@ class Document:
         self.title = None
         self.author = None
         self.header = None
-        self.content = None
+        self.content: Optional[Component] = None
         self.footer = None
         self.format = None
         self.encoding = None
         self.refs = None
         self.index = None
-        self.links = AttributesMap()

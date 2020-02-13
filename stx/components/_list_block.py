@@ -1,25 +1,20 @@
 from __future__ import annotations
 
-import re
-from io import StringIO
-from typing import List, Iterable, Optional, TextIO
-
-from stx.design.attributes_map import AttributesMap
-
-from stx.utils.strs import crop_text
+from typing import List, TextIO
 
 from ._component import Component
-from ..utils.stx_error import StxError
+from ..compiling.reading.location import Location
 
 
 class ListBlock(Component):
 
-    def __init__(self, items: List[Component], ordered: bool):
-        self.items = items
+    def __init__(
+            self,
+            location: Location,
+            ordered: bool):
+        self.location = location
         self.ordered = ordered
-
-    def __repr__(self):
-        return f'ListBlock<{len(self.items)} item(s)>'
+        self.items: List[Component] = []
 
     def write_text(self, output: TextIO):
         for item in self.items:

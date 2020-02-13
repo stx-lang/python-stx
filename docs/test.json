@@ -8,18 +8,79 @@
         "type": "section",
         "level": 1,
         "heading": {
-          "type": "plain-text",
-          "content": "Section 1\n"
+          "type": "paragraph",
+          "contents": [
+            {
+              "type": "plain-text",
+              "content": "Section 1\n"
+            }
+          ]
         },
         "content": {
           "type": "composite",
           "components": [
             {
+              "type": "paragraph",
+              "contents": [
+                {
+                  "type": "plain-text",
+                  "content": "This "
+                },
+                {
+                  "type": "styled-text",
+                  "style": "emphasized",
+                  "contents": [
+                    {
+                      "type": "plain-text",
+                      "content": "is"
+                    }
+                  ]
+                },
+                {
+                  "type": "plain-text",
+                  "content": " "
+                },
+                {
+                  "type": "styled-text",
+                  "style": "strong",
+                  "contents": [
+                    {
+                      "type": "plain-text",
+                      "content": "beautiful"
+                    }
+                  ]
+                },
+                {
+                  "type": "plain-text",
+                  "content": " and "
+                },
+                {
+                  "type": "link-text",
+                  "reference": "with a ref",
+                  "contents": [
+                    {
+                      "type": "plain-text",
+                      "content": "this is a link"
+                    }
+                  ]
+                },
+                {
+                  "type": "plain-text",
+                  "content": ".\n"
+                }
+              ]
+            },
+            {
               "type": "section",
               "level": 2,
               "heading": {
-                "type": "plain-text",
-                "content": "Section 1.1\n"
+                "type": "paragraph",
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "content": "Section 1.1\n"
+                  }
+                ]
               },
               "content": {
                 "type": "composite",
@@ -30,8 +91,13 @@
               "type": "section",
               "level": 2,
               "heading": {
-                "type": "plain-text",
-                "content": "Section 1.2\n"
+                "type": "paragraph",
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "content": "Section 1.2\n"
+                  }
+                ]
               },
               "content": {
                 "type": "composite",
@@ -40,8 +106,13 @@
                     "type": "section",
                     "level": 3,
                     "heading": {
-                      "type": "plain-text",
-                      "content": "Section 1.2.1\n"
+                      "type": "paragraph",
+                      "contents": [
+                        {
+                          "type": "plain-text",
+                          "content": "Section 1.2.1\n"
+                        }
+                      ]
                     },
                     "content": {
                       "type": "composite",
@@ -52,8 +123,13 @@
                     "type": "section",
                     "level": 3,
                     "heading": {
-                      "type": "plain-text",
-                      "content": "Section 1.2.2\n"
+                      "type": "paragraph",
+                      "contents": [
+                        {
+                          "type": "plain-text",
+                          "content": "Section 1.2.2\n"
+                        }
+                      ]
                     },
                     "content": {
                       "type": "composite",
@@ -67,15 +143,25 @@
               "type": "section",
               "level": 2,
               "heading": {
-                "type": "plain-text",
-                "content": "Section 1.3\n"
+                "type": "paragraph",
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "content": "Section 1.3\n"
+                  }
+                ]
               },
               "content": {
                 "type": "section",
                 "level": 3,
                 "heading": {
-                  "type": "plain-text",
-                  "content": "Section 1.3.1\n"
+                  "type": "paragraph",
+                  "contents": [
+                    {
+                      "type": "plain-text",
+                      "content": "Section 1.3.1\n"
+                    }
+                  ]
                 },
                 "content": {
                   "type": "composite",
@@ -90,8 +176,13 @@
         "type": "section",
         "level": 1,
         "heading": {
-          "type": "plain-text",
-          "content": "Section 2\n"
+          "type": "paragraph",
+          "contents": [
+            {
+              "type": "plain-text",
+              "content": "Section 2\n"
+            }
+          ]
         },
         "content": {
           "type": "composite",

@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+from stx.compiling.reading.location import Location
 from stx.components import Component, Section
-from stx.design.document import Document
+from stx.document import Document
 from stx.compiling.composer import Composer
 from stx.compiling.reading.reader import Reader
 
@@ -30,46 +31,51 @@ class AbstractParser(Reader, ABC):
         pass
 
     @abstractmethod
-    def parse_attribute(self):
+    def parse_attribute(self, location: Location):
         pass
 
     @abstractmethod
-    def parse_pre_caption(self, mark_indentation: int):
+    def parse_pre_caption(
+            self, location: Location, mark_indentation: int):
         pass
 
     @abstractmethod
-    def parse_post_caption(self, indentation: int):
+    def parse_post_caption(self, location: Location, indentation: int):
         pass
 
     @abstractmethod
-    def parse_code_block(self, root_indentation: int):
+    def parse_code_block(self, location: Location, root_indentation: int):
         pass
 
     @abstractmethod
-    def parse_content_box(self, mark_indentation: int):
+    def parse_content_box(
+            self, location: Location, mark_indentation: int):
         pass
 
     @abstractmethod
-    def parse_directive(self):
+    def parse_directive(self, location: Location):
         pass
 
     @abstractmethod
-    def parse_list_item(self, indentation: int, ordered: bool):
+    def parse_list_item(
+            self, location: Location, indentation: int, ordered: bool):
         pass
 
     @abstractmethod
-    def parse_paragraph(self, text: str):
+    def parse_paragraph(self, location: Location, text: str):
         pass
 
     @abstractmethod
     def parse_section(
-            self, level: int, mark_indentation: int, root_indentation: int):
+            self, location: Location, level: int,
+            mark_indentation: int, root_indentation: int):
         pass
 
     @abstractmethod
-    def parse_table_row(self, indentation: int, header: bool):
+    def parse_table_row(
+            self, location: Location, indentation: int, header: bool):
         pass
 
     @abstractmethod
-    def parse_table_cell(self, indentation: int):
+    def parse_table_cell(self, location: Location, indentation: int):
         pass

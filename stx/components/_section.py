@@ -1,33 +1,27 @@
 from __future__ import annotations
 
-import re
-from io import StringIO
-from typing import List, Iterable, Optional, TextIO
-
-from stx.design.attributes_map import AttributesMap
-
-from stx.utils.strs import crop_text
+from typing import List, TextIO, Optional
 
 from ._component import Component
+from ..compiling.reading.location import Location
 
 
 class Section(Component):
 
-    def __init__(self, heading: Component, content: Component, level: int):
-        self.heading = heading
-        self.content = content
+    def __init__(
+            self,
+            location: Location,
+            level: int):
+        self.location = location
         self.level = level
-        self.type = None
-        self.number = None
-
-    def __repr__(self):
-        return f'Section<{len(self.components)} component(s)>'
+        self.heading: Optional[Component] = None
+        self.content: Optional[Component] = None
+        self.type: Optional[str] = None
+        self.number: Optional[str] = None
 
     def write_text(self, output: TextIO):
         self.heading.write_text(output)
-
-        for component in self.components:
-            component.write_text(output)
+        self.content.write_text(output)
 
     def get_children(self) -> List[Component]:
-        return [self.heading, *self.components]
+        return [self.heading, self.content]

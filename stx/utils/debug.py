@@ -1,10 +1,10 @@
 from io import StringIO
-from typing import Any
+from typing import Any, Optional
 
 DEFAULT_MAX_LENGTH = 40
 
 
-def quote_string(value: str, max_length: int) -> str:
+def quote_string(value: str, max_length: Optional[int]) -> str:
     out = StringIO()
 
     out.write('`')
@@ -12,7 +12,7 @@ def quote_string(value: str, max_length: int) -> str:
     actual_length = 0
 
     for c in value:
-        if actual_length >= max_length:
+        if max_length is not None and actual_length >= max_length:
             break
         elif c == '\\':
             out.write('\\\\')
@@ -40,9 +40,9 @@ def quote_string(value: str, max_length: int) -> str:
     return out.getvalue()
 
 
-def see(value: Any) -> str:
+def see(value: Any, limit=DEFAULT_MAX_LENGTH) -> str:
     if isinstance(value, str):
-        return quote_string(str(value), DEFAULT_MAX_LENGTH)
+        return quote_string(str(value), limit)
     elif isinstance(value, int):
         return str(value)
 

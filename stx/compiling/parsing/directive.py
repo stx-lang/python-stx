@@ -1,6 +1,7 @@
 from abc import ABC
 from typing import Any
 
+from stx.compiling.reading.location import Location
 from stx.components import RawText, TableOfContents
 from stx.compiling.parsing.abstract import AbstractParser
 from stx.compiling.values import parse_entry
@@ -10,7 +11,7 @@ from stx.utils.stx_error import StxError
 
 class DirectiveParser(AbstractParser, ABC):
 
-    def parse_directive(self):
+    def parse_directive(self, location: Location):
         content = self.get_content()
         file_path = content.file_path
 
@@ -36,19 +37,29 @@ class DirectiveParser(AbstractParser, ABC):
                 raise StxError('Expected a string for the format')
 
             self.document.format = value
+        elif key == 'encoding':
+            if not isinstance(value, str):
+                raise StxError('Expected a string for the encoding')
+
+            self.document.encoding = value
         elif key == 'toc':
-            self.composer.add(TableOfContents())
+            self.composer.add(TableOfContents(location))
         elif key == 'link':
             # TODO handle links
             pass
         elif key == 'include':
-            self.process_import(file_path, value, parse=True)
+            self.process_import(location, file_path, value, parse=True)
         elif key == 'embed':
-            self.process_import(file_path, value, parse=False)
+            self.process_import(location, file_path, value, parse=False)
         else:
             raise StxError(f'Unsupported directive: {key}')
 
-    def process_import(self, file_path: str, include_path: Any, parse: bool):
+    def process_import(
+            self,
+            location: Location,
+            file_path: str,
+            include_path: Any,
+            parse: bool):
         if not isinstance(include_path, str):
             raise StxError('Expected a string.')
 
@@ -62,4 +73,4 @@ class DirectiveParser(AbstractParser, ABC):
                     text = f.read()
 
                 # TODO add support for more type of files
-                self.composer.add(RawText(text))
+                self.composer.add(RawText(location, text))

@@ -1,6 +1,7 @@
 from abc import ABC
 from io import StringIO
 
+from stx.compiling.reading.location import Location
 from stx.components import PlainText, CodeBlock
 from stx.compiling.marks import code_block_mark
 from stx.compiling.parsing.abstract import AbstractParser
@@ -12,6 +13,7 @@ class CodeBlockParser(AbstractParser, ABC):
 
     def parse_code_block(
             self,
+            location: Location,
             root_indentation: int):
         content = self.get_content()
 
@@ -36,6 +38,10 @@ class CodeBlockParser(AbstractParser, ABC):
 
             out.write(line)
 
+        content.skip_empty_line()
+
         code = out.getvalue()
 
-        self.composer.add(CodeBlock(code, lang))
+        self.composer.add(
+            CodeBlock(location, code, lang)
+        )
