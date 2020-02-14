@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 
 from stx.compiling.reading.location import Location
 from stx.components import Component, Section
 from stx.document import Document
 from stx.compiling.composer import Composer
 from stx.compiling.reading.reader import Reader
+from stx.utils.closeable import Closeable
 
 
 class AbstractParser(Reader, ABC):
@@ -14,8 +15,23 @@ class AbstractParser(Reader, ABC):
         super().__init__()
         self.document = document
         self.composer = Composer()
-        self.stop_mark = None  # TODO Rename to `stop_char`
+        self.stop_char_stack = []
         self.section_stack: List[Section] = []
+
+    @property
+    def stop_char(self) -> Optional[str]:
+        if len(self.stop_char_stack) == 0:
+            return None
+        return self.stop_char_stack[-1]
+
+    def using_stop_char(self, char: str) -> Closeable:
+        def enter_action():
+            self.stop_char_stack.append(char)
+
+        def exit_action():
+            self.stop_char_stack.pop()
+
+        return Closeable(enter_action, exit_action)
 
     @abstractmethod
     def capture_component(

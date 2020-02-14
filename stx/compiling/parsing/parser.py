@@ -67,12 +67,12 @@ class Parser(
 
             with content:
                 location = content.get_location()
-                mark = content.read_mark(self.stop_mark)
+                mark = content.read_mark(self.stop_char)
 
                 if mark is None:
                     content.commit()
 
-                    text = content.read_text(content.column, self.stop_mark)
+                    text = content.read_text(content.column, self.stop_char)
 
                     if len(text) > 0:
                         self.parse_paragraph(location, text)

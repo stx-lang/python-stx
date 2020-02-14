@@ -6,15 +6,17 @@ from stx.rendering.html5.serializer import document_to_html
 from stx.rendering.json.renderer import render_to_file
 
 if __name__ == '__main__':
-    # stx_file = '/Users/sergio/bakasoft/stx/docs/test.stx'
-    # out_file = '/Users/sergio/bakasoft/stx/docs/test.json'
+    stx_file = '/Users/sergio/bakasoft/stx/docs/test.stx'
+    json_file = '/Users/sergio/bakasoft/stx/docs/test.json'
+    html_file = '/Users/sergio/bakasoft/stx/docs/test.html'
 
     # stx_file = '/Users/sergio/bakasoft/stx/docs/index.stx'
-    # out_file = '/Users/sergio/bakasoft/stx/docs/index.json'
+    # json_file = '/Users/sergio/bakasoft/stx/docs/index.json'
+    # html_file = '/Users/sergio/bakasoft/stx/docs/index.html'
 
-    stx_file = '/Users/sergio/bm/docs/src/index.stx'
-    json_file = '/Users/sergio/bm/docs/docs/index.json'
-    html_file = '/Users/sergio/bm/docs/docs/index.html'
+    # stx_file = '/Users/sergio/bm/docs/src/index.stx'
+    # json_file = '/Users/sergio/bm/docs/docs/index.json'
+    # html_file = '/Users/sergio/bm/docs/docs/index.html'
 
     try:
         os.remove(json_file)

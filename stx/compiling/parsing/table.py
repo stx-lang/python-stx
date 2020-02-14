@@ -44,13 +44,10 @@ class TableParser(AbstractParser, ABC):
 
             table.rows.append(row)
 
-        self.stop_mark = table_cell_mark
+        with self.using_stop_char(table_cell_mark):
+            cell = self.capture_component(indentation, True)
 
-        cell = self.capture_component(indentation, True)
-
-        # TODO ensure that is from the same content
-        self.get_content().skip_empty_line()
-
-        self.stop_mark = None
+            # TODO ensure that is from the same content
+            self.get_content().skip_empty_line()
 
         row.cells.append(cell)
