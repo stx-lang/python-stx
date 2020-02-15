@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta name="generator" content="STX 0.0.1"><title>STX Documentation</title></head><body data-type="book"><h1>STX Documentation</h1><nav data-type="toc"><h1>Table of Contents</h1><ol><li><a href="#stx" data-type="xref" data-number="1.">STX</a></li><li><a href="#syntax" data-type="xref" data-number="2.">Syntax</a><ol><li><a href="#text" data-type="xref" data-number="2.1.">Text</a></li><li><a href="#paragraph" data-type="xref" data-number="2.2.">Paragraph</a></li><li><a href="#section" data-type="xref" data-number="2.3.">Section</a></li><li><a href="#lists" data-type="xref" data-number="2.4.">Lists</a></li><li><a href="#table" data-type="xref" data-number="2.5.">Table</a></li><li><a href="#code" data-type="xref" data-number="2.6.">Code</a></li><li><a href="#figure" data-type="xref" data-number="2.7.">Figure</a></li><li><a href="#content-box" data-type="xref" data-number="2.8.">Content Box</a></li><li><a href="#attributes" data-type="xref" data-number="2.9.">Attributes</a></li><li><a href="#directives" data-type="xref" data-number="2.10.">Directives</a><ol><li><a href="#meta-information" data-type="xref" data-number="2.10.1.">Meta-Information</a></li><li><a href="#table-of-contents" data-type="xref" data-number="2.10.2.">Table of Contents</a></li><li><a href="#includes" data-type="xref" data-number="2.10.3.">Includes</a></li><li><a href="#links" data-type="xref" data-number="2.10.4.">Links</a></li></ol></li><li><a href="#comments" data-type="xref" data-number="2.11.">Comments</a></li></ol></li><li><a href="#references" data-type="xref" data-number="3.">References</a></li><li><a href="#numbering" data-type="xref" data-number="4.">Numbering</a></li><li><a href="#rendering" data-type="xref" data-number="5.">Rendering</a><ol><li><a href="#htmlbook" data-type="xref" data-number="5.1.">HTMLBook</a></li></ol></li><li><a href="#appendix" data-type="xref" data-number="6.">Appendix</a><ol><li><a href="#reserved-mark" data-type="xref" data-number="6.1.">Reserved Marks</a></li></ol></li></ol></nav><section id="stx"><h1 data-number="1.">STX
+<!DOCTYPE html><html><head><meta name="generator" content="STX 0.0.1"><title>STX Documentation</title><link rel="stylesheet" type="text/css" href="assets/layout.css"><link rel="stylesheet" type="text/css" href="assets/style.css"></head><body data-type="book"><h1>STX Documentation</h1><nav data-type="toc"><h1>Table of Contents</h1><ol><li><a href="#stx" data-type="xref" data-number="1.">STX</a></li><li><a href="#syntax" data-type="xref" data-number="2.">Syntax</a><ol><li><a href="#text" data-type="xref" data-number="2.1.">Text</a></li><li><a href="#paragraph" data-type="xref" data-number="2.2.">Paragraph</a></li><li><a href="#section" data-type="xref" data-number="2.3.">Section</a></li><li><a href="#lists" data-type="xref" data-number="2.4.">Lists</a></li><li><a href="#table" data-type="xref" data-number="2.5.">Table</a></li><li><a href="#code" data-type="xref" data-number="2.6.">Code</a></li><li><a href="#figure" data-type="xref" data-number="2.7.">Figure</a></li><li><a href="#content-box" data-type="xref" data-number="2.8.">Content Box</a></li><li><a href="#attributes" data-type="xref" data-number="2.9.">Attributes</a></li><li><a href="#directives" data-type="xref" data-number="2.10.">Directives</a><ol><li><a href="#meta-information" data-type="xref" data-number="2.10.1.">Meta-Information</a></li><li><a href="#table-of-contents" data-type="xref" data-number="2.10.2.">Table of Contents</a></li><li><a href="#includes" data-type="xref" data-number="2.10.3.">Includes</a></li><li><a href="#links" data-type="xref" data-number="2.10.4.">Links</a></li></ol></li><li><a href="#comments" data-type="xref" data-number="2.11.">Comments</a></li></ol></li><li><a href="#references" data-type="xref" data-number="3.">References</a></li><li><a href="#numbering" data-type="xref" data-number="4.">Numbering</a></li><li><a href="#rendering" data-type="xref" data-number="5.">Rendering</a><ol><li><a href="#htmlbook" data-type="xref" data-number="5.1.">HTMLBook</a></li></ol></li><li><a href="#appendix" data-type="xref" data-number="6.">Appendix</a><ol><li><a href="#reserved-mark" data-type="xref" data-number="6.1.">Reserved Marks</a></li></ol></li></ol></nav><section id="stx"><h1 data-number="1.">STX
 </h1><p>STX is a simple markup language for creating documents.
 </p></section><section id="syntax"><h1 data-number="2.">Syntax
 </h1><p>The STX files are parsed line by line; if a line starts with a <a href="#reserved-mark" data-type="xref">reserved mark</a>,
@@ -71,6 +71,62 @@ hen there is no section to exit.
 </td></tr><tr><td><code>```</code> </td><td>code block mark
 </td></tr><tr><td><code>!</code> </td><td>content box mark
 </td></tr><tr><td><code>///</code> </td><td>comment block mark
-</td></tr></table><pre data-type="programlisting">#stylesheets:&apos;assets/style.css&apos;
-#include:&apos;assets/scripts.html&apos;
-</pre></section></section></body></html>
+</td></tr></table><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    // create layout
+    (() => {
+        $('body').append('<div id="layout-center"><main></main></div>');
+        $('main:first-of-type').append($('body > :not(#layout-center)'));
+        $('<div id="layout-start"></div>').insertBefore($('#layout-center'));
+        $('#layout-start').append($('[data-type=toc]:first'));
+    })();
+    
+    // activate toc links
+    (() => {
+        function isElementInViewport(el) {
+            var rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        var references = [];
+
+        $('[data-type=toc]:first a[data-type=xref]').each((index, source) => {
+            var href = $(source).attr('href');
+            
+            if (href && href.startsWith('#')) {
+                var id = href.substring(1);
+                var target = document.getElementById(id);
+
+                if (target) {
+                    references.push({source, target});
+                }
+            }
+        });
+
+        $(window).on('DOMContentLoaded load resize scroll', () => {
+            var visibleTarget = null;
+
+            for (var ref of references) {
+                if(isElementInViewport(ref.target)) {
+                    visibleTarget = ref.target
+                    break;
+                }
+            }
+
+            for (var ref of references) {
+                if (ref.target === visibleTarget) {
+                    $(ref.source).addClass('active')
+                }
+                else {
+                    $(ref.source).removeClass('active');
+                }
+            }
+        });
+    })();
+</script>
+</section></section></body></html>

@@ -2958,15 +2958,14 @@
                 ]
               },
               {
-                "type": "code-block",
+                "type": "embedded-block",
                 "refs": [],
                 "location": {
                   "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
-                  "line": 111,
+                  "line": 115,
                   "column": 0
                 },
-                "lang": null,
-                "content": "#stylesheets:'assets/style.css'\n#include:'assets/scripts.html'\n"
+                "content": "<script src=\"https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js\"></script>\n<script type=\"text/javascript\">\n    // create layout\n    (() => {\n        $('body').append('<div id=\"layout-center\"><main></main></div>');\n        $('main:first-of-type').append($('body > :not(#layout-center)'));\n        $('<div id=\"layout-start\"></div>').insertBefore($('#layout-center'));\n        $('#layout-start').append($('[data-type=toc]:first'));\n    })();\n    \n    // activate toc links\n    (() => {\n        function isElementInViewport(el) {\n            var rect = el.getBoundingClientRect();\n            return (\n                rect.top >= 0 &&\n                rect.left >= 0 &&\n                rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&\n                rect.left <= (window.innerWidth || document.documentElement.clientWidth)\n            );\n        }\n\n        var references = [];\n\n        $('[data-type=toc]:first a[data-type=xref]').each((index, source) => {\n            var href = $(source).attr('href');\n            \n            if (href && href.startsWith('#')) {\n                var id = href.substring(1);\n                var target = document.getElementById(id);\n\n                if (target) {\n                    references.push({source, target});\n                }\n            }\n        });\n\n        $(window).on('DOMContentLoaded load resize scroll', () => {\n            var visibleTarget = null;\n\n            for (var ref of references) {\n                if(isElementInViewport(ref.target)) {\n                    visibleTarget = ref.target\n                    break;\n                }\n            }\n\n            for (var ref of references) {\n                if (ref.target === visibleTarget) {\n                    $(ref.source).addClass('active')\n                }\n                else {\n                    $(ref.source).removeClass('active');\n                }\n            }\n        });\n    })();\n</script>\n"
               }
             ]
           }

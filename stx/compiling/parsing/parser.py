@@ -55,6 +55,17 @@ class Parser(
             indentation=0,
             breakable=False)
 
+        # TODO improve error messages
+        if len(self.composer.stack) > 0:
+            raise StxError('unclosed components')
+        elif len(self.composer.attributes_buffer) > 0:
+            raise StxError(
+                f'not consumed attributes: {self.composer.attributes_buffer}')
+        elif len(self.composer.pre_captions) > 0:
+            raise StxError(
+                'not consumed pre captions: ',
+                self.composer.pre_captions[0].location)
+
     def parse_components(
             self,
             indentation: int,

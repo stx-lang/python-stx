@@ -109,7 +109,8 @@ Starts with a `=`.
 |- `!` | content box mark
 |- `///` | comment block mark
 
-```
-#stylesheets:'assets/style.css'
-#include:'assets/scripts.html'
-```
+#stylesheets:[
+    'assets/layout.css',
+    'assets/style.css'
+]
+#embed:'assets/layout.html'

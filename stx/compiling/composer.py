@@ -10,7 +10,7 @@ class Composer:
     def __init__(self):
         self.stack: List[List[Component]] = []
         self.attributes_buffer = {}
-        self.pre_captions = []
+        self.pre_captions: List[Component] = []
 
     def push(self):
         self.stack.append([])
