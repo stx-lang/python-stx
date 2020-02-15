@@ -4,7 +4,6 @@ from typing import List, Optional
 
 from stx.compiling.reading.content import Content
 from stx.compiling.reading.location import Location
-from stx.compiling.reading.tape import Tape
 from stx.components import PlainText, Component, LinkText, StyledText, \
     Paragraph
 from stx.compiling.parsing.abstract import AbstractParser
