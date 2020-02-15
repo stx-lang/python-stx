@@ -167,6 +167,7 @@ class ParagraphParser(AbstractParser, ABC):
                         break
                     else:
                         context.content.commit()
+                        continue
             elif c == ESCAPE_CHAR:
                 context.content.move_next()
 
