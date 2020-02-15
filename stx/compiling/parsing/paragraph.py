@@ -59,6 +59,9 @@ class ParagraphParser(AbstractParser, ABC):
 
         contents = self.parse_contents(context)
 
+        if content.alive(context.indentation):  # TODO this should be implicit
+            content.skip_empty_line()
+
         if len(contents) == 0:
             return False
 
@@ -138,12 +141,21 @@ class ParagraphParser(AbstractParser, ABC):
                     not greedy and c in BEGIN_CHAR_LIST):
                 break
             elif c == '\n':
+                if out.getvalue().strip(' ') == '':
+                    context.alive = False
+                    context.content.move_next()
+                    return ''
+
                 out.write(c)
                 context.content.move_next()
 
                 with context.content:
                     spaces = read_spaces(context.content, context.indentation)
 
+                    if context.content.peek() is None:
+                        context.alive = False
+                        context.content.commit()
+                        break
                     if context.content.peek() == '\n':
                         context.content.move_next()
                         context.alive = False

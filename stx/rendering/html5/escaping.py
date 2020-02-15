@@ -1,5 +1,5 @@
 import string
-from typing import TextIO
+from typing import TextIO, Any
 
 entities = {
     # Main Entities
@@ -49,8 +49,11 @@ entities = {
 }
 
 
-def write_text(text: str, out: TextIO):
-    for c in text:
+def write_text(value: Any, out: TextIO):
+    if value is None:
+        return
+
+    for c in str(value):
         code = ord(c)
         entity = entities.get(code)
 

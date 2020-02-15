@@ -34,7 +34,7 @@ class Content:
         logger.info(f'Loading file {see(file_path, None)}...')
 
         with open(self._file_path, mode='r') as stream:
-            self._content = stream.read()
+            self._content = stream.read().rstrip()
             self._length = len(self._content)
 
     # TODO you can do it better

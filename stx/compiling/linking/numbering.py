@@ -19,13 +19,14 @@ def link_section_numbers(
             if isinstance(child, Section):
                 child.number = parent_number + f'{count}.'
 
-                link_section_numbers(
-                    child.content, child.number, current_level + 1)
-
                 if child.level != current_level:
                     logger.warning(
-                        f'Unexpected section level: {child.level}',
+                        f'Expected section level {current_level}'
+                        f' instead of {child.level}.',
                         child.location)
+
+                link_section_numbers(
+                    child.content, child.number, current_level + 1)
 
                 count += 1
             else:
