@@ -1,0 +1,2977 @@
+{
+  "title": "STX Documentation",
+  "author": null,
+  "content": {
+    "type": "composite",
+    "refs": [],
+    "location": {
+      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+      "line": 3,
+      "column": 0
+    },
+    "components": [
+      {
+        "type": "toc",
+        "refs": [],
+        "location": {
+          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+          "line": 3,
+          "column": 0
+        },
+        "title": "Table of Contents",
+        "elements": [
+          {
+            "title": "STX",
+            "reference": "stx",
+            "number": "1.",
+            "elements": []
+          },
+          {
+            "title": "Syntax",
+            "reference": "syntax",
+            "number": "2.",
+            "elements": [
+              {
+                "title": "Text",
+                "reference": "text",
+                "number": "2.1.",
+                "elements": []
+              },
+              {
+                "title": "Paragraph",
+                "reference": "paragraph",
+                "number": "2.2.",
+                "elements": []
+              },
+              {
+                "title": "Section",
+                "reference": "section",
+                "number": "2.3.",
+                "elements": []
+              },
+              {
+                "title": "Lists",
+                "reference": "lists",
+                "number": "2.4.",
+                "elements": []
+              },
+              {
+                "title": "Table",
+                "reference": "table",
+                "number": "2.5.",
+                "elements": []
+              },
+              {
+                "title": "Code",
+                "reference": "code",
+                "number": "2.6.",
+                "elements": []
+              },
+              {
+                "title": "Figure",
+                "reference": "figure",
+                "number": "2.7.",
+                "elements": []
+              },
+              {
+                "title": "Content Box",
+                "reference": "content-box",
+                "number": "2.8.",
+                "elements": []
+              },
+              {
+                "title": "Attributes",
+                "reference": "attributes",
+                "number": "2.9.",
+                "elements": []
+              },
+              {
+                "title": "Directives",
+                "reference": "directives",
+                "number": "2.10.",
+                "elements": [
+                  {
+                    "title": "Meta-Information",
+                    "reference": "meta-information",
+                    "number": "2.10.1.",
+                    "elements": []
+                  },
+                  {
+                    "title": "Table of Contents",
+                    "reference": "table-of-contents",
+                    "number": "2.10.2.",
+                    "elements": []
+                  },
+                  {
+                    "title": "Includes",
+                    "reference": "includes",
+                    "number": "2.10.3.",
+                    "elements": []
+                  },
+                  {
+                    "title": "Links",
+                    "reference": "links",
+                    "number": "2.10.4.",
+                    "elements": []
+                  }
+                ]
+              },
+              {
+                "title": "Comments",
+                "reference": "comments",
+                "number": "2.11.",
+                "elements": []
+              }
+            ]
+          },
+          {
+            "title": "References",
+            "reference": "references",
+            "number": "3.",
+            "elements": []
+          },
+          {
+            "title": "Numbering",
+            "reference": "numbering",
+            "number": "4.",
+            "elements": []
+          },
+          {
+            "title": "Rendering",
+            "reference": "rendering",
+            "number": "5.",
+            "elements": [
+              {
+                "title": "HTMLBook",
+                "reference": "htmlbook",
+                "number": "5.1.",
+                "elements": []
+              }
+            ]
+          },
+          {
+            "title": "Appendix",
+            "reference": "appendix",
+            "number": "6.",
+            "elements": [
+              {
+                "title": "Reserved Marks",
+                "reference": "reserved-mark",
+                "number": "6.1.",
+                "elements": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "refs": [
+          "stx"
+        ],
+        "location": {
+          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+          "line": 5,
+          "column": 0
+        },
+        "level": 1,
+        "number": "1.",
+        "heading": {
+          "type": "paragraph",
+          "refs": [],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 5,
+            "column": 2
+          },
+          "contents": [
+            {
+              "type": "plain-text",
+              "refs": [],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 5,
+                "column": 2
+              },
+              "content": "STX\n"
+            }
+          ]
+        },
+        "content": {
+          "type": "paragraph",
+          "refs": [],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 7,
+            "column": 0
+          },
+          "contents": [
+            {
+              "type": "plain-text",
+              "refs": [],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 7,
+                "column": 0
+              },
+              "content": "STX is a simple markup language for creating documents.\n"
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "refs": [
+          "syntax"
+        ],
+        "location": {
+          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+          "line": 9,
+          "column": 0
+        },
+        "level": 1,
+        "number": "2.",
+        "heading": {
+          "type": "paragraph",
+          "refs": [],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 9,
+            "column": 2
+          },
+          "contents": [
+            {
+              "type": "plain-text",
+              "refs": [],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 9,
+                "column": 2
+              },
+              "content": "Syntax\n"
+            }
+          ]
+        },
+        "content": {
+          "type": "composite",
+          "refs": [],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 11,
+            "column": 0
+          },
+          "components": [
+            {
+              "type": "paragraph",
+              "refs": [],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 11,
+                "column": 0
+              },
+              "contents": [
+                {
+                  "type": "plain-text",
+                  "refs": [],
+                  "location": {
+                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                    "line": 11,
+                    "column": 0
+                  },
+                  "content": "The STX files are parsed line by line; if a line starts with a "
+                },
+                {
+                  "type": "link-text",
+                  "refs": [],
+                  "location": {
+                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                    "line": 11,
+                    "column": 63
+                  },
+                  "reference": "reserved-mark",
+                  "contents": [
+                    {
+                      "type": "plain-text",
+                      "refs": [],
+                      "location": {
+                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                        "line": 11,
+                        "column": 64
+                      },
+                      "content": "reserved mark"
+                    }
+                  ]
+                },
+                {
+                  "type": "plain-text",
+                  "refs": [],
+                  "location": {
+                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                    "line": 11,
+                    "column": 78
+                  },
+                  "content": ",\n\nll the subsequent lines which have the indentation aligned to the first\n\non-space character after the mark are be considered the inner content of the\n\nlement that represents the given mark, this content is parsed in the same way\n\nine by line, but considering the indentation.\n"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "refs": [],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 17,
+                "column": 0
+              },
+              "contents": [
+                {
+                  "type": "plain-text",
+                  "refs": [],
+                  "location": {
+                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                    "line": 17,
+                    "column": 0
+                  },
+                  "content": "When the indentation is broken, the inner content is broken as well closing\n\nhe element and starting again the parsing line by line.\n\nhis mechanism allows to create nested elements.\n"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "refs": [],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 21,
+                "column": 0
+              },
+              "contents": [
+                {
+                  "type": "plain-text",
+                  "refs": [],
+                  "location": {
+                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                    "line": 21,
+                    "column": 0
+                  },
+                  "content": "When a line doesn't start with a reserved mark, it is considered a paragraph;\n\nhe paragraphs are broken by one empty line.\n\nwo or more empty lines result in exiting from a section or just a separation\n\nhen there is no section to exit.\n"
+                }
+              ]
+            },
+            {
+              "type": "section",
+              "refs": [
+                "text"
+              ],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 26,
+                "column": 0
+              },
+              "level": 2,
+              "number": "2.1.",
+              "heading": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 26,
+                  "column": 3
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 26,
+                      "column": 3
+                    },
+                    "content": "Text\n"
+                  }
+                ]
+              },
+              "content": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 28,
+                  "column": 0
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 28,
+                      "column": 0
+                    },
+                    "content": "asdf\n"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "section",
+              "refs": [
+                "paragraph"
+              ],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 30,
+                "column": 0
+              },
+              "level": 2,
+              "number": "2.2.",
+              "heading": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 30,
+                  "column": 3
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 30,
+                      "column": 3
+                    },
+                    "content": "Paragraph\n"
+                  }
+                ]
+              },
+              "content": {
+                "type": "composite",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 32,
+                  "column": 0
+                },
+                "components": []
+              }
+            },
+            {
+              "type": "section",
+              "refs": [
+                "section"
+              ],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 32,
+                "column": 0
+              },
+              "level": 2,
+              "number": "2.3.",
+              "heading": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 32,
+                  "column": 3
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 32,
+                      "column": 3
+                    },
+                    "content": "Section\n"
+                  }
+                ]
+              },
+              "content": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 34,
+                  "column": 0
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 34,
+                      "column": 0
+                    },
+                    "content": "Starts with a "
+                  },
+                  {
+                    "type": "styled-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 34,
+                      "column": 14
+                    },
+                    "style": "code",
+                    "contents": [
+                      {
+                        "type": "plain-text",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 34,
+                          "column": 15
+                        },
+                        "content": "="
+                      }
+                    ]
+                  },
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 34,
+                      "column": 17
+                    },
+                    "content": ".\n"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "section",
+              "refs": [
+                "lists"
+              ],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 36,
+                "column": 0
+              },
+              "level": 2,
+              "number": "2.4.",
+              "heading": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 36,
+                  "column": 3
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 36,
+                      "column": 3
+                    },
+                    "content": "Lists\n"
+                  }
+                ]
+              },
+              "content": {
+                "type": "composite",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 38,
+                  "column": 0
+                },
+                "components": []
+              }
+            },
+            {
+              "type": "section",
+              "refs": [
+                "table"
+              ],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 38,
+                "column": 0
+              },
+              "level": 2,
+              "number": "2.5.",
+              "heading": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 38,
+                  "column": 3
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 38,
+                      "column": 3
+                    },
+                    "content": "Table\n"
+                  }
+                ]
+              },
+              "content": {
+                "type": "code-block",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 40,
+                  "column": 0
+                },
+                "lang": "stx",
+                "content": ""
+              }
+            },
+            {
+              "type": "section",
+              "refs": [
+                "code"
+              ],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 44,
+                "column": 0
+              },
+              "level": 2,
+              "number": "2.6.",
+              "heading": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 44,
+                  "column": 3
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 44,
+                      "column": 3
+                    },
+                    "content": "Code\n"
+                  }
+                ]
+              },
+              "content": {
+                "type": "composite",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 46,
+                  "column": 0
+                },
+                "components": []
+              }
+            },
+            {
+              "type": "section",
+              "refs": [
+                "figure"
+              ],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 46,
+                "column": 0
+              },
+              "level": 2,
+              "number": "2.7.",
+              "heading": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 46,
+                  "column": 3
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 46,
+                      "column": 3
+                    },
+                    "content": "Figure\n"
+                  }
+                ]
+              },
+              "content": {
+                "type": "composite",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 48,
+                  "column": 0
+                },
+                "components": []
+              }
+            },
+            {
+              "type": "section",
+              "refs": [
+                "content-box"
+              ],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 48,
+                "column": 0
+              },
+              "level": 2,
+              "number": "2.8.",
+              "heading": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 48,
+                  "column": 3
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 48,
+                      "column": 3
+                    },
+                    "content": "Content Box\n"
+                  }
+                ]
+              },
+              "content": {
+                "type": "box",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 51,
+                  "column": 0
+                },
+                "style": "warning",
+                "content": {
+                  "type": "section",
+                  "refs": [
+                    "warning"
+                  ],
+                  "location": {
+                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                    "line": 51,
+                    "column": 2
+                  },
+                  "level": 1,
+                  "number": null,
+                  "heading": {
+                    "type": "paragraph",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 51,
+                      "column": 4
+                    },
+                    "contents": [
+                      {
+                        "type": "plain-text",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 51,
+                          "column": 4
+                        },
+                        "content": "Warning\n"
+                      }
+                    ]
+                  },
+                  "content": {
+                    "type": "paragraph",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 53,
+                      "column": 2
+                    },
+                    "contents": [
+                      {
+                        "type": "plain-text",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 53,
+                          "column": 2
+                        },
+                        "content": "This is a warning box.\n"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "type": "section",
+              "refs": [
+                "attributes"
+              ],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 55,
+                "column": 0
+              },
+              "level": 2,
+              "number": "2.9.",
+              "heading": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 55,
+                  "column": 3
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 55,
+                      "column": 3
+                    },
+                    "content": "Attributes\n"
+                  }
+                ]
+              },
+              "content": {
+                "type": "composite",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 57,
+                  "column": 0
+                },
+                "components": []
+              }
+            },
+            {
+              "type": "section",
+              "refs": [
+                "directives"
+              ],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 57,
+                "column": 0
+              },
+              "level": 2,
+              "number": "2.10.",
+              "heading": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 57,
+                  "column": 3
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 57,
+                      "column": 3
+                    },
+                    "content": "Directives\n"
+                  }
+                ]
+              },
+              "content": {
+                "type": "composite",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 59,
+                  "column": 0
+                },
+                "components": [
+                  {
+                    "type": "section",
+                    "refs": [
+                      "meta-information"
+                    ],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 59,
+                      "column": 0
+                    },
+                    "level": 3,
+                    "number": "2.10.1.",
+                    "heading": {
+                      "type": "paragraph",
+                      "refs": [],
+                      "location": {
+                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                        "line": 59,
+                        "column": 4
+                      },
+                      "contents": [
+                        {
+                          "type": "plain-text",
+                          "refs": [],
+                          "location": {
+                            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                            "line": 59,
+                            "column": 4
+                          },
+                          "content": "Meta-Information\n"
+                        }
+                      ]
+                    },
+                    "content": {
+                      "type": "table",
+                      "refs": [
+                        "directive-description-title-asdf-format-"
+                      ],
+                      "location": {
+                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                        "line": 61,
+                        "column": 0
+                      },
+                      "caption": null,
+                      "number": "1.",
+                      "rows": [
+                        {
+                          "header": true,
+                          "cells": [
+                            {
+                              "type": "paragraph",
+                              "refs": [],
+                              "location": {
+                                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                "line": 61,
+                                "column": 3
+                              },
+                              "contents": [
+                                {
+                                  "type": "plain-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 61,
+                                    "column": 3
+                                  },
+                                  "content": "Directive   "
+                                }
+                              ]
+                            },
+                            {
+                              "type": "paragraph",
+                              "refs": [],
+                              "location": {
+                                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                "line": 61,
+                                "column": 17
+                              },
+                              "contents": [
+                                {
+                                  "type": "plain-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 61,
+                                    "column": 17
+                                  },
+                                  "content": "Description\n"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "header": false,
+                          "cells": [
+                            {
+                              "type": "paragraph",
+                              "refs": [],
+                              "location": {
+                                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                "line": 62,
+                                "column": 3
+                              },
+                              "contents": [
+                                {
+                                  "type": "styled-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 62,
+                                    "column": 3
+                                  },
+                                  "style": "code",
+                                  "contents": [
+                                    {
+                                      "type": "plain-text",
+                                      "refs": [],
+                                      "location": {
+                                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                        "line": 62,
+                                        "column": 4
+                                      },
+                                      "content": "#title"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "plain-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 62,
+                                    "column": 11
+                                  },
+                                  "content": "    "
+                                }
+                              ]
+                            },
+                            {
+                              "type": "paragraph",
+                              "refs": [],
+                              "location": {
+                                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                "line": 62,
+                                "column": 17
+                              },
+                              "contents": [
+                                {
+                                  "type": "plain-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 62,
+                                    "column": 17
+                                  },
+                                  "content": "asdf\n"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "header": false,
+                          "cells": [
+                            {
+                              "type": "paragraph",
+                              "refs": [],
+                              "location": {
+                                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                "line": 63,
+                                "column": 3
+                              },
+                              "contents": [
+                                {
+                                  "type": "styled-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 63,
+                                    "column": 3
+                                  },
+                                  "style": "code",
+                                  "contents": [
+                                    {
+                                      "type": "plain-text",
+                                      "refs": [],
+                                      "location": {
+                                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                        "line": 63,
+                                        "column": 4
+                                      },
+                                      "content": "#format"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "plain-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 63,
+                                    "column": 12
+                                  },
+                                  "content": "   "
+                                }
+                              ]
+                            },
+                            {
+                              "type": "paragraph",
+                              "refs": [],
+                              "location": {
+                                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                "line": 63,
+                                "column": 17
+                              },
+                              "contents": [
+                                {
+                                  "type": "plain-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 63,
+                                    "column": 17
+                                  },
+                                  "content": "asdf\n"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "header": false,
+                          "cells": [
+                            {
+                              "type": "paragraph",
+                              "refs": [],
+                              "location": {
+                                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                "line": 64,
+                                "column": 3
+                              },
+                              "contents": [
+                                {
+                                  "type": "styled-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 64,
+                                    "column": 3
+                                  },
+                                  "style": "code",
+                                  "contents": [
+                                    {
+                                      "type": "plain-text",
+                                      "refs": [],
+                                      "location": {
+                                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                        "line": 64,
+                                        "column": 4
+                                      },
+                                      "content": "#author"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "plain-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 64,
+                                    "column": 12
+                                  },
+                                  "content": "   "
+                                }
+                              ]
+                            },
+                            {
+                              "type": "paragraph",
+                              "refs": [],
+                              "location": {
+                                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                "line": 64,
+                                "column": 17
+                              },
+                              "contents": [
+                                {
+                                  "type": "plain-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 64,
+                                    "column": 17
+                                  },
+                                  "content": "asdf\n"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "header": false,
+                          "cells": [
+                            {
+                              "type": "paragraph",
+                              "refs": [],
+                              "location": {
+                                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                "line": 65,
+                                "column": 3
+                              },
+                              "contents": [
+                                {
+                                  "type": "styled-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 65,
+                                    "column": 3
+                                  },
+                                  "style": "code",
+                                  "contents": [
+                                    {
+                                      "type": "plain-text",
+                                      "refs": [],
+                                      "location": {
+                                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                        "line": 65,
+                                        "column": 4
+                                      },
+                                      "content": "#encoding"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "plain-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 65,
+                                    "column": 14
+                                  },
+                                  "content": " "
+                                }
+                              ]
+                            },
+                            {
+                              "type": "paragraph",
+                              "refs": [],
+                              "location": {
+                                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                "line": 65,
+                                "column": 17
+                              },
+                              "contents": [
+                                {
+                                  "type": "plain-text",
+                                  "refs": [],
+                                  "location": {
+                                    "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                    "line": 65,
+                                    "column": 17
+                                  },
+                                  "content": "asdf\n"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "section",
+                    "refs": [
+                      "table-of-contents"
+                    ],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 67,
+                      "column": 0
+                    },
+                    "level": 3,
+                    "number": "2.10.2.",
+                    "heading": {
+                      "type": "paragraph",
+                      "refs": [],
+                      "location": {
+                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                        "line": 67,
+                        "column": 4
+                      },
+                      "contents": [
+                        {
+                          "type": "plain-text",
+                          "refs": [],
+                          "location": {
+                            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                            "line": 67,
+                            "column": 4
+                          },
+                          "content": "Table of Contents\n"
+                        }
+                      ]
+                    },
+                    "content": {
+                      "type": "code-block",
+                      "refs": [],
+                      "location": {
+                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                        "line": 69,
+                        "column": 0
+                      },
+                      "lang": "stx",
+                      "content": "#toc\n"
+                    }
+                  },
+                  {
+                    "type": "section",
+                    "refs": [
+                      "includes"
+                    ],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 73,
+                      "column": 0
+                    },
+                    "level": 3,
+                    "number": "2.10.3.",
+                    "heading": {
+                      "type": "paragraph",
+                      "refs": [],
+                      "location": {
+                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                        "line": 73,
+                        "column": 4
+                      },
+                      "contents": [
+                        {
+                          "type": "plain-text",
+                          "refs": [],
+                          "location": {
+                            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                            "line": 73,
+                            "column": 4
+                          },
+                          "content": "Includes\n"
+                        }
+                      ]
+                    },
+                    "content": {
+                      "type": "composite",
+                      "refs": [],
+                      "location": {
+                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                        "line": 75,
+                        "column": 0
+                      },
+                      "components": []
+                    }
+                  },
+                  {
+                    "type": "section",
+                    "refs": [
+                      "links"
+                    ],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 75,
+                      "column": 0
+                    },
+                    "level": 3,
+                    "number": "2.10.4.",
+                    "heading": {
+                      "type": "paragraph",
+                      "refs": [],
+                      "location": {
+                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                        "line": 75,
+                        "column": 4
+                      },
+                      "contents": [
+                        {
+                          "type": "plain-text",
+                          "refs": [],
+                          "location": {
+                            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                            "line": 75,
+                            "column": 4
+                          },
+                          "content": "Links\n"
+                        }
+                      ]
+                    },
+                    "content": {
+                      "type": "composite",
+                      "refs": [],
+                      "location": {
+                        "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                        "line": 77,
+                        "column": 0
+                      },
+                      "components": []
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "section",
+              "refs": [
+                "comments"
+              ],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 77,
+                "column": 0
+              },
+              "level": 2,
+              "number": "2.11.",
+              "heading": {
+                "type": "paragraph",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 77,
+                  "column": 3
+                },
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                      "line": 77,
+                      "column": 3
+                    },
+                    "content": "Comments\n"
+                  }
+                ]
+              },
+              "content": {
+                "type": "composite",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 79,
+                  "column": 0
+                },
+                "components": []
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "refs": [
+          "references"
+        ],
+        "location": {
+          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+          "line": 79,
+          "column": 0
+        },
+        "level": 1,
+        "number": "3.",
+        "heading": {
+          "type": "paragraph",
+          "refs": [],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 79,
+            "column": 2
+          },
+          "contents": [
+            {
+              "type": "plain-text",
+              "refs": [],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 79,
+                "column": 2
+              },
+              "content": "References\n"
+            }
+          ]
+        },
+        "content": {
+          "type": "composite",
+          "refs": [],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 81,
+            "column": 0
+          },
+          "components": []
+        }
+      },
+      {
+        "type": "section",
+        "refs": [
+          "numbering"
+        ],
+        "location": {
+          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+          "line": 81,
+          "column": 0
+        },
+        "level": 1,
+        "number": "4.",
+        "heading": {
+          "type": "paragraph",
+          "refs": [],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 81,
+            "column": 2
+          },
+          "contents": [
+            {
+              "type": "plain-text",
+              "refs": [],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 81,
+                "column": 2
+              },
+              "content": "Numbering\n"
+            }
+          ]
+        },
+        "content": {
+          "type": "composite",
+          "refs": [],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 83,
+            "column": 0
+          },
+          "components": []
+        }
+      },
+      {
+        "type": "section",
+        "refs": [
+          "rendering"
+        ],
+        "location": {
+          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+          "line": 83,
+          "column": 0
+        },
+        "level": 1,
+        "number": "5.",
+        "heading": {
+          "type": "paragraph",
+          "refs": [],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 83,
+            "column": 2
+          },
+          "contents": [
+            {
+              "type": "plain-text",
+              "refs": [],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 83,
+                "column": 2
+              },
+              "content": "Rendering\n"
+            }
+          ]
+        },
+        "content": {
+          "type": "section",
+          "refs": [
+            "htmlbook"
+          ],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 85,
+            "column": 0
+          },
+          "level": 2,
+          "number": "5.1.",
+          "heading": {
+            "type": "paragraph",
+            "refs": [],
+            "location": {
+              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+              "line": 85,
+              "column": 3
+            },
+            "contents": [
+              {
+                "type": "plain-text",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 85,
+                  "column": 3
+                },
+                "content": "HTMLBook\n"
+              }
+            ]
+          },
+          "content": {
+            "type": "composite",
+            "refs": [],
+            "location": {
+              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+              "line": 87,
+              "column": 0
+            },
+            "components": []
+          }
+        }
+      },
+      {
+        "type": "section",
+        "refs": [
+          "appendix"
+        ],
+        "location": {
+          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+          "line": 87,
+          "column": 0
+        },
+        "level": 1,
+        "number": "6.",
+        "heading": {
+          "type": "paragraph",
+          "refs": [],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 87,
+            "column": 2
+          },
+          "contents": [
+            {
+              "type": "plain-text",
+              "refs": [],
+              "location": {
+                "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                "line": 87,
+                "column": 2
+              },
+              "content": "Appendix\n"
+            }
+          ]
+        },
+        "content": {
+          "type": "section",
+          "refs": [
+            "reserved-mark"
+          ],
+          "location": {
+            "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+            "line": 90,
+            "column": 0
+          },
+          "level": 2,
+          "number": "6.1.",
+          "heading": {
+            "type": "paragraph",
+            "refs": [],
+            "location": {
+              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+              "line": 90,
+              "column": 3
+            },
+            "contents": [
+              {
+                "type": "plain-text",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 90,
+                  "column": 3
+                },
+                "content": "Reserved Marks\n"
+              }
+            ]
+          },
+          "content": {
+            "type": "composite",
+            "refs": [],
+            "location": {
+              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+              "line": 92,
+              "column": 0
+            },
+            "components": [
+              {
+                "type": "table",
+                "refs": [
+                  "-heading6-mark-heading5-mark-heading4-mark"
+                ],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 92,
+                  "column": 0
+                },
+                "caption": null,
+                "number": "2.",
+                "rows": [
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 92,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 92,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 92,
+                                  "column": 4
+                                },
+                                "content": "======"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 92,
+                              "column": 11
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 92,
+                          "column": 14
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 92,
+                              "column": 14
+                            },
+                            "content": "heading6 mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 93,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 93,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 93,
+                                  "column": 4
+                                },
+                                "content": "====="
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 93,
+                              "column": 10
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 93,
+                          "column": 13
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 93,
+                              "column": 13
+                            },
+                            "content": "heading5 mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 94,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 94,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 94,
+                                  "column": 4
+                                },
+                                "content": "===="
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 94,
+                              "column": 9
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 94,
+                          "column": 12
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 94,
+                              "column": 12
+                            },
+                            "content": "heading4 mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 95,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 95,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 95,
+                                  "column": 4
+                                },
+                                "content": "==="
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 95,
+                              "column": 8
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 95,
+                          "column": 11
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 95,
+                              "column": 11
+                            },
+                            "content": "heading3 mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 96,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 96,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 96,
+                                  "column": 4
+                                },
+                                "content": "=="
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 96,
+                              "column": 7
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 96,
+                          "column": 10
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 96,
+                              "column": 10
+                            },
+                            "content": "heading2 mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 97,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 97,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 97,
+                                  "column": 4
+                                },
+                                "content": "="
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 97,
+                              "column": 6
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 97,
+                          "column": 9
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 97,
+                              "column": 9
+                            },
+                            "content": "heading1 mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 98,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 98,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 98,
+                                  "column": 4
+                                },
+                                "content": "-"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 98,
+                              "column": 6
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 98,
+                          "column": 9
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 98,
+                              "column": 9
+                            },
+                            "content": "unordered list item mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 99,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 99,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 99,
+                                  "column": 4
+                                },
+                                "content": "."
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 99,
+                              "column": 6
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 99,
+                          "column": 9
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 99,
+                              "column": 9
+                            },
+                            "content": "ordered list item mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 100,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 100,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 100,
+                                  "column": 4
+                                },
+                                "content": "|-"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 100,
+                              "column": 7
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 100,
+                          "column": 10
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 100,
+                              "column": 10
+                            },
+                            "content": "table d row mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 101,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 101,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 101,
+                                  "column": 4
+                                },
+                                "content": "|="
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 101,
+                              "column": 7
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 101,
+                          "column": 10
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 101,
+                              "column": 10
+                            },
+                            "content": "table h row mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 102,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 102,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 102,
+                                  "column": 4
+                                },
+                                "content": "|"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 102,
+                              "column": 6
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 102,
+                          "column": 9
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 102,
+                              "column": 9
+                            },
+                            "content": "table cell mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 103,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 103,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 103,
+                                  "column": 4
+                                },
+                                "content": ">"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 103,
+                              "column": 6
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 103,
+                          "column": 9
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 103,
+                              "column": 9
+                            },
+                            "content": "pre caption mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 104,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 104,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 104,
+                                  "column": 4
+                                },
+                                "content": "<"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 104,
+                              "column": 6
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 104,
+                          "column": 9
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 104,
+                              "column": 9
+                            },
+                            "content": "post caption mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 105,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 105,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 105,
+                                  "column": 4
+                                },
+                                "content": "@"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 105,
+                              "column": 6
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 105,
+                          "column": 9
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 105,
+                              "column": 9
+                            },
+                            "content": "attribute mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 106,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 106,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 106,
+                                  "column": 4
+                                },
+                                "content": "#"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 106,
+                              "column": 6
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 106,
+                          "column": 9
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 106,
+                              "column": 9
+                            },
+                            "content": "directive mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 107,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 107,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 107,
+                                  "column": 4
+                                },
+                                "content": "```"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 107,
+                              "column": 11
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 107,
+                          "column": 14
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 107,
+                              "column": 14
+                            },
+                            "content": "code block mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 108,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 108,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 108,
+                                  "column": 4
+                                },
+                                "content": "!"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 108,
+                              "column": 6
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 108,
+                          "column": 9
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 108,
+                              "column": 9
+                            },
+                            "content": "content box mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "header": false,
+                    "cells": [
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 109,
+                          "column": 3
+                        },
+                        "contents": [
+                          {
+                            "type": "styled-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 109,
+                              "column": 3
+                            },
+                            "style": "code",
+                            "contents": [
+                              {
+                                "type": "plain-text",
+                                "refs": [],
+                                "location": {
+                                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                                  "line": 109,
+                                  "column": 4
+                                },
+                                "content": "///"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 109,
+                              "column": 8
+                            },
+                            "content": " "
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "refs": [],
+                        "location": {
+                          "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                          "line": 109,
+                          "column": 11
+                        },
+                        "contents": [
+                          {
+                            "type": "plain-text",
+                            "refs": [],
+                            "location": {
+                              "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                              "line": 109,
+                              "column": 11
+                            },
+                            "content": "comment block mark\n"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "code-block",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/index.stx",
+                  "line": 111,
+                  "column": 0
+                },
+                "lang": null,
+                "content": "#stylesheets:'assets/style.css'\n#include:'assets/scripts.html'\n"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

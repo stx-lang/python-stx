@@ -47,7 +47,9 @@ class TableParser(AbstractParser, ABC):
         with self.using_stop_char(table_cell_mark):
             cell = self.capture_component(indentation, True)
 
-            # TODO ensure that is from the same content
-            self.get_content().skip_empty_line()
+            # TODO this is weird maybe None content should be supported
+            if self.active():
+                # TODO ensure that is from the same content
+                self.get_content().skip_empty_line()
 
         row.cells.append(cell)

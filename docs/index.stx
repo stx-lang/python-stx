@@ -109,5 +109,7 @@ Starts with a `=`.
 |- `!` | content box mark
 |- `///` | comment block mark
 
-#link:['stylesheet', 'assets/style.css']
+```
+#stylesheets:'assets/style.css'
 #include:'assets/scripts.html'
+```

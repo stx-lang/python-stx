@@ -1,0 +1,55 @@
+{
+  "title": null,
+  "author": null,
+  "content": {
+    "type": "table",
+    "refs": [],
+    "location": {
+      "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
+      "line": 0,
+      "column": 0
+    },
+    "caption": null,
+    "number": null,
+    "rows": [
+      {
+        "header": false,
+        "cells": [
+          {
+            "type": "paragraph",
+            "refs": [],
+            "location": {
+              "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
+              "line": 0,
+              "column": 3
+            },
+            "contents": [
+              {
+                "type": "styled-text",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
+                  "line": 0,
+                  "column": 3
+                },
+                "style": "code",
+                "contents": [
+                  {
+                    "type": "plain-text",
+                    "refs": [],
+                    "location": {
+                      "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
+                      "line": 0,
+                      "column": 4
+                    },
+                    "content": "|-"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

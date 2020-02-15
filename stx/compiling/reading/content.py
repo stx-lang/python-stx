@@ -37,6 +37,7 @@ class Content:
             self._content = stream.read()
             self._length = len(self._content)
 
+    # TODO you can do it better
     def __enter__(self):
         self._trx.append(TRX(self._pos, self._line, self._column, None))
         return self
@@ -99,7 +100,7 @@ class Content:
             else:
                 self._column += 1
         else:
-            raise Exception('EOF')
+            raise StxError('EOF')
 
     def peek(self) -> Optional[str]:
         if self._pos < self._length:
@@ -203,41 +204,6 @@ class Content:
         self.read_while([' '])
 
         return mark
-
-    def read_text(
-            self, indentation: int, stop_char: Optional[str]) -> Optional[str]:
-        out = StringIO()
-        line_number = 0
-
-        while True:
-            with self:
-                if stop_char is None:
-                    line_text = self.read_until(['\n'], consume_last=True)
-                else:
-                    line_text = self.read_until(['\n', stop_char])
-
-                    if self.peek() == '\n':
-                        self.move_next()
-
-                # The text is complete if the line is empty
-                if len(line_text.strip(' \n')) == 0:
-                    self.commit()
-                    break
-                elif line_number == 0:
-                    out.write(line_text)
-                    self.commit()
-                    line_number += 1
-                    continue
-                elif line_text.startswith(indentation * ' '):
-                    out.write(line_text[indentation:])
-                    self.commit()
-                    line_number += 1
-                    continue
-                else:
-                    self.rollback()
-                    break
-
-        return out.getvalue()
 
     def read_line(self, indentation: int):
         with self:

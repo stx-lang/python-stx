@@ -2,6 +2,7 @@ from abc import ABC
 from io import StringIO
 from typing import List, Optional
 
+from stx.compiling.reading.content import Content
 from stx.compiling.reading.location import Location
 from stx.compiling.reading.tape import Tape
 from stx.components import PlainText, Component, LinkText, StyledText, \
@@ -27,27 +28,138 @@ STYLE_CHAR_TOKEN_MAP = {
 BEGIN_CHAR_LIST = [LINK_BEGIN_CHAR] + list(STYLE_CHAR_TOKEN_MAP.keys())
 
 
+def read_spaces(content: Content, max_length: int) -> int:
+    count = 0
+
+    while content.peek() in [' ', '\t']:
+        content.move_next()
+
+        count += 1
+
+        if count >= max_length:
+            break
+
+    return count
+
+
+class ParaContext:
+
+    def __init__(self, content: Content, indentation: int):
+        self.content = content
+        self.indentation = indentation
+        self.alive = True
+
+
 class ParagraphParser(AbstractParser, ABC):
 
-    def parse_paragraph(self, location: Location, text: str):
-        tape = Tape(text)
-        contents = self.parse_contents(location, tape)
+    def parse_paragraph(self, location: Location, content: Content) -> bool:
+        context = ParaContext(
+            content=content,
+            indentation=content.column,
+        )
+
+        contents = self.parse_contents(context)
+
+        if len(contents) == 0:
+            return False
 
         self.composer.add(Paragraph(location, contents))
+        return True
 
-    def consume_text(self, tape: Tape, greedy: bool) -> str:
+    def parse_contents(
+            self, context: ParaContext) -> List[Component]:
+        contents = []
+
+        while context.alive:
+            location = context.content.get_location()
+
+            c = context.content.peek()
+
+            if c is None or c == self.stop_char:
+                break
+            elif c == LINK_BEGIN_CHAR:
+                context.content.move_next()
+
+                with self.using_stop_char(LINK_END_CHAR):
+                    children = self.parse_contents(context)
+
+                if context.content.peek() != LINK_END_CHAR:
+                    raise StxError('Expected link end char')
+
+                context.content.move_next()
+
+                if context.content.peek() == LINK_REF_BEGIN_CHAR:
+                    context.content.move_next()
+
+                    with self.using_stop_char(LINK_REF_END_CHAR):
+                        ref = self.consume_text(context, greedy=True)
+
+                    if context.content.peek() != LINK_REF_END_CHAR:
+                        raise StxError('expected link ref end char')
+
+                    context.content.move_next()
+                else:
+                    ref = None
+
+                contents.append(
+                    LinkText(location, children, ref)
+                )
+            elif c in STYLE_CHAR_TOKEN_MAP:
+                context.content.move_next()
+
+                token = STYLE_CHAR_TOKEN_MAP[c]
+                with self.using_stop_char(c):
+                    children = self.parse_contents(context)
+
+                if context.content.peek() != c:
+                    raise StxError(f'Unclosed style: {token}')
+
+                context.content.move_next()
+
+                contents.append(
+                    StyledText(location, children, token)
+                )
+            else:
+                text = self.consume_text(context, greedy=False)
+
+                if text != '':
+                    contents.append(
+                        PlainText(location, text)
+                    )
+
+        return contents
+
+    def consume_text(self, context: ParaContext, greedy: bool) -> str:
         out = StringIO()
 
-        while True:
-            c = tape.peek()
+        while context.alive:
+            c = context.content.peek()
 
             if c is None or c == self.stop_char or (
                     not greedy and c in BEGIN_CHAR_LIST):
                 break
-            elif c == ESCAPE_CHAR:
-                tape.move_next()
+            elif c == '\n':
+                out.write(c)
+                context.content.move_next()
 
-                c = tape.peek()
+                with context.content:
+                    spaces = read_spaces(context.content, context.indentation)
+
+                    if context.content.peek() == '\n':
+                        context.content.move_next()
+                        context.alive = False
+                        context.content.commit()
+                        break
+                    elif spaces < context.indentation:
+                        context.alive = False
+                        context.content.rollback()
+                        break
+                    else:
+                        context.content.commit()
+            elif c == ESCAPE_CHAR:
+                context.content.move_next()
+
+                c = context.content.peek()
 
                 if c is None:
                     raise StxError('expected special char')
@@ -55,62 +167,6 @@ class ParagraphParser(AbstractParser, ABC):
                     raise StxError('invalid escaped char')
 
             out.write(c)
-            tape.move_next()
+            context.content.move_next()
 
         return out.getvalue()
-
-    def parse_contents(
-            self, location: Location, tape: Tape) -> List[Component]:
-        contents = []
-
-        while True:
-            c = tape.peek()
-
-            if c is None or c == self.stop_char:
-                break
-            elif c == LINK_BEGIN_CHAR:
-                tape.move_next()
-
-                with self.using_stop_char(LINK_END_CHAR):
-                    children = self.parse_contents(location, tape)
-
-                if tape.peek() != LINK_END_CHAR:
-                    raise StxError('Expected link end char')
-
-                tape.move_next()
-
-                if tape.peek() == LINK_REF_BEGIN_CHAR:
-                    tape.move_next()
-
-                    with self.using_stop_char(LINK_REF_END_CHAR):
-                        ref = self.consume_text(tape, greedy=True)
-
-                    if tape.peek() != LINK_REF_END_CHAR:
-                        raise StxError('expected link ref end char')
-
-                    tape.move_next()
-                else:
-                    ref = None
-
-                component = LinkText(location, children, ref)  # TODO fix location
-            elif c in STYLE_CHAR_TOKEN_MAP:
-                tape.move_next()
-
-                token = STYLE_CHAR_TOKEN_MAP[c]
-                with self.using_stop_char(c):
-                    children = self.parse_contents(location, tape)
-
-                if tape.peek() != c:
-                    raise StxError(f'Unclosed style: {token}')
-
-                tape.move_next()
-
-                component = StyledText(location, children, token)  # TODO fix location
-            else:
-                text = self.consume_text(tape, greedy=False)
-
-                component = PlainText(location, text)  # TODO fix location
-
-            contents.append(component)
-
-        return contents

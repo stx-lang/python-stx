@@ -79,10 +79,10 @@ def generate_body(document: Document, html: Tag):
 
 
 def generate_component(
-        parent: Tag, component: Component, collapse_paragraph=False):
-    if collapse_paragraph and isinstance(component, Paragraph):
-        generate_components(parent, component.contents)
-    elif isinstance(component, Composite):
+        parent: Tag, component: Component,
+        collapse_paragraph=False,
+        collapse_section=False):
+    if isinstance(component, Composite):
         generate_components(parent, component.components)
     elif isinstance(component, CodeBlock):
         generate_code_block(parent, component)
@@ -91,7 +91,7 @@ def generate_component(
     elif isinstance(component, ListBlock):
         generate_list_block(parent, component)
     elif isinstance(component, Paragraph):
-        generate_paragraph(parent, component)
+        generate_paragraph(parent, component, collapse_paragraph)
     elif isinstance(component, PlainText):
         generate_plain_text(parent, component)
     elif isinstance(component, StyledText):
@@ -103,7 +103,7 @@ def generate_component(
     elif isinstance(component, Figure):
         generate_figure(parent, component)
     elif isinstance(component, Section):
-        generate_section(parent, component)
+        generate_section(parent, component, collapse_section)
     elif isinstance(component, TableOfContents):
         generate_toc(parent, component)
     elif isinstance(component, Separator):
@@ -172,8 +172,11 @@ def generate_list_block(parent: Tag, list_block: ListBlock):
         generate_component(item_tag, item, collapse_paragraph=True)
 
 
-def generate_paragraph(parent: Tag, paragraph: Paragraph):
-    p_tag = append_component_tag(parent, paragraph, 'p')
+def generate_paragraph(parent: Tag, paragraph: Paragraph, collapse: bool):
+    if not collapse:
+        p_tag = append_component_tag(parent, paragraph, 'p')
+    else:
+        p_tag = parent
 
     generate_components(p_tag, paragraph.contents)
 
@@ -226,8 +229,11 @@ def generate_figure(parent: Tag, figure: Figure):
     generate_component(caption_tag, figure.caption, collapse_paragraph=True)
 
 
-def generate_section(parent: Tag, section: Section):
-    section_tag = append_component_tag(parent, section, 'section')
+def generate_section(parent: Tag, section: Section, collapse: bool):
+    if not collapse:
+        section_tag = append_component_tag(parent, section, 'section')
+    else:
+        section_tag = parent
 
     if section.type is not None:
         section_tag['data-type'] = section.type
@@ -295,7 +301,7 @@ def generate_box(parent: Tag, box: ContentBox):
     if box.style is not None:
         box_tag['data-type'] = box.style
 
-    generate_component(box_tag, box.content)
+    generate_component(box_tag, box.content, collapse_section=True)
 
 
 def append_component_tag(

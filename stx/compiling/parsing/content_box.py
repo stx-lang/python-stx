@@ -15,4 +15,6 @@ class ContentBoxParser(AbstractParser, ABC):
 
         self.composer.add(box)
 
+        self.section_stack.append(None)
         box.content = self.capture_component(mark_indentation, True)
+        self.section_stack.pop()

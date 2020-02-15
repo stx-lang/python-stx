@@ -72,10 +72,7 @@ class Parser(
                 if mark is None:
                     content.commit()
 
-                    text = content.read_text(content.column, self.stop_char)
-
-                    if len(text) > 0:
-                        self.parse_paragraph(location, text)
+                    if self.parse_paragraph(location, content):
                         continue
                     elif breakable:
                         break  # TODO

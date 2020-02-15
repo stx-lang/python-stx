@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
+from stx.compiling.reading.content import Content
 from stx.compiling.reading.location import Location
 from stx.components import Component, Section
 from stx.document import Document
@@ -78,7 +79,7 @@ class AbstractParser(Reader, ABC):
         pass
 
     @abstractmethod
-    def parse_paragraph(self, location: Location, text: str):
+    def parse_paragraph(self, location: Location, content: Content):
         pass
 
     @abstractmethod
