@@ -1,9 +1,9 @@
 from typing import List, Any, Optional
 
-from stx.compiling.reading.location import Location
 from stx.components import Component, Composite, Figure, Table
 from stx.utils.stx_error import StxError
 from stx.utils.debug import see
+
 
 class Composer:
 
@@ -40,6 +40,8 @@ class Composer:
         if len(self.pre_captions) > 0:
             if isinstance(component, Table):
                 component.caption = self.pre_captions.pop()
+
+                self.components.append(component)
             else:
                 figure = Figure(
                     component.location, component, self.pre_captions.pop())
