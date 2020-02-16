@@ -5,7 +5,27 @@
 
 = STX
 
-STX is a simple markup language for creating documents.
+STX is a markup language for creating documents.
+It was designed to be simple enough to be easily written but at the same time
+powerful enough to allow creating complex documents.
+
+Despite part of the syntax is based on Markdown, STX is not an extension.
+In order to achieve advanced features, the [syntax] is stricter and more
+structured.
+
+= Features
+
+== Document Model
+
+== Cross References
+
+== Numbering
+
+== Rendering
+
+=== HTMLBook
+
+=== JSON
 
 = Syntax
 
@@ -77,14 +97,6 @@ Starts with a `=`.
 
 == Comments
 
-= References
-
-= Numbering
-
-= Rendering
-
-== HTMLBook
-
 = Appendix
 
 @ref:"reserved mark"
@@ -114,3 +126,5 @@ Starts with a `=`.
     'assets/style.css'
 ]
 #embed:'assets/layout.html'
+
+== Document Components
