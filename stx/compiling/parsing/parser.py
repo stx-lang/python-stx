@@ -30,26 +30,6 @@ class Parser(
     AbstractParser,
 ):
 
-    def capture_component(
-            self,
-            indentation: int,
-            breakable=True) -> Component:
-        location = self.get_location()
-
-        self.composer.push()
-
-        self.parse_components(
-            indentation,
-            breakable)
-
-        component = self.composer.pop()
-
-        if component is None:
-            # TODO implement empty component
-            return Composite(location)
-
-        return component
-
     def capture(self):
         self.document.content = self.capture_component(
             indentation=0,
@@ -66,10 +46,14 @@ class Parser(
                 'not consumed pre captions: ',
                 self.composer.pre_captions[0].location)
 
-    def parse_components(
+    def capture_component(
             self,
             indentation: int,
-            breakable=True):
+            breakable=True) -> Component:
+        location = self.get_location()
+
+        self.composer.push()
+
         while self.active():
             content = self.get_content()
 
@@ -145,3 +129,11 @@ class Parser(
                     location, mark_indentation, ordered=True)
             else:
                 raise StxError(f'Unsupported mark: `{mark}`')
+
+        component = self.composer.pop()
+
+        if component is None:
+            # TODO implement empty component
+            return Composite(location)
+
+        return component

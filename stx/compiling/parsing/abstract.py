@@ -18,6 +18,16 @@ class AbstractParser(Reader, ABC):
         self.composer = Composer()
         self.stop_char_stack = []
         self.section_stack: List[Section] = []
+        self.exit_count: int = 0
+
+    def push_exit(self, count: int):
+        self.exit_count += count
+
+    def pull_exit(self) -> bool:
+        if self.exit_count > 0:
+            self.exit_count -= 1
+            return True
+        return False
 
     @property
     def stop_char(self) -> Optional[str]:
@@ -41,10 +51,6 @@ class AbstractParser(Reader, ABC):
 
     @abstractmethod
     def capture(self):
-        pass
-
-    @abstractmethod
-    def parse_components(self, indentation: int, breakable: bool):
         pass
 
     @abstractmethod
