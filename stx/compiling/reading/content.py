@@ -37,7 +37,7 @@ class Content:
             self._content = stream.read().rstrip()
             self._length = len(self._content)
 
-    # TODO you can do it better
+    # TODO refactor using one method that returns a transaction object
     def __enter__(self):
         self._trx.append(TRX(self._pos, self._line, self._column, None))
         return self
@@ -266,3 +266,18 @@ class Content:
                 break
 
         return count
+
+    def move_to_indentation(self, indentation: int) -> bool:
+        with self:
+            while self.column < indentation:
+                if self.peek() in [' ', '\t', '\r', '\n']:
+                    self.move_next()
+                else:
+                    break
+
+            if self.column == indentation:
+                self.commit()
+                return True
+            else:
+                self.rollback()
+                return False
