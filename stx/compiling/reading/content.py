@@ -253,3 +253,16 @@ class Content:
 
     def get_location(self) -> Location:
         return Location(self.file_path, self.line, self.column)
+
+    def read_spaces(self, max_length: int = None) -> int:
+        count = 0
+
+        while self.peek() in [' ', '\t']:
+            self.move_next()
+
+            count += 1
+
+            if max_length is not None and count >= max_length:
+                break
+
+        return count

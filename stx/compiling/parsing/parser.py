@@ -75,10 +75,12 @@ class Parser(
 
             if not content.alive(indentation):
                 break
+            elif content.peek() == self.stop_char:
+                break
 
             with content:
                 location = content.get_location()
-                mark = content.read_mark(self.stop_char)
+                mark = content.read_mark(self.stop_char)  # TODO is stop char still required?
 
                 if mark is None:
                     content.commit()

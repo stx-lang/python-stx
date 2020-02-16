@@ -2,88 +2,104 @@
   "title": null,
   "author": null,
   "content": {
-    "type": "composite",
+    "type": "table",
     "refs": [],
     "location": {
       "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
       "line": 0,
       "column": 0
     },
-    "components": [
+    "caption": null,
+    "number": null,
+    "rows": [
       {
-        "type": "paragraph",
-        "refs": [],
-        "location": {
-          "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
-          "line": 0,
-          "column": 0
-        },
-        "contents": [
+        "header": false,
+        "cells": [
           {
-            "type": "plain-text",
+            "type": "paragraph",
             "refs": [],
             "location": {
               "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
               "line": 0,
-              "column": 0
+              "column": 3
             },
-            "content": "PARAGRAPH\n"
+            "contents": [
+              {
+                "type": "plain-text",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
+                  "line": 0,
+                  "column": 3
+                },
+                "content": "A\n"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "refs": [],
+            "location": {
+              "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
+              "line": 1,
+              "column": 4
+            },
+            "contents": [
+              {
+                "type": "plain-text",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
+                  "line": 1,
+                  "column": 4
+                },
+                "content": "B\n"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "refs": [],
+            "location": {
+              "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
+              "line": 2,
+              "column": 4
+            },
+            "contents": [
+              {
+                "type": "plain-text",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
+                  "line": 2,
+                  "column": 4
+                },
+                "content": "C\n"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "refs": [],
+            "location": {
+              "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
+              "line": 3,
+              "column": 4
+            },
+            "contents": [
+              {
+                "type": "plain-text",
+                "refs": [],
+                "location": {
+                  "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
+                  "line": 3,
+                  "column": 4
+                },
+                "content": "D"
+              }
+            ]
           }
         ]
-      },
-      {
-        "type": "separator",
-        "refs": [],
-        "location": {
-          "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
-          "line": 2,
-          "column": 0
-        },
-        "name": 0
-      },
-      {
-        "type": "figure",
-        "refs": [
-          "caption"
-        ],
-        "location": {
-          "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
-          "line": 4,
-          "column": 0
-        },
-        "number": "1.",
-        "content": {
-          "type": "code-block",
-          "refs": [],
-          "location": {
-            "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
-            "line": 4,
-            "column": 0
-          },
-          "lang": "bm",
-          "content": "CODE\n"
-        },
-        "caption": {
-          "type": "paragraph",
-          "refs": [],
-          "location": {
-            "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
-            "line": 7,
-            "column": 2
-          },
-          "contents": [
-            {
-              "type": "plain-text",
-              "refs": [],
-              "location": {
-                "file_path": "/Users/sergio/bakasoft/stx/docs/test.stx",
-                "line": 7,
-                "column": 2
-              },
-              "content": "CAPTION\n"
-            }
-          ]
-        }
       }
     ]
   }

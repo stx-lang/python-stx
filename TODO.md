@@ -5,3 +5,4 @@
 1. Add images support.
 1. Prettify HTML with `BeautifulSoup` using configuration.
 1. Add configuration to prettify JSON files (instead of doing always).
+1. Refactor parsing logic: identify common patterns.

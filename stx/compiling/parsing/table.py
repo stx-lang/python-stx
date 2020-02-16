@@ -44,12 +44,36 @@ class TableParser(AbstractParser, ABC):
 
             table.rows.append(row)
 
-        with self.using_stop_char(table_cell_mark):
-            cell = self.capture_component(indentation, True)
+        indentation0 = indentation
 
-            # TODO this is weird maybe None content should be supported
-            if self.active():
-                # TODO ensure that is from the same content
-                self.get_content().skip_empty_line()
+        while True:
+            with self.using_stop_char(table_cell_mark):
+                cell = self.capture_component(indentation, True)
 
-        row.cells.append(cell)
+                row.cells.append(cell)
+
+                # TODO this is weird maybe None content should be supported
+                if self.active():
+                    # TODO ensure that is from the same content
+                    self.get_content().skip_empty_line()
+
+            if not self.active():
+                break
+
+            content = self.get_content()
+
+            with content:
+                # Consume indentation when it is the beginning of the line
+                if content.column == 0:
+                    if content.read_spaces(indentation0) < indentation0:
+                        content.rollback()
+                        break
+
+                if content.peek() == table_cell_mark:
+                    content.move_next()
+                    content.read_spaces()
+
+                    indentation = content.column
+                    content.commit()
+                else:
+                    break

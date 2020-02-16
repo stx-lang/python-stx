@@ -27,20 +27,6 @@ STYLE_CHAR_TOKEN_MAP = {
 BEGIN_CHAR_LIST = [LINK_BEGIN_CHAR] + list(STYLE_CHAR_TOKEN_MAP.keys())
 
 
-def read_spaces(content: Content, max_length: int) -> int:
-    count = 0
-
-    while content.peek() in [' ', '\t']:
-        content.move_next()
-
-        count += 1
-
-        if count >= max_length:
-            break
-
-    return count
-
-
 class ParaContext:
 
     def __init__(self, content: Content, indentation: int):
@@ -150,7 +136,7 @@ class ParagraphParser(AbstractParser, ABC):
                 context.content.move_next()
 
                 with context.content:
-                    spaces = read_spaces(context.content, context.indentation)
+                    spaces = context.content.read_spaces(context.indentation)
 
                     if context.content.peek() is None:
                         context.alive = False
