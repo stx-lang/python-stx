@@ -13,6 +13,5 @@ class AttributeParser(AbstractParser, ABC):
         key, value = parse_entry(content)
 
         content.expect_end_of_line()
-        content.skip_empty_line()
 
         self.composer.push_attribute(key, value)

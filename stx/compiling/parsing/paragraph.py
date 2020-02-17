@@ -45,9 +45,6 @@ class ParagraphParser(AbstractParser, ABC):
 
         contents = self.parse_contents(context)
 
-        if content.alive(context.indentation):  # TODO this should be implicit
-            content.skip_empty_line()
-
         if len(contents) == 0:
             return False
 

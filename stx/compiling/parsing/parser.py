@@ -56,7 +56,10 @@ class Parser(
         while self.active():
             content = self.get_content()
 
-            if not content.move_to_indentation(indentation):
+            while content.consume_empty_line():
+                pass
+
+            if not content.consume_indentation(indentation):
                 break
             elif content.peek() == self.stop_char:
                 break

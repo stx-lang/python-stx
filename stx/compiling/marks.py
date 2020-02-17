@@ -57,6 +57,7 @@ reserved_block_marks = [
     code_block_mark,
     content_box_mark,
     comment_block_mark,
+    exit_mark,
 ]
 
 

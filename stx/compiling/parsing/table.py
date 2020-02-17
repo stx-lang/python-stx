@@ -52,11 +52,6 @@ class TableParser(AbstractParser, ABC):
 
                 row.cells.append(cell)
 
-                # TODO this is weird maybe None content should be supported
-                if self.active():
-                    # TODO ensure that is from the same content
-                    self.get_content().skip_empty_line()
-
             if not self.active():
                 break
 

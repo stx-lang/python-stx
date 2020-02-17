@@ -38,8 +38,6 @@ class CodeBlockParser(AbstractParser, ABC):
 
             out.write(line)
 
-        content.skip_empty_line()
-
         code = out.getvalue()
 
         self.composer.add(

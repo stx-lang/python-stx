@@ -1,6 +1,6 @@
 # TODO
 
-1. Add mark for breaking components instead of empty lines (ignore empty lines)
+1. ~Add mark for breaking components instead of empty lines (ignore empty lines)~
 1. Add directive for configuring output files.
 1. Add macro support.
 1. Add images support.

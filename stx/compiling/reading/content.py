@@ -249,15 +249,6 @@ class Content:
 
             trx.save()
 
-    def skip_empty_line(self):
-        with self.checkout() as trx:
-            text = self.read_until(['\n'], consume_last=True)
-
-            if re.match(EMPTY_OR_WHITESPACE, text):
-                trx.save()
-            else:
-                trx.cancel()
-
     def get_location(self) -> Location:
         return Location(self.file_path, self.line, self.column, self.position)
 
@@ -274,28 +265,36 @@ class Content:
 
         return count
 
-    def move_to_indentation(self, indentation: int) -> bool:
-        with self.checkout() as trx:
-            while self.column < indentation:
-                if self.peek() in [' ', '\t', '\r', '\n']:
-                    self.move_next()
-                else:
-                    break
-
-            if self.column >= indentation:
-                trx.save()
-                return True
-            else:
-                trx.cancel()
-                return False
-
-    def consume_empty_line(self):
+    def consume_indentation(self, indentation: int) -> bool:
         loc0 = self.get_location()
+
+        while self.column < indentation:
+            if self.peek() == ' ':
+                self.move_next()
+            else:
+                break
+
+        if self.column >= indentation:
+            return True
+
+        self.go_back(loc0)
+        return False
+
+    def consume_empty_line(self) -> bool:
+        loc0 = self.get_location()
+
+        count = 0
 
         while self.peek() == ' ':
             self.move_next()
 
-        if self.peek() in [None, '\n']:
+            count += 1
+
+        c = self.peek()
+
+        if c is None:
+            return count > 0
+        elif c == '\n':
             self.move_next()
             return True
 

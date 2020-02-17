@@ -21,7 +21,4 @@ class ListBlockParser(AbstractParser, ABC):
 
         list_item = self.capture_component(indentation, True)
 
-        # TODO ensure that is from the same content
-        self.get_content().skip_empty_line()
-
         list_block.items.append(list_item)

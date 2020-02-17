@@ -21,8 +21,6 @@ class DirectiveParser(AbstractParser, ABC):
         if content.column > 0:
             content.expect_end_of_line()
 
-        content.skip_empty_line()
-
         if key == 'title':
             self.document.title = to_str(value)
         elif key == 'author':
