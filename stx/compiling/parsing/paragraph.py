@@ -135,24 +135,24 @@ class ParagraphParser(AbstractParser, ABC):
                 out.write(c)
                 context.content.move_next()
 
-                with context.content:
+                with context.content.checkout() as trx:
                     spaces = context.content.read_spaces(context.indentation)
 
                     if context.content.peek() is None:
                         context.alive = False
-                        context.content.commit()
+                        trx.save()
                         break
                     if context.content.peek() == '\n':
                         context.content.move_next()
                         context.alive = False
-                        context.content.commit()
+                        trx.save()
                         break
                     elif spaces < context.indentation:
                         context.alive = False
-                        context.content.rollback()
+                        trx.cancel()
                         break
                     else:
-                        context.content.commit()
+                        trx.save()
                         continue
             elif c == ESCAPE_CHAR:
                 context.content.move_next()

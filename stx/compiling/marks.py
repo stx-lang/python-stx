@@ -17,7 +17,8 @@ content_box_mark = '!'
 code_block_mark = '```'
 comment_block_mark = '///'
 attribute_mark = '@'
-directive_mark = '#'
+directive_mark = '#'  # TODO change to $ (to avoid conflicts with Markdown)
+exit_mark = '%'
 
 escape_mark = '\\'
 
@@ -80,9 +81,3 @@ reserved_text_marks = [
     begin_link_mark,
     begin_macro_mark,
 ]
-
-
-def get_section_level(mark):
-    if mark not in heading_marks:
-        raise Exception(f'`{mark}` is not a heading mark.')
-    return heading_marks.index(mark) + 1

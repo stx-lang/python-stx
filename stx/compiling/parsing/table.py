@@ -62,11 +62,11 @@ class TableParser(AbstractParser, ABC):
 
             content = self.get_content()
 
-            with content:
+            with content.checkout() as trx:
                 # Consume indentation when it is the beginning of the line
                 if content.column == 0:
                     if content.read_spaces(indentation0) < indentation0:
-                        content.rollback()
+                        trx.cancel()
                         break
 
                 if content.peek() == table_cell_mark:
@@ -74,6 +74,6 @@ class TableParser(AbstractParser, ABC):
                     content.read_spaces()
 
                     indentation = content.column
-                    content.commit()
+                    trx.save()
                 else:
                     break

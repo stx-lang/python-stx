@@ -1,9 +1,10 @@
 from stx.compiling.reading.content import Content
 from stx.components import Separator, Component, Composite
-from stx.compiling.marks import heading_marks, get_section_level, \
+from stx.compiling.marks import heading_marks, \
     directive_mark, attribute_mark, code_block_mark, content_box_mark, \
     table_h_row_mark, table_d_row_mark, table_cell_mark, pre_caption_mark, \
-    post_caption_mark, ordered_list_item_mark, unordered_list_item_mark
+    post_caption_mark, ordered_list_item_mark, unordered_list_item_mark, \
+    exit_mark
 from stx.compiling.parsing.attribute import AttributeParser
 from stx.compiling.parsing.abstract import AbstractParser
 from stx.compiling.parsing.caption import CaptionParser
@@ -47,9 +48,7 @@ class Parser(
                 self.composer.pre_captions[0].location)
 
     def capture_component(
-            self,
-            indentation: int,
-            breakable=True) -> Component:
+            self, indentation: int, breakable=True) -> Component:
         location = self.get_location()
 
         self.composer.push()
@@ -57,50 +56,35 @@ class Parser(
         while self.active():
             content = self.get_content()
 
-            if not content.alive(indentation):
+            if not content.move_to_indentation(indentation):
                 break
             elif content.peek() == self.stop_char:
                 break
 
-            with content:
-                location = content.get_location()
-                mark = content.read_mark(self.stop_char)  # TODO is stop char still required?
+            # TODO check if it is alive
 
-                if mark is None:
-                    content.commit()
+            location = content.get_location()
 
-                    if self.parse_paragraph(location, content):
-                        continue
-                    elif breakable:
-                        break  # TODO
-
-                    self.composer.add(Separator(location))
-                    continue
-                elif mark in heading_marks:
-                    section_level = get_section_level(mark)
-                    parent_section = (
-                        self.section_stack[-1]
-                        if len(self.section_stack) > 0 else None
-                    )
-
-                    if (parent_section is not None
-                            and parent_section.level >= section_level):
-                        content.rollback()
-                        break
-
-                    content.commit()
-                    parse_section = True
-                else:
-                    content.commit()
-                    parse_section = False
-
+            mark = content.read_mark()
             mark_indentation = content.column
             root_indentation = indentation
 
-            if parse_section:
-                self.parse_section(
-                    location, section_level,
-                    mark_indentation, root_indentation)
+            if mark is None:
+                self.parse_paragraph(location, content)
+            elif mark == exit_mark:
+                break
+            elif mark in heading_marks:
+                parent_section = self.get_parent_section()
+                section_level = len(mark)
+
+                if (parent_section is not None
+                        and parent_section.level >= section_level):
+                    content.go_back(location)
+                    break
+                else:
+                    self.parse_section(
+                        location, section_level,
+                        mark_indentation, root_indentation)
             elif mark == directive_mark:
                 self.parse_directive(location)
             elif mark == attribute_mark:

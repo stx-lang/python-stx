@@ -20,6 +20,11 @@ class AbstractParser(Reader, ABC):
         self.section_stack: List[Section] = []
         self.exit_count: int = 0
 
+    def get_parent_section(self) -> Optional[Section]:
+        if len(self.section_stack) > 0:
+            return self.section_stack[-1]
+        return None
+
     def push_exit(self, count: int):
         self.exit_count += count
 

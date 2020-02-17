@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import re
 from io import StringIO
 from typing import List, Optional
@@ -15,96 +17,98 @@ EMPTY_OR_WHITESPACE = r'^ *$'
 
 class TRX:
 
-    def __init__(self, pos: int, line: int, column: int, state: Optional[str]):
-        self.pos = pos
-        self.line = line
-        self.column = column
-        self.state = state
+    def __init__(self, content: Content):
+        self._content = content
+        self._position = None
+        self._line = None
+        self._column = None
+        self._state = 'created'
+
+    def __enter__(self):
+        if self._state == 'started':
+            raise Exception('Transaction is already started.')
+
+        self._position = self._content.position
+        self._line = self._content.line
+        self._column = self._content.column
+        self._state = 'started'
+        self._content.transactions.append(self)
+        return self
+
+    def _pop_transaction(self):
+        if len(self._content.transactions) == 0:
+            raise Exception('Corrupted transaction')
+
+        trx = self._content.transactions.pop()
+
+        if trx != self:
+            raise Exception('Corrupted transaction')
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_val is not None:
+            raise exc_val
+
+        if self._state not in ['saved', 'canceled']:
+            raise Exception(f'Unfinished transaction: {self._state}')
+
+    def save(self):
+        self._pop_transaction()
+
+        self._state = 'saved'
+
+    def cancel(self):
+        self._pop_transaction()
+
+        self._content.position = self._position
+        self._content.line = self._line
+        self._content.column = self._column
+
+        self._state = 'canceled'
 
 
 class Content:
 
     def __init__(self, file_path: str):
-        self._file_path = file_path
-        self._pos = 0
-        self._line = 0
-        self._column = 0
-        self._trx = []
+        self.file_path = file_path
+        self.position = 0
+        self.line = 0
+        self.column = 0
+        self.transactions: List[TRX] = []
 
         logger.info(f'Loading file {see(file_path, None)}...')
 
-        with open(self._file_path, mode='r') as stream:
+        with open(self.file_path, mode='r') as stream:
             self._content = stream.read().rstrip()
             self._length = len(self._content)
 
-    # TODO refactor using one method that returns a transaction object
-    def __enter__(self):
-        self._trx.append(TRX(self._pos, self._line, self._column, None))
-        return self
+    def checkout(self) -> TRX:
+        return TRX(self)
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if exc_val is not None:
-            raise exc_val
-        elif len(self._trx) == 0:
-            raise Exception('Corrupted transaction')
-
-        trx = self._trx.pop()
-
-        if trx.state == 'R':
-            self._pos = trx.pos
-            self._line = trx.line
-            self._column = trx.column
-        elif trx.state != 'C':
-            raise Exception('Unfinished transaction!')
-
-    def commit(self):
-        if len(self._trx) == 0:
-            raise Exception('No available transaction')
-        elif self._trx[-1].state is not None:
-            raise Exception('Consumed transaction')
-
-        self._trx[-1].state = 'C'
-
-    def rollback(self):
-        if len(self._trx) == 0:
-            raise Exception('No available transaction')
-        elif self._trx[-1].state is not None:
-            raise Exception('Consumed transaction')
-
-        self._trx[-1].state = 'R'
-
-    @property
-    def column(self):
-        return self._column
-
-    @property
-    def line(self):
-        return self._line
-
-    @property
-    def file_path(self):
-        return self._file_path
+    def go_back(self, location: Location):
+        self.position = location.position
+        self.line = location.line
+        self.column = location.column
 
     def halted(self):
-        return self._pos >= self._length and len(self._trx) == 0
+        return self.position >= self._length and len(self.transactions) == 0
 
     def move_next(self):
-        if self._pos < self._length:
-            new_line = (self._content[self._pos] == LF_CHAR)
+        if self.position < self._length:
+            new_line = (self._content[self.position] == LF_CHAR)
 
-            self._pos += 1
+            self.position += 1
 
             if new_line:
-                self._line += 1
-                self._column = 0
+                self.line += 1
+                self.column = 0
             else:
-                self._column += 1
+                self.column += 1
         else:
             raise StxError('EOF')
 
     def peek(self) -> Optional[str]:
-        if self._pos < self._length:
-            return self._content[self._pos]
+        if self.position < self._length:
+            return self._content[self.position]
 
         return None
 
@@ -118,7 +122,10 @@ class Content:
         return c
 
     def read_until(
-            self, chars: List[str], consume_last=False, max_length=None) -> str:
+            self,
+            chars: List[str],
+            consume_last=False,
+            max_length=None) -> str:
         out = StringIO()
 
         while True:
@@ -174,28 +181,28 @@ class Content:
         return out.getvalue()
 
     def alive(self, indentation: int) -> bool:  # TRX
-        if indentation > 0 and self._column < indentation:
-            with self:
+        if indentation > 0 and self.column < indentation:
+            with self.checkout() as trx:
                 line_prefix = self.read_until(['\n'], max_length=indentation)
 
                 if re.match(EMPTY_OR_WHITESPACE, line_prefix):
-                    self.commit()
+                    trx.save()
                     return True
                 else:
-                    self.rollback()
+                    trx.cancel()
                     return False
 
-        return self._pos < self._length
+        return self.position < self._length
 
-    def read_mark(self, stop_char: Optional[str]) -> Optional[str]:  # TRX
-        with self:
+    def read_mark(self) -> Optional[str]:  # TRX
+        with self.checkout() as trx:
             token = self.read_until([' ', '\n'], consume_last=False)
 
             mark = get_matching_mark(token)
 
-            self.rollback()
+            trx.cancel()
 
-        if mark is None or (stop_char is not None and mark == stop_char):
+        if mark is None:
             return None
 
         for i in range(len(mark)):
@@ -206,22 +213,22 @@ class Content:
         return mark
 
     def read_line(self, indentation: int):
-        with self:
+        with self.checkout() as trx:
 
             line_text = self.read_until(['\n'], consume_last=True)
 
             # The text is complete if the line is empty
             if len(line_text.strip(' \n')) == 0:
-                self.commit()
+                trx.save()
                 return ''
             elif self.column >= indentation:
-                self.commit()
+                trx.save()
                 return line_text
             elif line_text.startswith(indentation * ' '):
-                self.commit()
+                trx.save()
                 return line_text[indentation:]
             else:
-                self.rollback()
+                trx.cancel()
                 return None
 
     def expect_char(self, options: List[str]):
@@ -233,26 +240,26 @@ class Content:
         return c
 
     def expect_end_of_line(self):
-        with self:
+        with self.checkout() as trx:
             text = self.read_until(['\n'], consume_last=True)
 
             if len(text.strip()) > 0:
-                self.rollback()
+                trx.cancel()
                 raise StxError('Expected end of line.')
 
-            self.commit()
+            trx.save()
 
     def skip_empty_line(self):
-        with self:
+        with self.checkout() as trx:
             text = self.read_until(['\n'], consume_last=True)
 
             if re.match(EMPTY_OR_WHITESPACE, text):
-                self.commit()
+                trx.save()
             else:
-                self.rollback()
+                trx.cancel()
 
     def get_location(self) -> Location:
-        return Location(self.file_path, self.line, self.column)
+        return Location(self.file_path, self.line, self.column, self.position)
 
     def read_spaces(self, max_length: int = None) -> int:
         count = 0
@@ -268,16 +275,16 @@ class Content:
         return count
 
     def move_to_indentation(self, indentation: int) -> bool:
-        with self:
+        with self.checkout() as trx:
             while self.column < indentation:
                 if self.peek() in [' ', '\t', '\r', '\n']:
                     self.move_next()
                 else:
                     break
 
-            if self.column == indentation:
-                self.commit()
+            if self.column >= indentation:
+                trx.save()
                 return True
             else:
-                self.rollback()
+                trx.cancel()
                 return False
