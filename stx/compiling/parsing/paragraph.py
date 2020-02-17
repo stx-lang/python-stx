@@ -127,33 +127,23 @@ class ParagraphParser(AbstractParser, ABC):
                     not greedy and c in BEGIN_CHAR_LIST):
                 break
             elif c == '\n':
-                if out.getvalue().strip(' ') == '':
-                    context.alive = False
-                    context.content.move_next()
-                    return ''
-
                 out.write(c)
                 context.content.move_next()
 
-                with context.content.checkout() as trx:
-                    spaces = context.content.read_spaces(context.indentation)
+                if context.content.consume_empty_line():
+                    context.alive = False
+                    break
 
-                    if context.content.peek() is None:
-                        context.alive = False
-                        trx.save()
-                        break
-                    if context.content.peek() == '\n':
-                        context.content.move_next()
-                        context.alive = False
-                        trx.save()
-                        break
-                    elif spaces < context.indentation:
-                        context.alive = False
-                        trx.cancel()
-                        break
-                    else:
-                        trx.save()
-                        continue
+                loc0 = context.content.get_location()
+
+                spaces = context.content.read_spaces(context.indentation)
+
+                if spaces < context.indentation:
+                    context.alive = False
+                    context.content.go_back(loc0)
+                    break
+                else:
+                    continue
             elif c == ESCAPE_CHAR:
                 context.content.move_next()
 

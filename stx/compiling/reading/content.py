@@ -264,7 +264,7 @@ class Content:
     def read_spaces(self, max_length: int = None) -> int:
         count = 0
 
-        while self.peek() in [' ', '\t']:
+        while self.peek() == ' ':
             self.move_next()
 
             count += 1
@@ -288,3 +288,16 @@ class Content:
             else:
                 trx.cancel()
                 return False
+
+    def consume_empty_line(self):
+        loc0 = self.get_location()
+
+        while self.peek() == ' ':
+            self.move_next()
+
+        if self.peek() in [None, '\n']:
+            self.move_next()
+            return True
+
+        self.go_back(loc0)
+        return False
