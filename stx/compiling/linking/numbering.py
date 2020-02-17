@@ -34,7 +34,7 @@ def link_section_numbers(
     elif isinstance(root, Section):
         root.number = parent_number + '1.'
 
-        link_section_numbers(root.content, root.number, current_level)
+        link_section_numbers(root.content, root.number, current_level + 1)
 
 
 def link_figure_and_table_numbers(root: Component):
