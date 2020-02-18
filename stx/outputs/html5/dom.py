@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, TextIO, List, Optional
 
-from stx.rendering.html5.escaping import write_text
+from stx.outputs.html5.escaping import write_text
 
 
 class Element:

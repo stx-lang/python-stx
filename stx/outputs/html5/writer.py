@@ -1,7 +1,7 @@
 from typing import Optional
 
-from stx.rendering.html5.escaping import html_escape
-from stx.rendering.writer import Writer
+from stx.outputs.html5.escaping import html_escape
+from stx.outputs.writer import Writer
 
 
 class HtmlWriter(Writer):

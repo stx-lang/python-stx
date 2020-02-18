@@ -1,3 +1,6 @@
+from stx import logger
+from stx.compiling.compiler import compile_document
+from stx.outputs import registry
 from stx.utils.files import resolve_sibling
 
 
@@ -13,20 +16,12 @@ name = 'STX'
 title = f'{name} {version}'
 
 
-def main(input_file, output_file):
-    # document = from_file(input_file)
-    #
-    # if document.format is None:
-    #     document.format = 'html5'
-    #
-    # if document.encoding is None:
-    #     document.encoding = 'UTF-8'
-    #
-    # if document.format == 'html5':
-    #     with open(output_file, 'w', encoding=document.encoding) as f:
-    #         render_document(document, HtmlWriter(f))
-    # else:
-    #     raise Exception(f'Not implemented output format: {document.format}')
-    #
-    # validate_attributes(document)
-    pass
+def main(input_file: str):
+    document = compile_document(input_file)
+
+    for output in document.outputs:
+        logger.info(f'Generating {output.format} output...')
+
+        renderer = registry.get_renderer(output.format)
+
+        renderer(document, output)

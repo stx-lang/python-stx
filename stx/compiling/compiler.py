@@ -7,7 +7,7 @@ from stx.utils.thread_context import context
 
 
 def compile_document(file_path: str) -> Document:
-    doc = Document()
+    doc = Document(file_path)
 
     parser = Parser(doc)
 

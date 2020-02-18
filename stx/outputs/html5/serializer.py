@@ -6,7 +6,7 @@ from stx.components import Component, Composite, CodeBlock, Table, \
     ListBlock, Paragraph, PlainText, StyledText, LinkText, RawText, Figure, \
     Section, Separator, ContentBox, TableOfContents, ElementReference
 from stx.document import Document
-from stx.rendering.html5.dom import Tag
+from stx.outputs.html5.dom import Tag
 
 TYPE_H_TAGS = {
     'chapter': 'h1',

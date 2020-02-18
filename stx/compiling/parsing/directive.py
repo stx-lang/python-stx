@@ -5,6 +5,7 @@ from stx.compiling.reading.location import Location
 from stx.components import RawText, TableOfContents
 from stx.compiling.parsing.abstract import AbstractParser
 from stx.compiling.values import parse_entry
+from stx.outputs.output_task import OutputTask
 from stx.utils.converter import to_list_str, to_str
 from stx.utils.files import resolve_include_files
 from stx.utils.stx_error import StxError
@@ -37,6 +38,8 @@ class DirectiveParser(AbstractParser, ABC):
             self.process_import(location, file_path, value, parse=True)
         elif key == 'embed':
             self.process_import(location, file_path, value, parse=False)
+        elif key == 'output':
+            self.process_output(location, value)
         else:
             raise StxError(f'Unsupported directive: {key}')
 
@@ -60,3 +63,6 @@ class DirectiveParser(AbstractParser, ABC):
 
                 # TODO add support for more type of files
                 self.composer.add(RawText(location, text))
+
+    def process_output(self, location: Location, value: dict):
+        self.document.outputs.append(OutputTask(location, value))

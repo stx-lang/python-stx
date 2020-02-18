@@ -1,6 +1,6 @@
 # from stx.compiling.parsing.paragraph import parse_contents, Tape
 # from stx.compiling.reading.content import Content
-# from stx.rendering.json.serializer import components_to_json
+# from stx.outputs.json.serializer import components_to_json
 #
 #
 # def check(actual: str, stop: str, expected):
