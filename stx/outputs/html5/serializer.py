@@ -1,12 +1,15 @@
-from typing import Optional, List
+from typing import List
 
 from stx import app, logger
-from stx.compiling.reading.location import Location
-from stx.components import Component, Composite, CodeBlock, Table, \
-    ListBlock, Paragraph, PlainText, StyledText, LinkText, RawText, Figure, \
-    Section, Separator, ContentBox, TableOfContents, ElementReference
+from stx.components import Component, Composite, CodeBlock, Table, Image
+from stx.components import ListBlock, Paragraph, PlainText, StyledText
+from stx.components import LinkText, RawText, Figure, Section, Separator
+from stx.components import ContentBox, TableOfContents, ElementReference
+from stx.components import MacroText, CapturedText
 from stx.document import Document
 from stx.outputs.html5.dom import Tag
+from stx.utils.stx_error import StxError
+from stx.utils.debug import see
 
 TYPE_H_TAGS = {
     'chapter': 'h1',
@@ -16,6 +19,11 @@ TYPE_H_TAGS = {
     'sect4': 'h4',
     'sect5': 'h5',
 }
+
+CAPTURED_CLASS_TAGS = [
+    'cite', 'ins', 'kbd', 'mark', 'q', 's',
+    'samp', 'small', 'sub', 'sup', 'var',
+]
 
 
 def document_to_html(document: Document) -> List[Tag]:
@@ -98,6 +106,10 @@ def generate_component(
         generate_styled_text(parent, component)
     elif isinstance(component, LinkText):
         generate_link_text(parent, component)
+    elif isinstance(component, CapturedText):
+        generate_captured_text(parent, component)
+    elif isinstance(component, MacroText):
+        generate_macro_text(parent, component)
     elif isinstance(component, RawText):
         generate_embedded_block(parent, component)
     elif isinstance(component, Figure):
@@ -110,6 +122,8 @@ def generate_component(
         generate_separator(parent, component)
     elif isinstance(component, ContentBox):
         generate_box(parent, component)
+    elif isinstance(component, Image):
+        generate_image(parent, component)
     else:
         raise NotImplementedError(f'Not implemented type: {type(component)}')
 
@@ -212,6 +226,27 @@ def generate_link_text(parent: Tag, link_text: LinkText):
     generate_components(a_tag, link_text.contents)
 
 
+def generate_captured_text(parent: Tag, captured: CapturedText):
+    if captured.class_ in CAPTURED_CLASS_TAGS:
+        cap_tag = append_component_tag(parent, captured, captured.class_)
+    else:
+        cap_tag = append_component_tag(parent, captured, 'span')
+
+        if captured.class_:
+            cap_tag['class'] = captured.class_
+
+    generate_components(cap_tag, captured.contents)
+
+
+def generate_macro_text(parent: Tag, macro: MacroText):
+    if macro.content is None:
+        raise StxError(
+            f'Macro was not processed: {see(macro.entry.to_any())}',
+            macro.location)
+
+    generate_component(parent, macro.content)
+
+
 def generate_embedded_block(parent: Tag, embedded_block: RawText):
     parent.append_literal(embedded_block.content)
 
@@ -302,6 +337,14 @@ def generate_box(parent: Tag, box: ContentBox):
         box_tag['data-type'] = box.style
 
     generate_component(box_tag, box.content, collapse_section=True)
+
+
+def generate_image(parent: Tag, image: Image):
+    img_tag = parent.append_tag('img')
+    img_tag['src'] = image.src
+
+    if image.alt:
+        img_tag['alt'] = image.alt
 
 
 def append_component_tag(

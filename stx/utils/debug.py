@@ -45,5 +45,7 @@ def see(value: Any, limit=DEFAULT_MAX_LENGTH) -> str:
         return quote_string(str(value), limit)
     elif isinstance(value, int):
         return str(value)
+    elif isinstance(value, dict):
+        return str(value)
 
     return f'{type(value).__name__}<{hash(value)}>'

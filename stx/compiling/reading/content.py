@@ -68,18 +68,23 @@ class TRX:
 
 class Content:
 
-    def __init__(self, file_path: str):
+    def __init__(self, content: str, file_path: str):
         self.file_path = file_path
         self.position = 0
         self.line = 0
         self.column = 0
         self.transactions: List[TRX] = []
+        self._content = content
+        self._length = len(content)
 
+    @staticmethod
+    def from_file(file_path: str) -> Content:
         logger.info(f'Loading file {see(file_path, None)}...')
 
-        with open(self.file_path, mode='r') as stream:
-            self._content = stream.read().rstrip()
-            self._length = len(self._content)
+        with open(file_path, mode='r') as stream:
+            content = stream.read().rstrip()
+
+        return Content(content, file_path)
 
     def checkout(self) -> TRX:
         return TRX(self)

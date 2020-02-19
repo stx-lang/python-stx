@@ -1,12 +1,13 @@
 from abc import ABC
 from io import StringIO
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from stx.compiling.reading.content import Content
 from stx.compiling.reading.location import Location
-from stx.components import PlainText, Component, LinkText, StyledText, \
-    Paragraph
+from stx.components import PlainText, Component, LinkText, StyledText
+from stx.components import Paragraph, MacroText, CapturedText
 from stx.compiling.parsing.abstract import AbstractParser
+from stx.data_notation.parsing import skip_void, parse_entry
 from stx.utils.stx_error import StxError
 
 # TODO add macros
@@ -18,13 +19,23 @@ LINK_END_CHAR = ']'
 LINK_REF_BEGIN_CHAR = '('
 LINK_REF_END_CHAR = ')'
 
+CAPTURING_BEGIN_CHAR = '<'
+CAPTURING_END_CHAR = '>'
+CAP_CLASS_BEGIN_CHAR = '('
+CAP_CLASS_END_CHAR = ')'
+
+MACRO_BEGIN_CHAR = '{'
+MACRO_END_CHAR = '}'
+
 STYLE_CHAR_TOKEN_MAP = {
     '*': 'strong',
     '_': 'emphasized',
     '`': 'code',
 }
 
-BEGIN_CHAR_LIST = [LINK_BEGIN_CHAR] + list(STYLE_CHAR_TOKEN_MAP.keys())
+BEGIN_CHAR_LIST = [
+    LINK_BEGIN_CHAR, CAPTURING_BEGIN_CHAR, MACRO_BEGIN_CHAR
+] + list(STYLE_CHAR_TOKEN_MAP.keys())
 
 
 class ParaContext:
@@ -63,31 +74,28 @@ class ParagraphParser(AbstractParser, ABC):
             if c is None or c == self.stop_char:
                 break
             elif c == LINK_BEGIN_CHAR:
-                context.content.move_next()
-
-                with self.using_stop_char(LINK_END_CHAR):
-                    children = self.parse_contents(context)
-
-                if context.content.peek() != LINK_END_CHAR:
-                    raise StxError('Expected link end char')
-
-                context.content.move_next()
-
-                if context.content.peek() == LINK_REF_BEGIN_CHAR:
-                    context.content.move_next()
-
-                    with self.using_stop_char(LINK_REF_END_CHAR):
-                        ref = self.consume_text(context, greedy=True)
-
-                    if context.content.peek() != LINK_REF_END_CHAR:
-                        raise StxError('expected link ref end char')
-
-                    context.content.move_next()
-                else:
-                    ref = None
+                children, ref = self.read_delimited_contents_and_text(
+                    context,
+                    LINK_BEGIN_CHAR,
+                    LINK_END_CHAR,
+                    LINK_REF_BEGIN_CHAR,
+                    LINK_REF_END_CHAR,
+                )
 
                 contents.append(
                     LinkText(location, children, ref)
+                )
+            elif c == CAPTURING_BEGIN_CHAR:
+                children, cap_class = self.read_delimited_contents_and_text(
+                    context,
+                    CAPTURING_BEGIN_CHAR,
+                    CAPTURING_END_CHAR,
+                    CAP_CLASS_BEGIN_CHAR,
+                    CAP_CLASS_END_CHAR,
+                )
+
+                contents.append(
+                    CapturedText(location, children, cap_class)
                 )
             elif c in STYLE_CHAR_TOKEN_MAP:
                 context.content.move_next()
@@ -104,6 +112,23 @@ class ParagraphParser(AbstractParser, ABC):
                 contents.append(
                     StyledText(location, children, token)
                 )
+            elif c == MACRO_BEGIN_CHAR:
+                context.content.move_next()
+
+                skip_void(context.content)
+
+                entry = parse_entry(context.content)
+
+                skip_void(context.content)
+
+                if context.content.peek() != MACRO_END_CHAR:
+                    raise StxError(f'Expected macro end char')
+
+                context.content.move_next()
+
+                contents.append(
+                    MacroText(location, entry)
+                )
             else:
                 text = self.consume_text(context, greedy=False)
 
@@ -113,6 +138,53 @@ class ParagraphParser(AbstractParser, ABC):
                     )
 
         return contents
+
+    def read_delimited_text(
+            self,
+            context: ParaContext,
+            text_begin: str,
+            text_end: str):
+        if context.content.peek() != text_begin:
+            raise StxError(f'Expected char: {text_begin}')
+
+        context.content.move_next()
+
+        with self.using_stop_char(text_end):
+            text = self.consume_text(context, greedy=True)
+
+        if context.content.peek() != text_end:
+            raise StxError(f'Expected char: {text_end}')
+
+        context.content.move_next()
+
+        return text
+
+    def read_delimited_contents_and_text(
+            self,
+            context: ParaContext,
+            contents_begin: str,
+            contents_end: str,
+            text_begin: str,
+            text_end: str) -> Tuple[List[Component], Optional[str]]:
+        if context.content.peek() != contents_begin:
+            raise StxError(f'Expected char: {contents_begin}')
+
+        context.content.move_next()
+
+        with self.using_stop_char(contents_end):
+            contents = self.parse_contents(context)
+
+        if context.content.peek() != contents_end:
+            raise StxError(f'Expected char: {contents_end}')
+
+        context.content.move_next()
+
+        if context.content.peek() == text_begin:
+            text = self.read_delimited_text(context, text_begin, text_end)
+        else:
+            text = None
+
+        return contents, text
 
     def consume_text(self, context: ParaContext, greedy: bool) -> str:
         out = StringIO()

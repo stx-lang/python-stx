@@ -128,3 +128,25 @@ Starts with a `=`.
 #embed:'assets/layout.html'
 
 == Document Components
+
+...
+
+== Data Syntax
+
+=== Token
+
+```
+
+```
+
+=== Entry
+
+```
+
+```
+
+=== Array
+
+```
+
+```

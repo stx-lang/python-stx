@@ -2,10 +2,10 @@ from abc import ABC
 from io import StringIO
 
 from stx.compiling.reading.location import Location
-from stx.components import PlainText, CodeBlock
+from stx.components import CodeBlock
 from stx.compiling.marks import code_block_mark
 from stx.compiling.parsing.abstract import AbstractParser
-from stx.compiling.values import parse_name, NAME_BEGIN_CHARS
+from stx.data_notation.parsing import try_parse_text
 from stx.utils.stx_error import StxError
 
 
@@ -17,12 +17,7 @@ class CodeBlockParser(AbstractParser, ABC):
             root_indentation: int):
         content = self.get_content()
 
-        c = content.peek()
-
-        if c in NAME_BEGIN_CHARS:
-            lang = parse_name(content)
-        else:
-            lang = None
+        lang = try_parse_text(content)
 
         content.expect_end_of_line()
 

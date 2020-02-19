@@ -21,7 +21,7 @@ class Chain:
         if len(self.file_paths) == 0:
             return None
         file_path = self.file_paths.pop(0)
-        content = Content(file_path)
+        content = Content.from_file(file_path)
         return content
 
     def get_current_content(self) -> Optional[Content]:

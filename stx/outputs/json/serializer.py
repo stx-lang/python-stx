@@ -1,9 +1,11 @@
 from typing import Optional, List
 
 from stx.compiling.reading.location import Location
-from stx.components import Component, Composite, CodeBlock, Table, \
-    ListBlock, Paragraph, PlainText, StyledText, LinkText, RawText, Figure, \
-    Section, Separator, ContentBox, TableOfContents, ElementReference
+from stx.components import Component, Composite, CodeBlock, Table, Image
+from stx.components import ListBlock, Paragraph, PlainText, StyledText
+from stx.components import LinkText, RawText, Figure, Section, Separator
+from stx.components import ContentBox, TableOfContents, ElementReference
+from stx.components import CapturedText, MacroText
 from stx.document import Document
 
 
@@ -150,6 +152,27 @@ def components_to_json(components: List[Component]) -> List[dict]:
     ]
 
 
+def captured_text_to_json(captured: CapturedText) -> dict:
+    return extend_base(captured, 'captured-text', {
+        'class': captured.class_,
+        'contents': components_to_json(captured.contents),
+    })
+
+
+def macro_text_to_json(macro: MacroText) -> dict:
+    return extend_base(macro, 'macro-text', {
+        'entry': macro.entry.to_any(),
+        'content': component_to_json(macro.content),
+    })
+
+
+def image_to_json(image: Image):
+    return extend_base(image, 'image', {
+        'src': image.src,
+        'alt': image.alt,
+    })
+
+
 def component_to_json(content: Optional[Component]) -> Optional[dict]:
     if content is None:
         return None
@@ -181,6 +204,12 @@ def component_to_json(content: Optional[Component]) -> Optional[dict]:
         return separator_to_json(content)
     elif isinstance(content, ContentBox):
         return box_to_json(content)
+    elif isinstance(content, CapturedText):
+        return captured_text_to_json(content)
+    elif isinstance(content, MacroText):
+        return macro_text_to_json(content)
+    elif isinstance(content, Image):
+        return image_to_json(content)
     else:
         raise NotImplementedError(f'Not implemented type: {type(content)}')
 
