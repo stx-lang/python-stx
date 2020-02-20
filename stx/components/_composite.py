@@ -4,6 +4,8 @@ from typing import List, Optional, TextIO
 
 from ._component import Component
 from ..compiling.reading.location import Location
+from ..data_notation.values import Value
+from ..utils.tracked_dict import TrackedDict
 
 
 class Composite(Component):
@@ -21,3 +23,6 @@ class Composite(Component):
 
     def get_children(self) -> List[Component]:
         return self.components
+
+    def apply_advanced_attributes(self, attributes: TrackedDict[str, Value]):
+        pass

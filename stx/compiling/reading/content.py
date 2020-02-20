@@ -225,7 +225,7 @@ class Content:
             # The text is complete if the line is empty
             if len(line_text.strip(' \n')) == 0:
                 trx.save()
-                return ''
+                return line_text
             elif self.column >= indentation:
                 trx.save()
                 return line_text

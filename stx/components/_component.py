@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from io import StringIO
-from typing import List, Iterable, TextIO, Union, Optional
+from typing import List, Iterable, TextIO, Union, Optional, Dict
 
 from stx.compiling.reading.location import Location
+from stx.data_notation.values import Value, Token
 from stx.utils.stx_error import StxError
 from stx.utils.debug import see
+from stx.utils.tracked_dict import TrackedDict
 
 
 class Component:
@@ -66,11 +68,18 @@ class Component:
     def get_children(self) -> List[Component]:
         raise NotImplementedError()
 
-    def apply_attributes(self, attributes: dict):
-        for key, value in attributes.items():
-            if not hasattr(self, key):
-                raise StxError(
-                    f'Component {see(self)} does not'
-                    f' support the attribute {see(key)}.')
+    def apply_attributes(self, attributes: TrackedDict[str, Value]):
+        ref_value = attributes.get('ref')
 
-            setattr(self, key, value)
+        if ref_value is not None:
+            ref_value = ref_value.collapse()
+
+            if isinstance(ref_value, Token):
+                self.ref = ref_value.to_str()
+            else:
+                self.ref = ref_value.to_list()
+
+        self.apply_advanced_attributes(attributes)
+
+    def apply_advanced_attributes(self, attributes: TrackedDict[str, Value]):
+        raise NotImplementedError()

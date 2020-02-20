@@ -19,9 +19,12 @@ title = f'{name} {version}'
 def main(input_file: str):
     document = compile_document(input_file)
 
-    for output in document.outputs:
-        logger.info(f'Generating {output.format} output...')
+    if len(document.outputs) == 0:
+        logger.warning('There are not active outputs.')
+    else:
+        for output in document.outputs:
+            logger.info(f'Generating {output.format} output...')
 
-        renderer = registry.get_renderer(output.format)
+            renderer = registry.get_renderer(output.format)
 
-        renderer(document, output)
+            renderer(document, output)

@@ -1,15 +1,17 @@
-from typing import List, Any, Optional
+from typing import List, Optional
 
 from stx.components import Component, Composite, Figure, Table
+from stx.data_notation.values import Value
 from stx.utils.stx_error import StxError
 from stx.utils.debug import see
+from stx.utils.tracked_dict import TrackedDict
 
 
 class Composer:
 
     def __init__(self):
         self.stack: List[List[Component]] = []
-        self.attributes_buffer = {}
+        self.attributes_buffer: TrackedDict[str, Value] = TrackedDict({})
         self.pre_captions: List[Component] = []
 
     def push(self):
@@ -33,8 +35,16 @@ class Composer:
         return self.stack[-1]
 
     def add(self, component: Component):
-        if len(self.attributes_buffer) > 0:
+        if not self.attributes_buffer.empty():
             component.apply_attributes(self.attributes_buffer)
+
+            unknown_attr_keys = self.attributes_buffer.unknown_keys()
+
+            if len(unknown_attr_keys) > 0:
+                # TODO improve error message
+                raise StxError(f'Unknown attributes: {unknown_attr_keys} '
+                               f'for {type(component)}.')
+
             self.attributes_buffer.clear()
 
         if len(self.pre_captions) > 0:
@@ -50,11 +60,11 @@ class Composer:
         else:
             self.components.append(component)
 
-    def push_attribute(self, key: str, value: Any):
-        if key in self.attributes_buffer:
+    def push_attribute(self, key: str, value: Value):
+        if key in self.attributes_buffer.keys():
             raise StxError(f'The attribute {see(key)} was already defined.')
 
-        self.attributes_buffer[key] = value
+        self.attributes_buffer.put(key, value)
 
     def get_last_component(self) -> Optional[Component]:
         comps = self.components

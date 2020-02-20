@@ -14,7 +14,4 @@ class AttributeParser(AbstractParser, ABC):
 
         content.expect_end_of_line()
 
-        key = entry.name
-        value = entry.value.to_any()  # TODO pass Value objects directly to attributes
-
-        self.composer.push_attribute(key, value)
+        self.composer.push_attribute(entry.name, entry.value)

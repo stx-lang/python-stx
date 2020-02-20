@@ -4,6 +4,8 @@ from typing import List, TextIO
 
 from ._component import Component
 from ..compiling.reading.location import Location
+from ..data_notation.values import Value
+from ..utils.tracked_dict import TrackedDict
 
 
 class StyledText(Component):
@@ -23,3 +25,6 @@ class StyledText(Component):
 
     def get_children(self) -> List[Component]:
         return self.contents
+
+    def apply_advanced_attributes(self, attributes: TrackedDict[str, Value]):
+        pass

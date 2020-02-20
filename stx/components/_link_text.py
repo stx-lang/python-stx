@@ -5,6 +5,8 @@ from typing import List, Optional, TextIO
 
 from ._component import Component
 from ..compiling.reading.location import Location
+from ..data_notation.values import Value
+from ..utils.tracked_dict import TrackedDict
 
 
 def is_url(ref: str) -> bool:
@@ -28,6 +30,9 @@ class LinkText(Component):
 
     def get_children(self) -> List[Component]:
         return self.contents
+
+    def apply_advanced_attributes(self, attributes: TrackedDict[str, Value]):
+        pass
 
     def is_internal(self) -> bool:
         return self.reference is not None and not is_url(self.reference)

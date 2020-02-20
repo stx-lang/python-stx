@@ -5,6 +5,8 @@ from typing import List, Optional, TextIO
 from ._component import Component
 from ._table_row import TableRow
 from ..compiling.reading.location import Location
+from ..data_notation.values import Value
+from ..utils.tracked_dict import TrackedDict
 
 
 class Table(Component):
@@ -24,6 +26,9 @@ class Table(Component):
             return [self.caption, *self.rows]
 
         return self.rows
+
+    def apply_advanced_attributes(self, attributes: TrackedDict[str, Value]):
+        pass
 
     def get_last_row(self) -> Optional[TableRow]:
         if len(self.rows) > 0:

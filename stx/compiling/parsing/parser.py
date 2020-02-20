@@ -39,7 +39,7 @@ class Parser(
         # TODO improve error messages
         if len(self.composer.stack) > 0:
             raise StxError('unclosed components')
-        elif len(self.composer.attributes_buffer) > 0:
+        elif not self.composer.attributes_buffer.empty():
             raise StxError(
                 f'not consumed attributes: {self.composer.attributes_buffer}')
         elif len(self.composer.pre_captions) > 0:

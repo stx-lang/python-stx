@@ -6,6 +6,8 @@ from typing import List, Iterable, Optional, TextIO
 
 from ._component import Component
 from ..compiling.reading.location import Location
+from ..data_notation.values import Value
+from ..utils.tracked_dict import TrackedDict
 
 
 class ElementReference:
@@ -29,3 +31,10 @@ class TableOfContents(Component):
 
     def get_children(self) -> List[Component]:
         return []
+
+    def apply_advanced_attributes(self, attributes: TrackedDict[str, Value]):
+        title_value = attributes.get('title')
+
+        if title_value is not None:
+            self.title = title_value.to_str()
+

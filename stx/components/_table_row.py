@@ -6,6 +6,8 @@ from ._component import Component
 
 # TODO looks like this is not a component per se
 from ..compiling.reading.location import Location
+from ..data_notation.values import Value
+from ..utils.tracked_dict import TrackedDict
 
 
 class TableRow(Component):
@@ -21,3 +23,6 @@ class TableRow(Component):
 
     def get_children(self) -> List[Component]:
         return self.cells
+
+    def apply_advanced_attributes(self, attributes: TrackedDict[str, Value]):
+        pass

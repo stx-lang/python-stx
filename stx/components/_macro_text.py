@@ -5,6 +5,8 @@ from typing import List, Optional, TextIO
 from ._component import Component
 from ..compiling.reading.location import Location
 from ..data_notation.values import Entry
+from ..data_notation.values import Value
+from ..utils.tracked_dict import TrackedDict
 
 
 class MacroText(Component):
@@ -25,3 +27,6 @@ class MacroText(Component):
         if self.content is None:
             return []
         return [self.content]
+
+    def apply_advanced_attributes(self, attributes: TrackedDict[str, Value]):
+        pass
