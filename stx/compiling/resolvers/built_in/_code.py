@@ -1,5 +1,5 @@
 from stx.compiling.resolvers import utils
-from stx.components import FunctionCall, Component, Literal
+from stx.components import FunctionCall, Component, Literal, CodeBlock
 from stx.document import Document
 
 
@@ -12,4 +12,4 @@ def resolve_code(document: Document, call: FunctionCall) -> Component:
 
     utils.check_unknown_options(options, call)
 
-    return Literal(call.location, text, lang=lang)
+    return CodeBlock(call.location, text, lang=lang)

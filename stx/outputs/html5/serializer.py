@@ -210,11 +210,25 @@ def generate_styled_text(parent: Tag, styled_text: StyledText):
     elif styled_text.style == 'code':
         tag_name = 'code'
     else:
-        raise StxError(f'Not supported style: {styled_text.style}')
+        tag_name = None
 
-    styled_tag = append_component_tag(parent, styled_text, tag_name)
+    if tag_name is not None:
+        styled_tag = append_component_tag(parent, styled_text, tag_name)
 
-    generate_components(styled_tag, styled_text.contents)
+        generate_components(styled_tag, styled_text.contents)
+    else:
+        if styled_text.style == 'double-quote':
+            parent.append_literal('&ldquo;')
+            generate_components(parent, styled_text.contents)
+            parent.append_literal('&rdquo;')
+        elif styled_text.style == 'single-quote':
+            parent.append_literal('&lsquo;')
+            generate_components(parent, styled_text.contents)
+            parent.append_literal('&rsquo;')
+        else:
+            raise StxError(
+                f'Not supported style: {styled_text.style}.',
+                styled_text.location)
 
 
 def generate_custom_text(parent: Tag, styled_text: CustomText):
