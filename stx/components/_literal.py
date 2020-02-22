@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, TextIO, Optional
 
-from ._component import Component
+from ._component import Component, DisplayMode
 from ..compiling.reading.location import Location
 from ..data_notation.values import Value
 from ..utils.tracked_dict import TrackedDict
@@ -20,6 +20,10 @@ class Literal(Component):
         self.text = text
         self.lang = lang
         self.source = source
+
+    @property
+    def display_mode(self) -> DisplayMode:
+        return DisplayMode.DEFAULT
 
     def write_text(self, output: TextIO):
         output.write(self.text)

@@ -1,6 +1,5 @@
 from stx.compiling.linking.numbering import link_document_numbers
 from stx.compiling.linking.referencing import link_document_references
-from stx.compiling.linking.toc import link_document_tocs
 from stx.compiling.parsing.parser import capture, CTX
 from stx.compiling.resolvers.core import resolve_document
 from stx.compiling.reading.reader import Reader
@@ -21,9 +20,9 @@ def compile_document(file_path: str) -> Document:
 
     context.pop_reader()
 
+    # TODO only auto-generated references (do not validate links)
     link_document_references(doc)
     link_document_numbers(doc)
-    link_document_tocs(doc)
 
     resolve_document(doc)
 

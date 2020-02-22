@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, TextIO
 
-from ._component import Component
+from ._component import Component, DisplayMode
 from ..compiling.reading.location import Location
 from ..data_notation.values import Value
 from ..utils.tracked_dict import TrackedDict
@@ -18,6 +18,10 @@ class StyledText(Component):
         self.location = location
         self.contents = contents
         self.style = style
+
+    @property
+    def display_mode(self) -> DisplayMode:
+        return DisplayMode.INLINE
 
     def write_text(self, output: TextIO):
         for content in self.contents:

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from enum import Enum
 from io import StringIO
 from typing import List, Iterable, TextIO, Union, Optional, Dict
 
@@ -8,6 +9,33 @@ from stx.data_notation.values import Value, Token
 from stx.utils.stx_error import StxError
 from stx.utils.debug import see
 from stx.utils.tracked_dict import TrackedDict
+
+
+class DisplayMode(Enum):
+    DEFAULT = 'default'
+    INLINE = 'inline'
+    BLOCK = 'block'
+
+    @staticmethod
+    def compute_display_mode(components: List[Component]) -> DisplayMode:
+        inlines = 0
+        blocks = 0
+        other = 0
+
+        for component in components:
+            if component.display_mode == DisplayMode.BLOCK:
+                blocks += 1
+            elif component.display_mode == DisplayMode.INLINE:
+                inlines += 1
+            else:
+                other += 1
+
+        if inlines > 0 and blocks == 0:
+            return DisplayMode.INLINE
+        elif blocks > 0 and inlines == 0:
+            return DisplayMode.BLOCK
+
+        return DisplayMode.DEFAULT
 
 
 class Component:
@@ -66,6 +94,10 @@ class Component:
         raise NotImplementedError()
 
     def get_children(self) -> List[Component]:
+        raise NotImplementedError()
+
+    @property
+    def display_mode(self) -> DisplayMode:
         raise NotImplementedError()
 
     def apply_attributes(self, attributes: TrackedDict[str, Value]):

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, TextIO, Optional
 
-from ._component import Component
+from ._component import Component, DisplayMode
 from ..compiling.reading.location import Location
 from ..data_notation.values import Value
 from ..utils.tracked_dict import TrackedDict
@@ -25,6 +25,12 @@ class FunctionCall(Component):
         self.components_arg = components_arg
         self.plain_text_arg = plain_text_arg
         self.result: Optional[Component] = None
+
+    @property
+    def display_mode(self) -> DisplayMode:
+        if self.result is not None:
+            return self.result.display_mode
+        return DisplayMode.DEFAULT
 
     def write_text(self, output: TextIO):
         if self.result is not None:

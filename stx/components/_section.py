@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, TextIO, Optional
 
-from ._component import Component
+from ._component import Component, DisplayMode
 from ..compiling.reading.location import Location
 from ..data_notation.values import Value
 from ..utils.tracked_dict import TrackedDict
@@ -20,6 +20,10 @@ class Section(Component):
         self.content: Optional[Component] = None
         self.type: Optional[str] = None
         self.number: Optional[str] = None
+
+    @property
+    def display_mode(self) -> DisplayMode:
+        return DisplayMode.BLOCK
 
     def write_text(self, output: TextIO):
         self.heading.write_text(output)

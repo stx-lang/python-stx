@@ -1,6 +1,6 @@
 from ._captured_text import CapturedText
 from ._code_block import CodeBlock
-from ._component import Component
+from ._component import Component, DisplayMode
 from ._composite import Composite
 from ._content_box import ContentBox
 from ._custom_text import CustomText

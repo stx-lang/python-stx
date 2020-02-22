@@ -29,7 +29,7 @@ from stx.compiling.reading.location import Location
 from stx.compiling.reading.reader import Reader
 
 from stx.components import Component, Section, Composite, Table, TableRow, \
-    Paragraph
+    Paragraph, DisplayMode
 from stx.components import LinkText, StyledText, PlainText, Literal, ListBlock
 from stx.components import TableOfContents, FunctionCall
 
@@ -145,14 +145,7 @@ def capture_component(
         )
 
         if signal == PASS:
-            inlines = parse_inline(ctx, location, content, indentation)
-
-            if len(inlines) == 0:
-                raise StxError('Missing content.', location)
-
-            ctx.composer.add(
-                Paragraph(location, inlines)
-            )
+            parse_inline_component(ctx, mark, location, content, indentation)
         elif signal == CONSUMED:
             pass
         elif signal == EXIT:
@@ -442,8 +435,6 @@ def parse_directive(ctx: CTX, mark: str, location: Location) -> int:
         ctx.document.format = value.to_str()
     elif key == 'encoding':
         ctx.document.encoding = value.to_str()
-    elif key == 'toc':
-        ctx.composer.add(TableOfContents(location))
     elif key == 'stylesheets':
         ctx.document.stylesheets = value.to_list()
     elif key == 'include':
@@ -479,6 +470,30 @@ def process_import(
 
 def process_output(ctx, location: Location, value: Value):
     ctx.document.outputs.append(OutputTask(location, value.to_dict()))
+
+
+def parse_inline_component(
+        ctx: CTX,
+        mark: str,
+        location: Location,
+        content: Content,
+        indentation: int):
+    inlines = parse_inline(ctx, location, content, indentation)
+
+    if len(inlines) == 0:
+        # TODO return empty component
+        raise StxError('Missing content.', location)
+    elif len(inlines) == 1 and inlines[0].display_mode == DisplayMode.BLOCK:
+        component = inlines[0]
+    else:
+        display_mode = DisplayMode.compute_display_mode(inlines)
+
+        if display_mode == DisplayMode.BLOCK:
+            component = Composite(location, inlines)
+        else:
+            component = Paragraph(location, inlines)
+
+    ctx.composer.add(component)
 
 
 def parse_inline(

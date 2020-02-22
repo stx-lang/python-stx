@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, TextIO
 
-from ._component import Component
+from ._component import Component, DisplayMode
 from ..compiling.reading.location import Location
 from ..data_notation.values import Value
 from ..utils.tracked_dict import TrackedDict
@@ -17,6 +17,10 @@ class ListBlock(Component):
         self.location = location
         self.ordered = ordered
         self.items: List[Component] = []
+
+    @property
+    def display_mode(self) -> DisplayMode:
+        return DisplayMode.BLOCK
 
     def write_text(self, output: TextIO):
         for item in self.items:

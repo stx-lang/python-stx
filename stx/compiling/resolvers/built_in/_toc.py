@@ -1,3 +1,6 @@
+from stx.compiling.resolvers import utils
+from stx.components import Component, FunctionCall, TableOfContents
+from stx.document import Document
 from typing import List
 
 from stx.components import Component, TableOfContents, ElementReference, \
@@ -8,18 +11,21 @@ from stx.document import Document
 # TODO implement index of tables and figures
 
 
-def link_document_tocs(document: Document):
-    if document.content is not None:
-        link_component_tocs(document, document.content)
+def resolve_toc(document: Document, call: FunctionCall) -> Component:
+    options = utils.make_options_dict(call, key_for_str='title')
+
+    title = options.pop('title')
+
+    utils.check_unknown_options(options, call)
+
+    toc = TableOfContents(call.location, title)
+
+    generate_toc(document, toc)
+
+    return toc
 
 
-def link_component_tocs(document: Document, root: Component):
-    for component in root.walk():
-        if isinstance(component, TableOfContents):
-            link_table_of_contents(document, component)
-
-
-def link_table_of_contents(document: Document, toc: TableOfContents):
+def generate_toc(document: Document, toc: TableOfContents):
     if document.content is not None:
         collect_section_toc(document.content, toc.elements)
 
