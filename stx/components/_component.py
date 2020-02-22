@@ -72,10 +72,10 @@ class Component:
         ref_value = attributes.get('ref')
 
         if ref_value is not None:
-            ref_value = ref_value.collapse()
+            ref_token = ref_value.try_token()
 
-            if isinstance(ref_value, Token):
-                self.ref = ref_value.to_str()
+            if ref_token is not None:
+                self.ref = ref_token.to_str()
             else:
                 self.ref = ref_value.to_list()
 

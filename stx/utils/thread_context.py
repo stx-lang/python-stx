@@ -24,10 +24,10 @@ class _ThreadContext:
 
         return stack
 
-    def push_parser(self, reader):
+    def push_reader(self, reader):
         self._get_parser_stack().append(reader)
 
-    def pop_parser(self):
+    def pop_reader(self):
         self._get_parser_stack().pop()
 
 

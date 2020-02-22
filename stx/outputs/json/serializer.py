@@ -1,12 +1,14 @@
 from typing import Optional, List
 
 from stx.compiling.reading.location import Location
-from stx.components import Component, Composite, CodeBlock, Table, Image
+from stx.components import Component, Composite, CodeBlock, Table, Image, \
+    FunctionCall
 from stx.components import ListBlock, Paragraph, PlainText, StyledText
-from stx.components import LinkText, RawText, Figure, Section, Separator
+from stx.components import LinkText, Literal, Figure, Section, Separator
 from stx.components import ContentBox, TableOfContents, ElementReference
-from stx.components import CapturedText, MacroText
+from stx.components import CapturedText
 from stx.document import Document
+from stx.utils.stx_error import StxError
 
 
 def location_to_json(location: Optional[Location]) -> Optional[dict]:
@@ -89,10 +91,10 @@ def link_text_to_json(link_text: LinkText) -> dict:
     })
 
 
-def embedded_block_to_json(embedded_block: RawText) -> dict:
-    return extend_base(embedded_block, 'embedded-block', {
+def literal_block_to_json(literal: Literal) -> dict:
+    return extend_base(literal, 'literal', {
         # TODO add origin?
-        'content': embedded_block.content,
+        'content': literal.text,
     })
 
 
@@ -159,18 +161,18 @@ def captured_text_to_json(captured: CapturedText) -> dict:
     })
 
 
-def macro_text_to_json(macro: MacroText) -> dict:
-    return extend_base(macro, 'macro-text', {
-        'entry': macro.entry.to_any(),
-        'content': component_to_json(macro.content),
-    })
-
-
 def image_to_json(image: Image):
     return extend_base(image, 'image', {
         'src': image.src,
         'alt': image.alt,
     })
+
+
+def function_call_to_json(call: FunctionCall):
+    if call.result is None:
+        raise StxError(f'Not resolved function: {call.key}', call.location)
+
+    return component_to_json(call.result)
 
 
 def component_to_json(content: Optional[Component]) -> Optional[dict]:
@@ -192,8 +194,8 @@ def component_to_json(content: Optional[Component]) -> Optional[dict]:
         return styled_text_to_json(content)
     elif isinstance(content, LinkText):
         return link_text_to_json(content)
-    elif isinstance(content, RawText):
-        return embedded_block_to_json(content)
+    elif isinstance(content, Literal):
+        return literal_block_to_json(content)
     elif isinstance(content, Figure):
         return figure_to_json(content)
     elif isinstance(content, Section):
@@ -206,10 +208,10 @@ def component_to_json(content: Optional[Component]) -> Optional[dict]:
         return box_to_json(content)
     elif isinstance(content, CapturedText):
         return captured_text_to_json(content)
-    elif isinstance(content, MacroText):
-        return macro_text_to_json(content)
     elif isinstance(content, Image):
         return image_to_json(content)
+    elif isinstance(content, FunctionCall):
+        return function_call_to_json(content)
     else:
         raise NotImplementedError(f'Not implemented type: {type(content)}')
 

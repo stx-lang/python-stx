@@ -29,12 +29,23 @@ def parse_value(content: Content) -> Value:
 
 
 def parse_entry(content: Content) -> Entry:
+    location = content.get_location()
+
+    entry = try_parse_entry(content)
+
+    if entry is None:
+        raise StxError('Expected token or entry', location)
+
+    return entry
+
+
+def try_parse_entry(content: Content) -> Optional[Entry]:
     token_or_entry = try_parse_token_or_entry(content)
 
     if token_or_entry is None:
-        raise Exception('Expected token or entry')
+        return None
 
-    return token_or_entry.as_entry()
+    return token_or_entry.to_entry()
 
 
 def parse_values(content: Content) -> List[Value]:

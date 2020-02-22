@@ -13,9 +13,11 @@ class Composite(Component):
     def __init__(
             self,
             location: Location,
-            components: Optional[List[Component]] = None):
+            components: Optional[List[Component]] = None,
+            inline=False):
         self.location = location
         self.components = components if components is not None else []
+        self.inline = inline
 
     def write_text(self, output: TextIO):
         for component in self.components:

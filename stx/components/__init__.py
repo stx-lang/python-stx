@@ -4,13 +4,13 @@ from ._component import Component
 from ._composite import Composite
 from ._content_box import ContentBox
 from ._figure import Figure
+from ._function_call import FunctionCall
 from ._image import Image
 from ._link_text import LinkText
 from ._list_block import ListBlock
-from ._macro_text import MacroText
+from ._literal import Literal
 from ._paragraph import Paragraph
 from ._plain_text import PlainText
-from ._raw_text import RawText
 from ._section import Section
 from ._separator import Separator
 from ._styled_text import StyledText

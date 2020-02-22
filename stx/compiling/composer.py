@@ -17,15 +17,8 @@ class Composer:
     def push(self):
         self.stack.append([])
 
-    def pop(self) -> Optional[Component]:
-        components = self.stack.pop()
-
-        if len(components) == 0:
-            return None
-        elif len(components) == 1:
-            return components[0]
-
-        return Composite(components[0].location, components)
+    def pop(self) -> Optional[List[Component]]:
+        return self.stack.pop()
 
     @property
     def components(self) -> List[Component]:

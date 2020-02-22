@@ -5,7 +5,7 @@ from io import StringIO
 from typing import List, Optional
 
 from stx import logger
-from stx.compiling.marks import get_matching_mark
+from stx.compiling.marks import get_matching_mark, mark_max_length
 from stx.compiling.reading.location import Location
 from stx.utils.stx_error import StxError
 from stx.utils.debug import see
@@ -117,6 +117,38 @@ class Content:
 
         return None
 
+    def test(self, token: Optional[str]) -> bool:
+        if token is None:
+            return False
+
+        loc0 = self.get_location()
+
+        for expected_char in token:
+            actual_char = self.peek()
+
+            if actual_char is None or actual_char != expected_char:
+                self.go_back(loc0)
+                return False
+
+            self.move_next()
+
+        self.go_back(loc0)
+        return True
+
+    def pull(self, token: str) -> bool:
+        loc0 = self.get_location()
+
+        for expected_char in token:
+            actual_char = self.peek()
+
+            if actual_char is None or actual_char != expected_char:
+                self.go_back(loc0)
+                return False
+
+            self.move_next()
+
+        return True
+
     def read_next(self) -> Optional[str]:
         c = self.peek()
 
@@ -199,13 +231,17 @@ class Content:
 
         return self.position < self._length
 
-    def read_mark(self) -> Optional[str]:  # TRX
-        with self.checkout() as trx:
-            token = self.read_until([' ', '\n'], consume_last=False)
+    def read_mark(self) -> Optional[str]:
+        loc0 = self.get_location()
 
-            mark = get_matching_mark(token)
+        token = self.read_until(
+            chars=[' ', '\n'],
+            consume_last=False,
+            max_length=mark_max_length)
 
-            trx.cancel()
+        mark = get_matching_mark(token)
+
+        self.go_back(loc0)
 
         if mark is None:
             return None
@@ -213,28 +249,42 @@ class Content:
         for i in range(len(mark)):
             self.move_next()
 
-        self.read_while([' '])
-
         return mark
 
-    def read_line(self, indentation: int):
-        with self.checkout() as trx:
+    def read_line(self, indentation: int) -> Optional[str]:
+        loc0 = self.get_location()
 
-            line_text = self.read_until(['\n'], consume_last=True)
-
-            # The text is complete if the line is empty
-            if len(line_text.strip(' \n')) == 0:
-                trx.save()
-                return line_text
-            elif self.column >= indentation:
-                trx.save()
-                return line_text
-            elif line_text.startswith(indentation * ' '):
-                trx.save()
-                return line_text[indentation:]
-            else:
-                trx.cancel()
+        while self.column < indentation:
+            if self.peek() != ' ':
+                self.go_back(loc0)
                 return None
+
+            self.move_next()
+
+        out = StringIO()
+        length = 0
+
+        while True:
+            c = self.peek()
+
+            if c is None:
+                if length == 0:
+                    # Nothing has been actually read
+                    self.go_back(loc0)
+                    return None
+                else:
+                    # Not a line feed but it's ok
+                    break
+
+            out.write(c)
+            self.move_next()
+            length += 1
+
+            if c == '\n':
+                # Line feed: end of line!
+                break
+
+        return out.getvalue()
 
     def expect_char(self, options: List[str]):
         c = self.read_next()

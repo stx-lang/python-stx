@@ -1,126 +1,734 @@
+from io import StringIO
+from typing import List, Optional
+
+from stx.compiling.composer import Composer
+
+from stx.compiling.marks import heading_block_marks, header_row_block_mark, \
+    inline_marks
+from stx.compiling.marks import normal_row_block_mark, cell_block_mark
+from stx.compiling.marks import pre_caption_block_mark
+from stx.compiling.marks import post_caption_block_mark
+from stx.compiling.marks import unordered_item_block_mark
+from stx.compiling.marks import ordered_item_block_mark, section_levels
+from stx.compiling.marks import link_text_begin_mark, link_text_end_mark
+from stx.compiling.marks import container_begin_mark, container_end_mark
+from stx.compiling.marks import function_begin_mark, function_end_mark
+from stx.compiling.marks import attribute_special_mark, directive_special_mark
+from stx.compiling.marks import all_marks, escape_char, literal_area_mark
+from stx.compiling.marks import container_area_mark
+from stx.compiling.marks import strong_begin_mark, strong_end_mark
+from stx.compiling.marks import emphasized_begin_mark, emphasized_end_mark
+from stx.compiling.marks import code_begin_mark, code_end_mark
+from stx.compiling.marks import deleted_begin_mark, deleted_end_mark
+from stx.compiling.marks import d_quote_begin_mark, d_quote_end_mark
+from stx.compiling.marks import s_quote_begin_mark, s_quote_end_mark
+from stx.compiling.marks import ellipsis_single_mark
+
 from stx.compiling.reading.content import Content
-from stx.components import Separator, Component, Composite
-from stx.compiling.marks import heading_marks, \
-    directive_mark, attribute_mark, code_block_mark, content_box_mark, \
-    table_h_row_mark, table_d_row_mark, table_cell_mark, pre_caption_mark, \
-    post_caption_mark, ordered_list_item_mark, unordered_list_item_mark, \
-    exit_mark
-from stx.compiling.parsing.attribute import AttributeParser
-from stx.compiling.parsing.abstract import AbstractParser
-from stx.compiling.parsing.caption import CaptionParser
-from stx.compiling.parsing.code_block import CodeBlockParser
-from stx.compiling.parsing.content_box import ContentBoxParser
-from stx.compiling.parsing.directive import DirectiveParser
-from stx.compiling.parsing.list_block import ListBlockParser
-from stx.compiling.parsing.paragraph import ParagraphParser
-from stx.compiling.parsing.section import SectionParser
-from stx.compiling.parsing.table import TableParser
+from stx.compiling.reading.location import Location
+from stx.compiling.reading.reader import Reader
+
+from stx.components import Component, Section, Composite, Table, TableRow, \
+    Paragraph
+from stx.components import LinkText, StyledText, PlainText, Literal, ListBlock
+from stx.components import TableOfContents, FunctionCall
+
+from stx.data_notation.parsing import parse_entry, skip_void, try_parse_entry
+from stx.data_notation.values import Value
+
+from stx.document import Document
+
+from stx.outputs.output_task import OutputTask
+
+from stx.utils.closeable import Closeable
+from stx.utils.debug import see
+from stx.utils.files import resolve_include_files
 from stx.utils.stx_error import StxError
 
+PASS = 0
+EXIT = 1
+CONSUMED = 2
 
-class Parser(
-    AttributeParser,
-    CaptionParser,
-    CodeBlockParser,
-    ContentBoxParser,
-    DirectiveParser,
-    ListBlockParser,
-    ParagraphParser,
-    SectionParser,
-    TableParser,
-    AbstractParser,
-):
 
-    def capture(self):
-        self.document.content = self.capture_component(
-            indentation=0,
-            breakable=False)
+class CTX:
 
-        # TODO improve error messages
-        if len(self.composer.stack) > 0:
-            raise StxError('unclosed components')
-        elif not self.composer.attributes_buffer.empty():
-            raise StxError(
-                f'not consumed attributes: {self.composer.attributes_buffer}')
-        elif len(self.composer.pre_captions) > 0:
-            raise StxError(
-                'not consumed pre captions: ',
-                self.composer.pre_captions[0].location)
+    def __init__(self, document: Document, reader: Reader):
+        self.reader = reader
+        self.document = document
+        self.composer = Composer()
+        self.stop_mark_stack = []
+        self.section_stack: List[Section] = []
 
-    def capture_component(
-            self, indentation: int, breakable=True) -> Component:
-        location = self.get_location()
+    def get_parent_section(self) -> Optional[Section]:
+        if len(self.section_stack) > 0:
+            return self.section_stack[-1]
+        return None
 
-        self.composer.push()
+    @property
+    def stop_mark(self) -> Optional[str]:  # TODO rename to stop token
+        if len(self.stop_mark_stack) == 0:
+            return None
+        return self.stop_mark_stack[-1]
 
-        while self.active():
-            content = self.get_content()
+    def using_stop_mark(self, char: str) -> Closeable:
+        def enter_action():
+            self.stop_mark_stack.append(char)
 
-            while content.consume_empty_line():
-                pass
+        def exit_action():
+            self.stop_mark_stack.pop()
 
-            if not content.consume_indentation(indentation):
+        return Closeable(enter_action, exit_action)
+
+
+def capture(ctx: CTX):
+    ctx.document.content = capture_component(
+        ctx,
+        indentation=0,
+        breakable=False)
+
+    if ctx.reader.active():
+        raise StxError('Unexpected content.', ctx.reader.get_location())
+
+    # TODO improve error messages
+    if len(ctx.composer.stack) > 0:
+        raise StxError('unclosed components')
+    elif not ctx.composer.attributes_buffer.empty():
+        raise StxError(
+            f'not consumed attributes: {ctx.composer.attributes_buffer}')
+    elif len(ctx.composer.pre_captions) > 0:
+        raise StxError(
+            'not consumed pre captions: ',
+            ctx.composer.pre_captions[0].location)
+
+
+def capture_component(
+        ctx: CTX,
+        indentation: int,
+        breakable=True) -> Component:
+    location = ctx.reader.get_location()
+
+    ctx.composer.push()
+
+    while ctx.reader.active():
+        content = ctx.reader.get_content()
+
+        while content.consume_empty_line():
+            pass
+
+        if not content.consume_indentation(indentation):
+            break
+        elif content.test(ctx.stop_mark):
+            break
+        elif content.peek() is None:
+            break
+
+        location = content.get_location()
+
+        mark = content.read_mark()
+
+        signal = (
+                parse_section(ctx, mark, location, content, indentation)
+                or
+                parse_list(ctx, mark, location, content)
+                or
+                parse_table(ctx, mark, location, content)
+                or
+                parse_caption(ctx, mark, content)
+                or
+                parse_literal(ctx, mark, location, content, indentation)
+                or
+                parse_container(ctx, mark, location, content, indentation)
+                or
+                parse_attribute(ctx, mark, content)
+                or
+                parse_directive(ctx, mark, location)
+        )
+
+        if signal == PASS:
+            inlines = parse_inline(ctx, location, content, indentation)
+
+            if len(inlines) == 0:
+                raise StxError('Missing content.', location)
+
+            ctx.composer.add(
+                Paragraph(location, inlines)
+            )
+        elif signal == CONSUMED:
+            pass
+        elif signal == EXIT:
+            break
+        else:
+            raise AssertionError(f'Illegal signal: {signal}')
+
+    components = ctx.composer.pop()
+
+    if len(components) == 0:
+        # TODO Blank component
+        return Composite(location, [])
+    elif len(components) == 1:
+        return components[0]
+
+    return Composite(location, components)
+
+
+def parse_section(
+        ctx: CTX,
+        mark: str,
+        location: Location,
+        content: Content,
+        before_mark_indentation: int) -> int:
+    if mark not in heading_block_marks:
+        return PASS
+
+    parent_section = ctx.get_parent_section()
+    section_level = section_levels[mark]
+
+    if (parent_section is not None
+            and parent_section.level >= section_level):
+        content.go_back(location)
+        return EXIT
+
+    # TODO is this ok?
+    skip_void(content)
+
+    after_mark_indentation = content.column
+
+    section = Section(location, section_level)
+
+    ctx.composer.add(section)
+
+    ctx.section_stack.append(section)
+
+    section.heading = capture_component(ctx, after_mark_indentation, True)
+    section.content = capture_component(ctx, before_mark_indentation, True)
+
+    ctx.section_stack.pop()
+
+    return CONSUMED
+
+
+def parse_list(
+        ctx: CTX,
+        mark: str,
+        location: Location,
+        content: Content) -> int:
+    if mark == ordered_item_block_mark:
+        ordered = True
+    elif mark == unordered_item_block_mark:
+        ordered = False
+    else:
+        return PASS
+
+    list_block = ctx.composer.get_last_component()
+
+    if not isinstance(list_block, ListBlock):
+        list_block = ListBlock(location, ordered)
+
+        ctx.composer.add(list_block)
+
+    # TODO is this ok?
+    skip_void(content)
+
+    indentation = content.column
+
+    list_item = capture_component(ctx, indentation, True)
+
+    list_block.items.append(list_item)
+
+    return CONSUMED
+
+
+def parse_table(
+        ctx: CTX,
+        mark: str,
+        location: Location,
+        content: Content) -> int:
+    if mark == header_row_block_mark:
+        header = True
+        reuse_row = False
+    elif mark == normal_row_block_mark:
+        header = False
+        reuse_row = False
+    elif mark == cell_block_mark:
+        header = False
+        reuse_row = True
+    else:
+        return PASS
+
+    table = ctx.composer.get_last_component()
+
+    if not isinstance(table, Table):
+        table = Table(location)
+
+        ctx.composer.add(table)
+
+    row = table.get_last_row() if reuse_row else None
+
+    if row is None:
+        row = TableRow(location, header)
+
+        table.rows.append(row)
+
+    # TODO is this ok?
+    skip_void(content)
+
+    indentation0 = content.column
+    indentation = indentation0
+
+    while True:
+        with ctx.using_stop_mark(cell_block_mark):
+            cell = capture_component(ctx, indentation, True)
+
+            row.cells.append(cell)
+
+        if not ctx.reader.active():
+            break
+
+        content = ctx.reader.get_content()
+
+        with content.checkout() as trx:
+            # Consume indentation when it is the beginning of the line
+            if content.column == 0:
+                if content.read_spaces(indentation0) < indentation0:
+                    trx.cancel()
+                    break
+
+            if content.peek() == cell_block_mark:
+                content.move_next()
+                content.read_spaces()
+
+                indentation = content.column
+                trx.save()
+            else:
                 break
-            elif content.peek() == self.stop_char:
-                break
 
-            # TODO check if it is alive
+    return CONSUMED
+
+
+def parse_caption(ctx: CTX, mark: str, content: Content) -> int:
+    if mark == pre_caption_block_mark:
+        pre_mode = True
+    elif mark == post_caption_block_mark:
+        pre_mode = False
+    else:
+        return PASS
+
+    # TODO is this ok?
+    skip_void(content)
+
+    caption = capture_component(ctx, content.column, True)
+
+    if pre_mode:
+        ctx.composer.push_pre_caption(caption)
+    else:
+        ctx.composer.push_post_caption(caption)
+
+    return CONSUMED
+
+
+def parse_literal(
+        ctx: CTX, mark: str, location: Location, content: Content,
+        indentation_before_mark: int) -> int:
+    if mark != literal_area_mark:
+        return PASS
+
+    # TODO is this ok?
+    skip_void(content)
+
+    function_location = content.get_location()
+
+    function = try_parse_entry(content)
+
+    content.expect_end_of_line()
+
+    out = StringIO()
+
+    while True:
+        line = content.read_line(indentation_before_mark)
+
+        if line is None:
+            raise StxError(f'Expected: {mark}', content.get_location())
+        elif line.startswith(escape_char):
+            line = line[1:]  # remove escape char
+
+            if not line.startswith(mark) and not line.startswith(escape_char):
+                raise StxError(f'Invalid escaped sequence, expected:'
+                               f' {see(mark)} or {see(escape_char)}.')
+        elif line.rstrip() == mark:
+            break
+
+        out.write(line)
+
+    text = out.getvalue()
+
+    if function is not None:
+        component = FunctionCall(
+            function_location,
+            inline=False,
+            key=function.name,
+            options=function.value,
+            literal_arg=text,
+        )
+    else:
+        component = Literal(location, text)
+
+    ctx.composer.add(component)
+
+    return CONSUMED
+
+
+def parse_container(
+        ctx: CTX, mark: str, location: Location, content: Content,
+        indentation_before_mark: int) -> int:
+    if mark != container_area_mark:
+        return PASS
+
+    content.read_spaces()
+
+    function_location = content.get_location()
+
+    function = try_parse_entry(content)
+
+    content.expect_end_of_line()
+
+    with ctx.using_stop_mark(container_area_mark):
+        component = capture_component(ctx, indentation_before_mark)
+
+    if function is not None:
+        component = FunctionCall(
+            function_location,
+            inline=False,
+            key=function.name,
+            options=function.value,
+            content_arg=component,
+        )
+
+    ctx.composer.add(component)
+
+    return CONSUMED
+
+
+def parse_attribute(ctx: CTX, mark: str, content: Content) -> int:
+    if mark != attribute_special_mark:
+        return PASS
+
+    entry = parse_entry(content)
+
+    content.expect_end_of_line()
+
+    ctx.composer.push_attribute(entry.name, entry.value)
+
+    return CONSUMED
+
+
+def parse_directive(ctx: CTX, mark: str, location: Location) -> int:
+    if mark != directive_special_mark:
+        return PASS
+
+    content = ctx.reader.get_content()
+    file_path = content.file_path
+
+    entry = parse_entry(content)
+
+    key = entry.name
+    value = entry.value
+
+    if content.column > 0:
+        content.expect_end_of_line()
+
+    if key == 'title':
+        ctx.document.title = value.to_str()
+    elif key == 'author':
+        ctx.document.author = value.to_str()
+    elif key == 'format':
+        ctx.document.format = value.to_str()
+    elif key == 'encoding':
+        ctx.document.encoding = value.to_str()
+    elif key == 'toc':
+        ctx.composer.add(TableOfContents(location))
+    elif key == 'stylesheets':
+        ctx.document.stylesheets = value.to_list()
+    elif key == 'include':
+        process_import(ctx, location, file_path, value, parse=True)
+    elif key == 'embed':
+        process_import(ctx, location, file_path, value, parse=False)
+    elif key == 'output':
+        process_output(ctx, location, value)
+    else:
+        raise StxError(f'Unsupported directive: {key}')
+
+    return CONSUMED
+
+
+def process_import(
+        ctx: CTX,
+        location: Location,
+        file_path: str,
+        include_path: Value,
+        parse: bool):
+    file_paths = resolve_include_files(include_path.to_str(), file_path)
+
+    if parse:
+        ctx.reader.push_files(file_paths)
+    else:
+        for file_path in file_paths:
+            with open(file_path, 'r', encoding='UTF-8') as f:
+                text = f.read()
+
+            # TODO add support for more type of files
+            ctx.composer.add(Literal(location, text, source=file_path))
+
+
+def process_output(ctx, location: Location, value: Value):
+    ctx.document.outputs.append(OutputTask(location, value.to_dict()))
+
+
+def parse_inline(
+        ctx: CTX, location: Location,
+        content: Content, indentation: int) -> List[Component]:
+    ctx.composer.push()
+
+    try:
+        while not content.halted():
+            if content.test(ctx.stop_mark):
+                break
 
             location = content.get_location()
 
             mark = content.read_mark()
-            mark_indentation = content.column
-            root_indentation = indentation
 
-            if mark is None:
-                self.parse_paragraph(location, content)
-            elif mark == exit_mark:
+            if mark is not None and mark not in inline_marks:
+                mark = None
+
+            signal = (
+                parse_inline_function(ctx, mark, location, content)
+                or
+                parse_inline_container(ctx, mark, location, content, indentation)
+                or
+                parse_inline_style(ctx, mark, location, content, indentation)
+                or
+                parse_inline_link(ctx, mark, location, content, indentation)
+                or
+                parse_inline_token(ctx, mark, location, content, indentation)
+                or
+                parse_inline_text(ctx, mark, location, content, indentation)
+            )
+
+            if signal == PASS:
+                raise StxError(f'Not implemented mark: {mark}')
+            elif signal == CONSUMED:
+                pass
+            elif signal == EXIT:
                 break
-            elif mark in heading_marks:
-                parent_section = self.get_parent_section()
-                section_level = len(mark)
-
-                if (parent_section is not None
-                        and parent_section.level >= section_level):
-                    content.go_back(location)
-                    break
-                else:
-                    self.parse_section(
-                        location, section_level,
-                        mark_indentation, root_indentation)
-            elif mark == directive_mark:
-                self.parse_directive(location)
-            elif mark == attribute_mark:
-                self.parse_attribute(location)
-            elif mark == code_block_mark:
-                self.parse_code_block(location, root_indentation)
-            elif mark == content_box_mark:
-                self.parse_content_box(location, mark_indentation)
-            elif mark == table_h_row_mark:
-                self.parse_table_row(
-                    location, mark_indentation, header=True)
-            elif mark == table_d_row_mark:
-                self.parse_table_row(
-                    location, mark_indentation, header=False)
-            elif mark == table_cell_mark:
-                self.parse_table_cell(location, mark_indentation)
-            elif mark == pre_caption_mark:
-                self.parse_pre_caption(location, mark_indentation)
-            elif mark == post_caption_mark:
-                self.parse_post_caption(location, mark_indentation)
-            elif mark == unordered_list_item_mark:
-                self.parse_list_item(
-                    location, mark_indentation, ordered=False)
-            elif mark == ordered_list_item_mark:
-                self.parse_list_item(
-                    location, mark_indentation, ordered=True)
             else:
-                raise StxError(f'Unsupported mark: `{mark}`')
+                raise AssertionError(f'Illegal signal: {signal}')
+    except StxError as e:
+        raise StxError('Error parsing inline content.', location) from e
 
-        component = self.composer.pop()
+    return ctx.composer.pop()
 
-        if component is None:
-            # TODO implement empty component
-            return Composite(location)
 
-        return component
+def parse_inline_function(
+        ctx: CTX, mark: str, location: Location, content: Content) -> int:
+    if mark != function_begin_mark:
+        return PASS
+
+    skip_void(content)
+
+    function_location = content.get_location()
+
+    function = parse_entry(content)
+
+    skip_void(content)
+
+    if not content.pull(function_end_mark):
+        raise StxError(f'Expected mark: {function_end_mark}')
+
+    # TODO Add support for reading an inline container here so it can be
+    #   passed as argument to the function.
+
+    ctx.composer.add(
+        FunctionCall(
+            function_location,
+            inline=True,
+            key=function.name,
+            options=function.value))
+
+    return CONSUMED
+
+
+def parse_inline_container(
+        ctx: CTX, mark: str, location: Location,
+        content: Content, indentation: int) -> int:
+    if mark != container_begin_mark:
+        return PASS
+
+    with ctx.using_stop_mark(container_end_mark):
+        # It uses the original indentation
+        #   so the paragraph can be continued.
+        contents = parse_inline(
+            ctx, content.get_location(), content, indentation)
+
+    if not content.pull(container_end_mark):
+        raise StxError(f'Expected mark: {container_end_mark}')
+
+    # TODO Add support for parsing a function here so the already parsed
+    #   content can be passed as argument.
+
+    ctx.composer.add(Composite(location, contents, inline=True))
+
+    return CONSUMED
+
+
+def parse_inline_style(
+        ctx: CTX, mark: str, location: Location,
+        content: Content, indentation: int) -> int:
+    if mark == strong_begin_mark:
+        end_mark = strong_end_mark
+        style = 'strong'
+    elif mark == emphasized_begin_mark:
+        end_mark = emphasized_end_mark
+        style = 'emphasized'
+    elif mark == code_begin_mark:
+        end_mark = code_end_mark
+        style = 'code'
+    elif mark == deleted_begin_mark:
+        end_mark = deleted_end_mark
+        style = 'deleted'
+    elif mark == d_quote_begin_mark:
+        end_mark = d_quote_end_mark
+        style = 'double-quote'
+    elif mark == s_quote_begin_mark:
+        end_mark = s_quote_end_mark
+        style = 'single-quote'
+    else:
+        return PASS
+
+    with ctx.using_stop_mark(end_mark):
+        # It uses the original indentation
+        #   so the paragraph can be continued.
+        contents = parse_inline(
+            ctx, content.get_location(), content, indentation)
+
+    if not content.pull(end_mark):
+        raise StxError(f'Expected mark: {end_mark}')
+
+    ctx.composer.add(
+        StyledText(location, contents, style)
+    )
+
+    return CONSUMED
+
+
+def parse_inline_link(
+        ctx: CTX, mark: str, location: Location,
+        content: Content, indentation: int) -> int:
+    if mark != link_text_begin_mark:
+        return PASS
+
+    with ctx.using_stop_mark(link_text_end_mark):
+        # It uses the original indentation
+        #   so the paragraph can be continued.
+        contents = parse_inline(
+            ctx, content.get_location(), content, indentation)
+
+    if not content.pull(link_text_end_mark):
+        raise StxError(f'Expected mark: {link_text_end_mark}')
+
+    # TODO Add support for parsing the reference
+    reference = ''
+
+    ctx.composer.add(LinkText(location, contents, reference))
+
+    return CONSUMED
+
+
+def parse_inline_token(
+        ctx: CTX, mark: str, location: Location,
+        content: Content, indentation: int) -> int:
+    if mark == ellipsis_single_mark:
+        text = '\u2026'
+    else:
+        return PASS
+
+    ctx.composer.add(
+        PlainText(location, text)
+    )
+
+    return CONSUMED
+
+
+def parse_inline_text(
+        ctx: CTX, mark: str, location: Location,
+        content: Content, indentation: int) -> int:
+    if mark is not None:
+        return PASS
+
+    out = StringIO()
+
+    broken = False
+
+    while content.peek() is not None:
+        if content.test(ctx.stop_mark):
+            break
+
+        c = content.peek()
+
+        if c == '\n':
+            out.write(c)
+            content.move_next()
+
+            # Check if the text is broken by an empty line
+            if content.consume_empty_line():
+                broken = True
+                break
+
+            loc0 = content.get_location()
+
+            spaces = content.read_spaces(indentation)
+
+            # Check if the text is broken by indentation change
+            if spaces < indentation:
+                content.go_back(loc0)
+                broken = True
+                break
+
+            # Check if the text is broken by another component mark
+            for m in all_marks:
+                if content.test(m):
+                    content.go_back(loc0)
+                    broken = True
+                    break
+        elif c == escape_char:
+            content.move_next()
+
+            escaped = False
+
+            for m in all_marks:
+                if content.pull(m):
+                    escaped = True
+                    out.write(m)
+                    break
+
+            if content.pull(escape_char):
+                out.write(escape_char)
+                escaped = True
+
+            if not escaped:
+                raise StxError('invalid escaped char')
+        else:
+            out.write(c)
+            content.move_next()
+
+    text = out.getvalue()
+
+    if text == '':
+        return EXIT
+
+    ctx.composer.add(
+        PlainText(location, text)
+    )
+
+    if broken:
+        return EXIT
+    return CONSUMED

@@ -1,11 +1,12 @@
 from typing import List
 
 from stx import app, logger
-from stx.components import Component, Composite, CodeBlock, Table, Image
+from stx.components import Component, Composite, CodeBlock, Table, Image, \
+    FunctionCall
 from stx.components import ListBlock, Paragraph, PlainText, StyledText
-from stx.components import LinkText, RawText, Figure, Section, Separator
+from stx.components import LinkText, Literal, Figure, Section, Separator
 from stx.components import ContentBox, TableOfContents, ElementReference
-from stx.components import MacroText, CapturedText
+from stx.components import CapturedText
 from stx.document import Document
 from stx.outputs.html5.dom import Tag
 from stx.utils.stx_error import StxError
@@ -108,10 +109,8 @@ def generate_component(
         generate_link_text(parent, component)
     elif isinstance(component, CapturedText):
         generate_captured_text(parent, component)
-    elif isinstance(component, MacroText):
-        generate_macro_text(parent, component)
-    elif isinstance(component, RawText):
-        generate_embedded_block(parent, component)
+    elif isinstance(component, Literal):
+        generate_literal(parent, component)
     elif isinstance(component, Figure):
         generate_figure(parent, component)
     elif isinstance(component, Section):
@@ -124,6 +123,8 @@ def generate_component(
         generate_box(parent, component)
     elif isinstance(component, Image):
         generate_image(parent, component)
+    elif isinstance(component, FunctionCall):
+        generate_function_call(parent, component)
     else:
         raise NotImplementedError(f'Not implemented type: {type(component)}')
 
@@ -238,17 +239,8 @@ def generate_captured_text(parent: Tag, captured: CapturedText):
     generate_components(cap_tag, captured.contents)
 
 
-def generate_macro_text(parent: Tag, macro: MacroText):
-    if macro.content is None:
-        raise StxError(
-            f'Macro was not processed: {see(macro.entry.to_any())}',
-            macro.location)
-
-    generate_component(parent, macro.content)
-
-
-def generate_embedded_block(parent: Tag, embedded_block: RawText):
-    parent.append_literal(embedded_block.content)
+def generate_literal(parent: Tag, literal: Literal):
+    parent.append_literal(literal.text)
 
 
 def generate_figure(parent: Tag, figure: Figure):
@@ -345,6 +337,14 @@ def generate_image(parent: Tag, image: Image):
 
     if image.alt:
         img_tag['alt'] = image.alt
+
+
+def generate_function_call(parent: Tag, call: FunctionCall):
+    if call.result is None:
+        raise StxError(
+            f'Function {call.key} was not processed.', call.location)
+
+    generate_component(parent, call.result)
 
 
 def append_component_tag(

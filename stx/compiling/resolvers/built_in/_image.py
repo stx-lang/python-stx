@@ -1,14 +1,13 @@
 from stx import logger
 from stx.compiling.reading.location import Location
-from stx.components import Component, Image
+from stx.components import Component, Image, FunctionCall
 from stx.data_notation.values import Value, Token
 from stx.document import Document
 from stx.utils.stx_error import StxError
 
 
-def process_image(
-        document: Document, location: Location, value: Value) -> Component:
-    value = value.collapse()
+def resolve_image(document: Document, call: FunctionCall) -> Component:
+    value = call.options.collapse()
 
     if isinstance(value, Token):
         src = value.to_str()
@@ -19,8 +18,8 @@ def process_image(
         alt = d.get('alt', None)
 
     if src is None:
-        raise StxError(f'Missing `src` parameter in image.', location)
+        raise StxError(f'Missing `src` parameter in image.', call.location)
     elif not alt:
-        logger.warning('Image without `alt`', location)
+        logger.warning('Image without `alt`', call.location)
 
-    return Image(location, src, alt)
+    return Image(call.location, src, alt)

@@ -1,28 +1,32 @@
 from stx.compiling.linking.numbering import link_document_numbers
 from stx.compiling.linking.referencing import link_document_references
 from stx.compiling.linking.toc import link_document_tocs
-from stx.compiling.parsing.parser import Parser
-from stx.compiling.processing.core import process_document_macros
+from stx.compiling.parsing.parser import capture, CTX
+from stx.compiling.resolvers.core import resolve_document
+from stx.compiling.reading.reader import Reader
 from stx.document import Document
 from stx.utils.thread_context import context
 
 
 def compile_document(file_path: str) -> Document:
     doc = Document(file_path)
+    reader = Reader()
+    ctx = CTX(doc, reader)
 
-    parser = Parser(doc)
+    context.push_reader(reader)
 
-    context.push_parser(parser)
+    reader.push_file(file_path)
 
-    parser.push_file(file_path)
-    parser.capture()
+    capture(ctx)
 
-    context.pop_parser()
+    context.pop_reader()
 
     link_document_references(doc)
     link_document_numbers(doc)
     link_document_tocs(doc)
 
-    process_document_macros(doc)
+    resolve_document(doc)
+
+    # TODO validate links here
 
     return doc
