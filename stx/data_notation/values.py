@@ -195,7 +195,7 @@ class Group(Value):
         for item in self.items:
             if isinstance(item, Entry):
                 entries += 1
-            if isinstance(item, Token):
+            elif isinstance(item, Token):
                 tokens += 1
             else:
                 other += 1

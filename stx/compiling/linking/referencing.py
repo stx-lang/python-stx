@@ -43,7 +43,7 @@ def normalize_wild_references(component: Component):
 
     if len(wild_refs) > 0:
         component.ref = [
-            make_ref(wild_ref, None) for wild_ref in wild_refs
+            make_ref(wild_ref) for wild_ref in wild_refs
         ]
 
 
@@ -63,10 +63,10 @@ def normalize_and_report_invalid_links(root: Component, refs: Set[str]):
         if isinstance(component, LinkText):
             if component.reference is None:
                 # Generate reference from the text
-                component.reference = make_ref(component.get_text(), None)
+                component.reference = make_ref(component.get_text())
             elif component.is_internal():
                 # Normalize wild reference
-                component.reference = make_ref(component.reference, None)
+                component.reference = make_ref(component.reference)
             else:
                 # Do not validate this link
                 continue
@@ -104,13 +104,10 @@ def register_figure_reference(figure: Figure, refs: Set[str]):
 def generate_component_ref(component: Component, refs: Set[str]) -> str:
     count = 0
 
+    plain_text = component.get_text()
+
     while True:
-        plain_text = component.get_text()
-
-        if count > 0:
-            plain_text += f'-{count}'
-
-        ref = make_ref(plain_text, REF_LENGTH_HINT)
+        ref = make_ref(plain_text, REF_LENGTH_HINT, count)
 
         if ref not in refs:
             break
@@ -120,7 +117,10 @@ def generate_component_ref(component: Component, refs: Set[str]) -> str:
     return ref
 
 
-def make_ref(base: str, length_hint: Optional[int]) -> str:
+def make_ref(
+        base: str,
+        length_hint: Optional[int] = None,
+        count: Optional[int] = None) -> str:
     result = []
 
     # Important generate it in lowercase and trimmed
@@ -132,4 +132,12 @@ def make_ref(base: str, length_hint: Optional[int]) -> str:
         elif len(result) == 0 or result[-1] != '-':
             result.append('-')
 
-    return ''.join(result)
+    ref = ''.join(result)
+
+    if count is not None and count > 0:
+        if ref.endswith('-'):
+            ref += str(count)
+        else:
+            ref += f'-{count}'
+
+    return ref

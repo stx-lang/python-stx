@@ -2,7 +2,7 @@ from typing import Optional, List
 
 from stx.compiling.reading.location import Location
 from stx.components import Component, Composite, CodeBlock, Table, Image, \
-    FunctionCall
+    FunctionCall, CustomText
 from stx.components import ListBlock, Paragraph, PlainText, StyledText
 from stx.components import LinkText, Literal, Figure, Section, Separator
 from stx.components import ContentBox, TableOfContents, ElementReference
@@ -81,6 +81,13 @@ def styled_text_to_json(styled_text: StyledText) -> dict:
     return extend_base(styled_text, 'styled-text', {
         'style': styled_text.style,
         'contents': components_to_json(styled_text.contents),
+    })
+
+
+def custom_text_to_json(custom: CustomText) -> dict:
+    return extend_base(custom, 'styled-text', {
+        'custom_style': custom.custom_style,
+        'contents': components_to_json(custom.contents),
     })
 
 
@@ -192,6 +199,8 @@ def component_to_json(content: Optional[Component]) -> Optional[dict]:
         return plain_text_to_json(content)
     elif isinstance(content, StyledText):
         return styled_text_to_json(content)
+    elif isinstance(content, CustomText):
+        return custom_text_to_json(content)
     elif isinstance(content, LinkText):
         return link_text_to_json(content)
     elif isinstance(content, Literal):

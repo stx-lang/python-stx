@@ -12,13 +12,13 @@ def resolve_admonition(document: Document, call: FunctionCall) -> Component:
 
     data_type = options.pop('type', None)
 
-    utils.options_dict_must_be_empty(options, call)
+    utils.check_unknown_options(options, call)
 
     return make_admonition(document, call, data_type)
 
 
 def resolve_warning(document: Document, call: FunctionCall) -> Component:
-    utils.options_must_be_empty(call.options, call)
+    utils.check_unknown_options(call.options, call)
 
     return make_admonition(document, call, 'warning')
 
@@ -27,7 +27,7 @@ def make_admonition(
         document: Document,
         call: FunctionCall,
         data_type: Optional[str]) -> Component:
-    content = utils.make_content_arg(call)
+    content = utils.make_component_arg(call)
 
     # TODO implement wrapper component with meta-data
     return content

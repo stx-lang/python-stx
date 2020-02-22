@@ -2,7 +2,7 @@ from typing import List
 
 from stx import app, logger
 from stx.components import Component, Composite, CodeBlock, Table, Image, \
-    FunctionCall
+    FunctionCall, CustomText
 from stx.components import ListBlock, Paragraph, PlainText, StyledText
 from stx.components import LinkText, Literal, Figure, Section, Separator
 from stx.components import ContentBox, TableOfContents, ElementReference
@@ -105,6 +105,8 @@ def generate_component(
         generate_plain_text(parent, component)
     elif isinstance(component, StyledText):
         generate_styled_text(parent, component)
+    elif isinstance(component, CustomText):
+        generate_custom_text(parent, component)
     elif isinstance(component, LinkText):
         generate_link_text(parent, component)
     elif isinstance(component, CapturedText):
@@ -208,9 +210,18 @@ def generate_styled_text(parent: Tag, styled_text: StyledText):
     elif styled_text.style == 'code':
         tag_name = 'code'
     else:
-        tag_name = 'span'
+        raise StxError(f'Not supported style: {styled_text.style}')
 
     styled_tag = append_component_tag(parent, styled_text, tag_name)
+
+    generate_components(styled_tag, styled_text.contents)
+
+
+def generate_custom_text(parent: Tag, styled_text: CustomText):
+    styled_tag = append_component_tag(parent, styled_text, 'span')
+
+    if styled_text.custom_style is not None:
+        styled_tag['class'] = styled_text.custom_style
 
     generate_components(styled_tag, styled_text.contents)
 

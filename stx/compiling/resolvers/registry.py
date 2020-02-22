@@ -1,9 +1,10 @@
 from typing import Callable, Dict, Optional
 
-from stx.compiling.resolvers.built_in import resolve_code
+from stx.compiling.resolvers.built_in import resolve_code, resolve_custom_style
 from stx.compiling.resolvers.built_in import resolve_image
 from stx.compiling.resolvers.built_in import resolve_warning
 from stx.compiling.resolvers.built_in import resolve_admonition
+from stx.compiling.resolvers.built_in import resolve_line_feed
 
 from stx.components import Component, FunctionCall
 
@@ -38,3 +39,5 @@ register_resolver('image', resolve_image)
 register_resolver('code', resolve_code)
 register_resolver('warning', resolve_warning)
 register_resolver('admonition', resolve_admonition)
+register_resolver('br', resolve_line_feed)
+register_resolver('style', resolve_custom_style)

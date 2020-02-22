@@ -117,6 +117,13 @@ class Content:
 
         return None
 
+    def test_any(self, tokens: List[str]) -> bool:
+        for token in tokens:
+            if self.test(token):
+                return True
+
+        return False
+
     def test(self, token: Optional[str]) -> bool:
         if token is None:
             return False
@@ -134,6 +141,12 @@ class Content:
 
         self.go_back(loc0)
         return True
+
+    def pull_any(self, tokens: List[str]) -> Optional[str]:
+        for token in tokens:
+            if self.pull(token):
+                return token
+        return None
 
     def pull(self, token: str) -> bool:
         loc0 = self.get_location()
@@ -231,7 +244,7 @@ class Content:
 
         return self.position < self._length
 
-    def read_mark(self) -> Optional[str]:
+    def read_mark(self, valid_marks: List[str]) -> Optional[str]:
         loc0 = self.get_location()
 
         token = self.read_until(
@@ -239,7 +252,7 @@ class Content:
             consume_last=False,
             max_length=mark_max_length)
 
-        mark = get_matching_mark(token)
+        mark = get_matching_mark(token, valid_marks)
 
         self.go_back(loc0)
 

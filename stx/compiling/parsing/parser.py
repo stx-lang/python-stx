@@ -4,7 +4,7 @@ from typing import List, Optional
 from stx.compiling.composer import Composer
 
 from stx.compiling.marks import heading_block_marks, header_row_block_mark, \
-    inline_marks
+    not_inline_marks, inline_marks, link_ref_begin_mark, link_ref_end_mark
 from stx.compiling.marks import normal_row_block_mark, cell_block_mark
 from stx.compiling.marks import pre_caption_block_mark
 from stx.compiling.marks import post_caption_block_mark
@@ -124,7 +124,7 @@ def capture_component(
 
         location = content.get_location()
 
-        mark = content.read_mark()
+        mark = content.read_mark(not_inline_marks)
 
         signal = (
                 parse_section(ctx, mark, location, content, indentation)
@@ -286,21 +286,21 @@ def parse_table(
 
         content = ctx.reader.get_content()
 
-        with content.checkout() as trx:
-            # Consume indentation when it is the beginning of the line
-            if content.column == 0:
-                if content.read_spaces(indentation0) < indentation0:
-                    trx.cancel()
-                    break
+        loc0 = content.get_location()
 
-            if content.peek() == cell_block_mark:
-                content.move_next()
-                content.read_spaces()
-
-                indentation = content.column
-                trx.save()
-            else:
+        # Consume indentation when it is the beginning of the line
+        if content.column == 0:
+            if content.read_spaces(indentation0) < indentation0:
+                content.go_back(loc0)
                 break
+
+        if content.peek() == cell_block_mark:
+            content.move_next()
+            content.read_spaces()
+
+            indentation = content.column
+        else:
+            break
 
     return CONSUMED
 
@@ -367,7 +367,7 @@ def parse_literal(
             inline=False,
             key=function.name,
             options=function.value,
-            literal_arg=text,
+            plain_text_arg=text,
         )
     else:
         component = Literal(location, text)
@@ -385,8 +385,6 @@ def parse_container(
 
     content.read_spaces()
 
-    function_location = content.get_location()
-
     function = try_parse_entry(content)
 
     content.expect_end_of_line()
@@ -396,11 +394,11 @@ def parse_container(
 
     if function is not None:
         component = FunctionCall(
-            function_location,
+            location,
             inline=False,
             key=function.name,
             options=function.value,
-            content_arg=component,
+            components_arg=[component],
         )
 
     ctx.composer.add(component)
@@ -495,10 +493,7 @@ def parse_inline(
 
             location = content.get_location()
 
-            mark = content.read_mark()
-
-            if mark is not None and mark not in inline_marks:
-                mark = None
+            mark = content.read_mark(inline_marks)
 
             signal = (
                 parse_inline_function(ctx, mark, location, content)
@@ -544,9 +539,6 @@ def parse_inline_function(
     if not content.pull(function_end_mark):
         raise StxError(f'Expected mark: {function_end_mark}')
 
-    # TODO Add support for reading an inline container here so it can be
-    #   passed as argument to the function.
-
     ctx.composer.add(
         FunctionCall(
             function_location,
@@ -572,10 +564,27 @@ def parse_inline_container(
     if not content.pull(container_end_mark):
         raise StxError(f'Expected mark: {container_end_mark}')
 
-    # TODO Add support for parsing a function here so the already parsed
-    #   content can be passed as argument.
+    if not content.pull(function_begin_mark):
+        raise StxError(f'Expected mark: {function_begin_mark}')
 
-    ctx.composer.add(Composite(location, contents, inline=True))
+    skip_void(content)
+
+    function_location = content.get_location()
+
+    function = parse_entry(content)
+
+    skip_void(content)
+
+    if not content.pull(function_end_mark):
+        raise StxError(f'Expected mark: {function_end_mark}')
+
+    ctx.composer.add(
+        FunctionCall(
+            function_location,
+            inline=True,
+            key=function.name,
+            options=function.value,
+            components_arg=contents))
 
     return CONSUMED
 
@@ -635,8 +644,22 @@ def parse_inline_link(
     if not content.pull(link_text_end_mark):
         raise StxError(f'Expected mark: {link_text_end_mark}')
 
-    # TODO Add support for parsing the reference
-    reference = ''
+    if content.pull(link_ref_begin_mark):
+        out = StringIO()
+
+        while not content.pull(link_ref_end_mark):
+            c = content.peek()
+
+            if c is None:
+                raise StxError(
+                    f'Expected {link_ref_end_mark}', content.get_location())
+
+            out.write(c)
+            content.move_next()
+
+        reference = out.getvalue()
+    else:
+        reference = None
 
     ctx.composer.add(LinkText(location, contents, reference))
 
@@ -666,10 +689,13 @@ def parse_inline_text(
 
     out = StringIO()
 
-    broken = False
+    completed = False
 
     while content.peek() is not None:
-        if content.test(ctx.stop_mark):
+        # Check if the text is broken by an inline or stop mark
+        if content.test_any(inline_marks):
+            break
+        elif content.test(ctx.stop_mark):
             break
 
         c = content.peek()
@@ -678,43 +704,37 @@ def parse_inline_text(
             out.write(c)
             content.move_next()
 
-            # Check if the text is broken by an empty line
+            # Check if the text is completed by an empty line
             if content.consume_empty_line():
-                broken = True
+                completed = True
                 break
 
             loc0 = content.get_location()
 
             spaces = content.read_spaces(indentation)
 
-            # Check if the text is broken by indentation change
+            # Check if the text is completed by indentation change
             if spaces < indentation:
                 content.go_back(loc0)
-                broken = True
+                completed = True
                 break
 
-            # Check if the text is broken by another component mark
-            for m in all_marks:
-                if content.test(m):
-                    content.go_back(loc0)
-                    broken = True
-                    break
+            # Check if the text is completed by a non-inline mark
+            if content.test_any(not_inline_marks):
+                content.go_back(loc0)
+                completed = True
+                break
         elif c == escape_char:
             content.move_next()
 
-            escaped = False
-
-            for m in all_marks:
-                if content.pull(m):
-                    escaped = True
-                    out.write(m)
-                    break
-
-            if content.pull(escape_char):
+            escaped_mark = content.pull_any(all_marks)
+            if escaped_mark is not None:
+                out.write(escaped_mark)
+            elif content.pull(ctx.stop_mark):
+                out.write(ctx.stop_mark)
+            elif content.pull(escape_char):
                 out.write(escape_char)
-                escaped = True
-
-            if not escaped:
+            else:
                 raise StxError('invalid escaped char')
         else:
             out.write(c)
@@ -729,6 +749,6 @@ def parse_inline_text(
         PlainText(location, text)
     )
 
-    if broken:
+    if completed:
         return EXIT
     return CONSUMED

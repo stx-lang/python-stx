@@ -16,14 +16,14 @@ class FunctionCall(Component):
             inline: bool,
             key: str,
             options: Value,
-            content_arg: Optional[Component] = None,
-            literal_arg: Optional[str] = None):
+            components_arg: Optional[List[Component]] = None,
+            plain_text_arg: Optional[str] = None):
         self.location = location
         self.inline = inline
         self.key = key
         self.options = options
-        self.content_arg = content_arg
-        self.literal_arg = literal_arg
+        self.components_arg = components_arg
+        self.plain_text_arg = plain_text_arg
         self.result: Optional[Component] = None
 
     def write_text(self, output: TextIO):

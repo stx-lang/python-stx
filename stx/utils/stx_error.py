@@ -20,5 +20,6 @@ def generate_error_message(message: str, location: Optional[Location]):
 
 class StxError(Exception):
 
+    # TODO make location required
     def __init__(self, message: str, location: Location = None):
         super().__init__(generate_error_message(message, location))

@@ -3,6 +3,7 @@ from ._code_block import CodeBlock
 from ._component import Component
 from ._composite import Composite
 from ._content_box import ContentBox
+from ._custom_text import CustomText
 from ._figure import Figure
 from ._function_call import FunctionCall
 from ._image import Image
