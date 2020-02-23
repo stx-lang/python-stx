@@ -36,9 +36,7 @@ from stx.components import TableOfContents, FunctionCall
 from stx.data_notation.parsing import parse_entry, skip_void, try_parse_entry
 from stx.data_notation.values import Value
 
-from stx.document import Document
-
-from stx.outputs.output_task import OutputTask
+from stx.document import Document, OutputTask
 
 from stx.utils.closeable import Closeable
 from stx.utils.debug import see
@@ -469,7 +467,7 @@ def process_import(
 
 
 def process_output(ctx, location: Location, value: Value):
-    ctx.document.outputs.append(OutputTask(location, value.to_dict()))
+    ctx.document.outputs.append(OutputTask(ctx.document, location, value))
 
 
 def parse_inline_component(

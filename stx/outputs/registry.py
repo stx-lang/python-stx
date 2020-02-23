@@ -1,13 +1,12 @@
 from typing import Any, Callable, Dict
 
-from stx.document import Document
-from stx.outputs.output_task import OutputTask
+from stx.document import Document, OutputTask
 from stx.outputs.html5.output import renderer as html_renderer
 from stx.outputs.json.output import renderer as json_renderer
 from stx.utils.stx_error import StxError
 
 
-RendererType = Callable[[Document, OutputTask], Any]
+RendererType = Callable[[OutputTask], Any]
 
 
 _renderers: Dict[str, RendererType] = {

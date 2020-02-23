@@ -8,6 +8,9 @@ class Value:
     def to_any(self) -> Any:
         raise NotImplementedError()
 
+    def to_map(self) -> Dict[str, Value]:
+        raise NotImplementedError()
+
     def try_token(self) -> Optional[Token]:
         raise NotImplementedError()
 
@@ -80,6 +83,9 @@ class Empty(Value):
     def to_any(self) -> Any:
         return None
 
+    def to_map(self) -> Dict[str, Value]:
+        return {}
+
     def try_token(self) -> Optional[Token]:
         return None
 
@@ -112,6 +118,9 @@ class Token(Value):
 
     def to_any(self) -> Any:
         return self.text
+
+    def to_map(self) -> Dict[str, Value]:
+        return {self.text: Empty()}
 
     def try_token(self) -> Optional[Token]:
         return self
@@ -146,6 +155,9 @@ class Entry(Value):
 
     def to_any(self) -> Any:
         return self.to_dict()
+
+    def to_map(self) -> Dict[str, Value]:
+        return {self.name: self.value}
 
     def try_token(self) -> Optional[Token]:
         if isinstance(self.value, Empty):
@@ -206,6 +218,16 @@ class Group(Value):
                 return d
 
         return self.to_list()
+
+    def to_map(self) -> Dict[str, Value]:
+        d = {}
+
+        for item in self.items:
+            entry = item.to_entry()
+
+            d[entry.name] = entry.value
+
+        return d
 
     def try_token(self) -> Optional[Token]:
         length = len(self.items)
