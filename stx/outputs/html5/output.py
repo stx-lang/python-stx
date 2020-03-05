@@ -1,13 +1,15 @@
-from stx.document import Document, OutputTask
+from typing import TextIO
+
 from stx.outputs.html5.serializer import document_to_html
-from stx.utils.files import resolve_sibling
+from stx.outputs.output_action import OutputAction
 
 
-def renderer(output: OutputTask):
-    html = document_to_html(output.document)
+class HtmlOutputAction(OutputAction):
 
-    with output.target.open() as f:
+    def dump(self, out: TextIO):
+        html = document_to_html(self.document)
+
         for tag in html:
-            tag.render(f)
+            tag.render(out)
 
-    # TODO implement pretty-print
+        # TODO implement pretty-print

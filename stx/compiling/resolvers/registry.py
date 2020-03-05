@@ -1,7 +1,7 @@
 from typing import Callable, Dict, Optional
 
 from stx.compiling.resolvers.built_in import resolve_code, \
-    resolve_custom_style, resolve_toc
+    resolve_custom_style, resolve_toc, resolve_embed
 from stx.compiling.resolvers.built_in import resolve_image
 from stx.compiling.resolvers.built_in import resolve_warning
 from stx.compiling.resolvers.built_in import resolve_admonition
@@ -43,3 +43,4 @@ register_resolver('admonition', resolve_admonition)
 register_resolver('br', resolve_line_feed)
 register_resolver('style', resolve_custom_style)
 register_resolver('toc', resolve_toc)
+register_resolver('embed', resolve_embed)

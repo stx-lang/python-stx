@@ -11,6 +11,14 @@
   content: attr(data-number) ' ';
 }
 
+caption[data-number]::before{
+    content: 'Table ' attr(data-number) ' ';
+}
+
+figcaption[data-number]::before{
+  content: 'Figure ' attr(data-number) ' ';
+}
+
 body {
     display: flex;
     flex-direction: row;

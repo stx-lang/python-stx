@@ -36,7 +36,8 @@ from stx.components import TableOfContents, FunctionCall
 from stx.data_notation.parsing import parse_entry, skip_void, try_parse_entry
 from stx.data_notation.values import Value
 
-from stx.document import Document, OutputTask
+from stx.document import Document
+from stx.outputs import make_output_action
 
 from stx.utils.closeable import Closeable
 from stx.utils.debug import see
@@ -436,9 +437,7 @@ def parse_directive(ctx: CTX, mark: str, location: Location) -> int:
     elif key == 'stylesheets':
         ctx.document.stylesheets = value.to_list()
     elif key == 'include':
-        process_import(ctx, location, file_path, value, parse=True)
-    elif key == 'embed':
-        process_import(ctx, location, file_path, value, parse=False)
+        process_import(ctx, location, file_path, value)
     elif key == 'output':
         process_output(ctx, location, value)
     else:
@@ -451,23 +450,16 @@ def process_import(
         ctx: CTX,
         location: Location,
         file_path: str,
-        include_path: Value,
-        parse: bool):
+        include_path: Value):
     file_paths = resolve_include_files(include_path.to_str(), file_path)
 
-    if parse:
-        ctx.reader.push_files(file_paths)
-    else:
-        for file_path in file_paths:
-            with open(file_path, 'r', encoding='UTF-8') as f:
-                text = f.read()
-
-            # TODO add support for more type of files
-            ctx.composer.add(Literal(location, text, source=file_path))
+    ctx.reader.push_files(file_paths)
 
 
-def process_output(ctx, location: Location, value: Value):
-    ctx.document.outputs.append(OutputTask(ctx.document, location, value))
+def process_output(ctx: CTX, location: Location, value: Value):
+    action = make_output_action(ctx.document, location, value)
+
+    ctx.document.actions.append(action)
 
 
 def parse_inline_component(

@@ -8,6 +8,7 @@ idna==2.8
 keyring==20.0.0
 more-itertools==8.2.0
 packaging==20.1
+pathtools==0.1.2
 pkginfo==1.5.0.1
 pluggy==0.13.1
 py==1.8.1
@@ -18,9 +19,10 @@ readme-renderer==24.0
 requests==2.22.0
 requests-toolbelt==0.9.1
 six==1.13.0
--e git+git@github.com:bakasoft/stx.git@a29d5c36a08ad57d94e6c31dc30a76062632797d#egg=stx
+-e git+git@github.com:bakasoft/stx.git@d3bf45522c1ca64153b8814496e03092a2af3b87#egg=stx
 tqdm==4.41.0
 twine==3.1.1
 urllib3==1.25.7
+watchdog==0.10.2
 wcwidth==0.1.8
 webencodings==0.5.1

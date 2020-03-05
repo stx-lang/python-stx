@@ -1,0 +1,44 @@
+= Example (1.)
+
+This is paragraph with a [cross reference] and 
+an [external link](http://www.example.com).
+
+Here, another paragraph with *strong text*, _emphasized 
+text_ and `code text`.
+
+- This is a multiline list item, please notice
+  this second line is aligned with the previous one.
+- Nesting components is allowed, as long as the
+  text is well aligned:
+  
+  . This is a nested ordered list.
+  . The nesting is virtually infinite:
+    
+    |= Any    | Component
+    |- Can be | ```
+                nested
+                ```
+
+== Nested Section (1.1.)
+
+Sections are automatically nested without need to 
+align the text with the parent section, they are 
+nested using the section level indicated by the 
+number of `=`.
+
+:: Captions can be placed before the component.
+|= Column Title | Another Column
+|- Normal cell | - Nested content is allowed.
+                 - As long as it is well aligned.
+
+<img(src:`https://github.com/favicon.ico`, alt: `GitHub icon`)>
+:^ Captions can be placed after the component as well.
+
+@ref(`cross reference`)
+= Another Section (2.)
+
+First link in the document points to this section
+because a custom reference was defined.
+
+Custom formatting can be implemented by {capturing
+content}<style:custom> between angle brackets.

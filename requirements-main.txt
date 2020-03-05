@@ -1,2 +1,5 @@
 Click>=7.0
-pytest
+
+watchdog
+
+gramat

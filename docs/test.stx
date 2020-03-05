@@ -10,3 +10,6 @@ b
 
 
 c
+
+
+#output(file: test.json, format: json)

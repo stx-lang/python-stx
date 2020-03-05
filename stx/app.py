@@ -7,8 +7,8 @@ from watchdog.observers import Observer
 
 from stx import logger
 from stx.compiling.compiler import compile_document
-from stx.document import Document, OutputFile
-from stx.outputs import registry
+from stx.document import Document
+from stx.outputs import registry, OutputFile, OutputAction
 from stx.utils.files import resolve_sibling
 from stx.utils.debug import see
 
@@ -30,15 +30,11 @@ def process_file(input_file: str) -> Document:
 
     document = compile_document(input_file)
 
-    if len(document.outputs) == 0:
-        logger.warning('There are not active outputs.')
+    if len(document.actions) == 0:
+        logger.warning('No actions were registered.')
     else:
-        for output in document.outputs:
-            logger.info(f'Generating {output.format} output...')
-
-            renderer = registry.get_renderer(output.format)
-
-            renderer(output)
+        for action in document.actions:
+            action.run()
 
     return document
 
@@ -51,10 +47,11 @@ def watch_file(input_file: str):
 
         ignored_files.clear()
 
-        for output in document.outputs:
-            if isinstance(output.target, OutputFile):
+        for action in document.actions:
+            if (isinstance(action, OutputAction)
+                    and isinstance(action.target, OutputFile)):
                 ignored_files.add(
-                    os.path.abspath(output.target.file_path)
+                    os.path.abspath(action.target.file_path)
                 )
 
     class Handler(FileSystemEventHandler):
@@ -87,6 +84,7 @@ def watch_file(input_file: str):
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
+        logger.info('Stopping watch...')
         observer.stop()
     observer.join()
 

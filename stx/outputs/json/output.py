@@ -1,18 +1,19 @@
 import json
+from typing import TextIO
 
-from stx.document import Document, OutputTask
 from stx.outputs.json.serializer import document_to_json
-from stx.utils.files import resolve_sibling
+from stx.outputs.output_action import OutputAction
 
 
-def renderer(output: OutputTask):
-    d = document_to_json(output.document)
+class JsonOutputAction(OutputAction):
 
-    # TODO implement options
-    # if output.options.to_dict():
-    indent = 2
-    # else:
-        # indent = None
+    def dump(self, out: TextIO):
+        d = document_to_json(self.document)
 
-    with output.target.open() as f:
-        json.dump(d, f, indent=indent)
+        # TODO implement options
+        # if output.options.to_dict():
+        indent = 2
+        # else:
+            # indent = None
+
+        json.dump(d, out, indent=indent)
