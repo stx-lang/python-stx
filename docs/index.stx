@@ -1,11 +1,5 @@
 #title(`STX Documentation`)
 
-+++ code:json
-{
-    "json": true
-}
-+++
-
 <toc(title:`Table of Contents`)>
 
 = STX
@@ -21,51 +15,6 @@ External content can be included from other resources using [directives].
 Despite part of the syntax is based on Markdown and AsciiDoc, STX is not an 
 extension. In order to achieve advanced features, most of the [syntax] is 
 different and stricter.
-
-== Quick-reference
-
-+++ code:stx
-= Section 1
-== Section 2
-=== Section 3
-==== Section 4
-===== Section 5
-====== Section 6
-
-Paragraph starts, *strong text* _emphasized text_ `inline code sample`,
-paragraph continues, [Cross Reference], [Custom Text](cross reference),
-both previous links points to the same reference defined using `@ref(...)`,
-last paragraph line, [External Link](http://www.example.com).
-
-@ref(`cross reference`)
-- Item 1, this unordered list is the target component...
-- Item 2, ...for those links that points to `cross reference`
-
-Typographic quotation marks examples: ""surrounded by primary marks"",
-and ''surrounded by secondary marks''.
-
-. Ordered list item 1.
-. Ordered list item 2.
-
-:: Table caption before component.
-|= Column Header | Column Header
-|- Normal cell   | Normal cell
-%
-|- This is a brand new table, the mark `%` breaks any component.
-
-\+++ code:stx
-Literal content marked as `stx` language.
-\+++
-
-<img(https://github.com/favicon.ico)>
-:^ Image caption after component (results in a figure).
-
-Inline reference {here}<ref>, [link to the previous reference](here).
-
-!!! note
-Inner content is processed by the `note` function resulting in a note box.
-!!!
-+++
 
 = Features
 
@@ -270,7 +219,51 @@ This is a warning box.
 == Group
 
 
-= Example
+= Quick-reference
+
++++ code:stx
+= Section 1
+== Section 2
+=== Section 3
+==== Section 4
+===== Section 5
+====== Section 6
+
+Paragraph starts, *strong text* _emphasized text_ `inline code sample`,
+paragraph continues, [Cross Reference], [Custom Text](cross reference),
+both previous links points to the same reference defined using `@ref(...)`,
+last paragraph line, [External Link](http://www.example.com).
+
+@ref(`cross reference`)
+- Item 1, this unordered list is the target component...
+- Item 2, ...for those links that points to `cross reference`
+
+Typographic quotation marks examples: ""surrounded by primary marks"",
+and ''surrounded by secondary marks''.
+
+. Ordered list item 1.
+. Ordered list item 2.
+
+:: Table caption before component.
+|= Column Header | Column Header
+|- Normal cell   | Normal cell
+%
+|- This is a brand new table, the mark `%` breaks any component.
+
+\+++ code:stx
+Literal content marked as `stx` language.
+\+++
+
+<img(https://github.com/favicon.ico)>
+:^ Image caption after component (results in a figure).
+
+Inline reference {here}<ref>, [link to the previous reference](here).
+
+!!! note
+Inner content is processed by the `note` function resulting in a note box.
+!!!
++++
+
 
 #stylesheets(
     assets/layout.css,
