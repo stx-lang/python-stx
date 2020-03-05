@@ -20,13 +20,16 @@ different and stricter.
 
 == Structured
 
-The text written in STX generates documents represented by a hierarchycal data 
-structure described in the [Document Model] section.
+The text written in STX generates documents represented by a hierarchycal 
+component structure described in the [Document Model] section.
 
-Building a document using components makes it possible to have _inifite_ nesting
-and the option to render it to multiple [output formats].
+Building a document using components makes it possible to have ""inifite""
+nesting and the option to render it to multiple [output formats].
 
-
+Nesting rules are based on the text alignment. Whenever there is [block mark], 
+the content can be nested following the 
+aligment of the subsequent text. The content can be broken just by breaking 
+the alignment or by using the `%` symbol.
 
 == Cross References
 
@@ -74,6 +77,7 @@ HTMLBook
 
 = Syntax
 
+@ref(`block mark`)
 == Block
 
 _mark_ _[inline-space]_ _[content]_
@@ -108,7 +112,7 @@ _mark_ _[inline-space]_ _[content]_
 
 == Functions and Containers
 
-|= |
+|= Syntax                             | Description
 |- `\{` _content_ `}`                 | Simple container.
 |- `\{` _content_ `}\<` _[entry]_ `>` | Capturing block
 |- `\<` _[entry]_ `>\{` _content_ `}` | Capturing block
