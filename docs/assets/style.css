@@ -66,6 +66,11 @@ a.section-mark {
     text-decoration: none;
 }
 
+a[data-status=invalid] {
+    color: maroon;
+    text-decoration: line-through maroon;
+}
+
 /* background & border colors */
 
 body {

@@ -72,6 +72,7 @@ def normalize_and_report_invalid_links(root: Component, refs: Set[str]):
                 continue
 
             if component.reference not in refs:
+                component.invalid = True
                 logger.warning(
                     f'Invalid link: {see(component.reference, None)}',
                     component.location)

@@ -249,6 +249,9 @@ def generate_link_text(parent: Tag, link_text: LinkText):
     elif link_text.is_external():
         a_tag['href'] = link_text.reference
 
+    if link_text.invalid:
+        a_tag['data-status'] = 'invalid'
+
     generate_components(a_tag, link_text.contents)
 
 

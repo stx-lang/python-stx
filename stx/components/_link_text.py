@@ -23,6 +23,7 @@ class LinkText(Component):
         self.location = location
         self.contents = contents
         self.reference = reference
+        self.invalid = False
 
     @property
     def display_mode(self) -> DisplayMode:
