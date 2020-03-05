@@ -40,7 +40,7 @@ def composite_to_json(composite: Composite) -> dict:
 def code_block_to_json(code_block: CodeBlock) -> dict:
     return extend_base(code_block, 'code-block', {
         'lang': code_block.lang,
-        'content': code_block.content,
+        'content': components_to_json(code_block.contents),
     })
 
 

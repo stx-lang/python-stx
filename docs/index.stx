@@ -1,5 +1,11 @@
 #title(`STX Documentation`)
 
++++ code:json
+{
+    "json": true
+}
++++
+
 <toc(title:`Table of Contents`)>
 
 = STX

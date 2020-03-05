@@ -146,7 +146,7 @@ def generate_code_block(parent: Tag, code_block: CodeBlock):
     if code_block.lang is not None:
         pre['data-code-language'] = code_block.lang
 
-    pre.append_text(code_block.content)
+    generate_components(pre, code_block.contents)
 
 
 def generate_table(parent: Tag, table: Table):

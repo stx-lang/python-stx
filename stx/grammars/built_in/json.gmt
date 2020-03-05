@@ -1,0 +1,22 @@
+json: ws (string | number | object | array | keyword) ws
+
+keyword = "true" | "false" | "null"
+
+object = "{" ws { string ws ":" json / "," ws } "}"
+
+array = "[" ws { json / "," } "]"
+
+number =
+    ["-"] (`1-9` {`0-9`} | "0")
+    ["." {1 `0-9`}]
+    [ [`e E`] [`+ -`] {1 `0-9`} ]
+
+string = "\"" { !`" \\` | escaped-char } "\""
+
+escaped-char: "\\" (`" \\ / b f n r t` | escaped-unicode)
+
+escaped-unicode: "u" {4; hex-digit}
+
+hex-digit: `a-f A-F 0-9`
+
+ws: {`\u0020 \r \n \t`}

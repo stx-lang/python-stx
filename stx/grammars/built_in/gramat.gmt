@@ -1,0 +1,27 @@
+gramat = { void rule }
+
+rule = name void ( "=" | ":" ) void expression
+
+expression = {1 {1 expression-item / void } / "|" }
+
+expression-item = group | repetition | optional | literal | predicate | negation | reference
+
+group = "(" void expression ")"
+
+optional = "[" void expression "]"
+
+repetition = "{" void [integer void [ "," void integer | ";" void ] ] expression  "}"
+
+literal = "\"" { !`" \\` | escaped-char } "\""
+
+negation = "!" expression
+
+reference = name void !("=" | ":")
+
+predicate = "`" !"`" "`"
+
+escaped-char: "\\" (`" \\ / b f n r t` | escaped-unicode)
+
+escaped-unicode: "u" {4; hex-digit}
+
+void: {`\u0020 \r \n \t`}

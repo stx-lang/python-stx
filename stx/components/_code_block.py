@@ -10,9 +10,13 @@ from ..utils.tracked_dict import TrackedDict
 
 class CodeBlock(Component):
 
-    def __init__(self, location: Location, content: str, lang: str):
+    def __init__(
+            self,
+            location: Location,
+            contents: List[Component],
+            lang: str):
         self.location = location
-        self.content = content
+        self.contents = contents
         self.lang = lang
 
     @property
@@ -20,10 +24,11 @@ class CodeBlock(Component):
         return DisplayMode.BLOCK
 
     def write_text(self, output: TextIO):
-        output.write(self.content)
+        for item in self.contents:
+            item.write_text(output)
 
     def get_children(self) -> List[Component]:
-        return []
+        return list(self.contents)
 
     def apply_advanced_attributes(self, attributes: TrackedDict[str, Value]):
         pass
