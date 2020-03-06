@@ -324,8 +324,7 @@ def parse_literal(
     if mark != literal_area_mark:
         return PASS
 
-    # TODO is this ok?
-    skip_void(content)
+    content.read_spaces()
 
     function_location = content.get_location()
 

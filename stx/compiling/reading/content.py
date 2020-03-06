@@ -149,6 +149,9 @@ class Content:
         return None
 
     def pull(self, token: str) -> bool:
+        if token is None:
+            return False
+
         loc0 = self.get_location()
 
         for expected_char in token:
