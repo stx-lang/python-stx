@@ -86,7 +86,9 @@ def parse_values(content: Content) -> List[Value]:
     return items
 
 
-def try_parse_item(content: Content) -> Optional[Value]:
+def try_parse_item(
+        content: Content,
+        allow_entry_separator=True) -> Optional[Value]:
     c = content.peek()
 
     if c == EMPTY_CHAR:
@@ -99,7 +101,7 @@ def try_parse_item(content: Content) -> Optional[Value]:
     if group is not None:
         return group
 
-    return try_parse_token_or_entry(content)
+    return try_parse_token_or_entry(content, allow_entry_separator)
 
 
 def try_parse_group(content: Content):
@@ -126,7 +128,9 @@ def try_parse_group(content: Content):
     return None
 
 
-def try_parse_token_or_entry(content: Content) -> Union[Token, Entry, None]:
+def try_parse_token_or_entry(
+        content: Content,
+        allow_entry_separator=True) -> Union[Token, Entry, None]:
     text = try_parse_text(content)
 
     if text is None:
@@ -138,13 +142,13 @@ def try_parse_token_or_entry(content: Content) -> Union[Token, Entry, None]:
 
     c = content.peek()
 
-    if c == ENTRY_SEPARATOR_CHAR:
+    if c == ENTRY_SEPARATOR_CHAR and allow_entry_separator:
         content.move_next()
 
         skip_void(content)
 
         entry_name = text
-        entry_value = try_parse_item(content)
+        entry_value = try_parse_item(content, allow_entry_separator=False)
 
         if entry_value is None:
             raise StxError('Expected an entry value', content.get_location())

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta name="generator" content="STX 1.0.0"><title>STX Documentation</title><link rel="stylesheet" type="text/css" href="assets/layout.css"><link rel="stylesheet" type="text/css" href="assets/style.css"></head><body data-type="book"><h1>STX Documentation</h1><p><nav data-type="toc"><h1>Table of Contents</h1><ol><li><a href="#stx" data-type="xref" data-number="1.">STX</a></li><li><a href="#features" data-type="xref" data-number="2.">Features</a><ol><li><a href="#structured-documents" data-type="xref" data-number="2.1.">Structured Documents</a></li><li><a href="#cross-references" data-type="xref" data-number="2.2.">Cross References</a></li><li><a href="#numbering" data-type="xref" data-number="2.3.">Numbering</a></li><li><a href="#output-format" data-type="xref" data-number="2.4.">Output Formats</a><ol><li><a href="#html" data-type="xref" data-number="2.4.1.">HTML</a></li><li><a href="#json" data-type="xref" data-number="2.4.2.">JSON</a></li></ol></li></ol></li><li><a href="#syntax" data-type="xref" data-number="3.">Syntax</a><ol><li><a href="#block-mark" data-type="xref" data-number="3.1.">Block Components</a><ol><li><a href="#sections" data-type="xref" data-number="3.1.1.">Sections</a></li><li><a href="#lists" data-type="xref" data-number="3.1.2.">Lists</a></li><li><a href="#tables" data-type="xref" data-number="3.1.3.">Tables</a></li><li><a href="#captions" data-type="xref" data-number="3.1.4.">Captions</a></li><li><a href="#paragraphs" data-type="xref" data-number="3.1.5.">Paragraphs</a></li></ol></li><li><a href="#inline" data-type="xref" data-number="3.2.">Inline</a></li><li><a href="#functions-and-containers" data-type="xref" data-number="3.3.">Functions and Containers</a></li><li><a href="#meta" data-type="xref" data-number="3.4.">Meta</a></li></ol></li><li><a href="#document-model" data-type="xref" data-number="4.">Document Model</a><ol><li><a href="#document" data-type="xref" data-number="4.1.">Document</a></li><li><a href="#components" data-type="xref" data-number="4.2.">Component</a></li><li><a href="#section" data-type="xref" data-number="4.3.">Section</a><ol><li><a href="#syntax-1" data-type="xref" data-number="4.3.1.">Syntax</a></li><li><a href="#model" data-type="xref" data-number="4.3.2.">Model</a></li><li><a href="#attributes" data-type="xref" data-number="4.3.3.">Attributes</a></li></ol></li><li><a href="#content-box" data-type="xref" data-number="4.4.">Content Box</a></li></ol></li><li><a href="#warning" data-type="xref" data-number="5.">Warning</a><ol><li><a href="#figure" data-type="xref" data-number="5.1.">Figure</a></li><li><a href="#image" data-type="xref" data-number="5.2.">Image</a></li><li><a href="#code-block" data-type="xref" data-number="5.3.">Code Block</a></li><li><a href="#list-block" data-type="xref" data-number="5.4.">List Block</a><ol><li><a href="#table" data-type="xref" data-number="5.4.1.">Table</a></li></ol></li><li><a href="#captured-text" data-type="xref" data-number="5.5.">Captured Text</a></li><li><a href="#link-text" data-type="xref" data-number="5.6.">Link Text</a></li><li><a href="#macro-text" data-type="xref" data-number="5.7.">Macro Text</a></li><li><a href="#paragraph" data-type="xref" data-number="5.8.">Paragraph</a></li><li><a href="#plain-text" data-type="xref" data-number="5.9.">Plain Text</a></li><li><a href="#styledtext" data-type="xref" data-number="5.10.">StyledText</a></li><li><a href="#table-of-contents" data-type="xref" data-number="5.11.">Table of Contents</a></li></ol></li><li><a href="#data-syntax" data-type="xref" data-number="6.">Data Syntax</a><ol><li><a href="#token" data-type="xref" data-number="6.1.">Token</a></li><li><a href="#entry" data-type="xref" data-number="6.2.">Entry</a></li><li><a href="#group" data-type="xref" data-number="6.3.">Group</a></li></ol></li><li><a href="#quick-reference" data-type="xref" data-number="7.">Quick-reference</a></li></ol></nav>
+<!DOCTYPE html><html><head><meta name="generator" content="STX 1.0.0"><title>STX Documentation</title><link rel="stylesheet" type="text/css" href="assets/layout.css"><link rel="stylesheet" type="text/css" href="assets/style.css"></head><body data-type="book"><h1>STX Documentation</h1><p><nav data-type="toc"><h1>Table of Contents</h1><ol><li><a href="#stx" data-type="xref" data-number="1.">STX</a></li><li><a href="#features" data-type="xref" data-number="2.">Features</a><ol><li><a href="#structured-documents" data-type="xref" data-number="2.1.">Structured Documents</a></li><li><a href="#cross-references" data-type="xref" data-number="2.2.">Cross References</a></li><li><a href="#numbering" data-type="xref" data-number="2.3.">Numbering</a></li><li><a href="#output-format" data-type="xref" data-number="2.4.">Output Formats</a><ol><li><a href="#html" data-type="xref" data-number="2.4.1.">HTML</a></li><li><a href="#json" data-type="xref" data-number="2.4.2.">JSON</a></li></ol></li></ol></li><li><a href="#syntax" data-type="xref" data-number="3.">Syntax</a><ol><li><a href="#block-mark" data-type="xref" data-number="3.1.">Block Components</a><ol><li><a href="#sections" data-type="xref" data-number="3.1.1.">Sections</a></li><li><a href="#lists" data-type="xref" data-number="3.1.2.">Lists</a></li><li><a href="#tables" data-type="xref" data-number="3.1.3.">Tables</a></li><li><a href="#captions" data-type="xref" data-number="3.1.4.">Captions</a></li><li><a href="#literals" data-type="xref" data-number="3.1.5.">Literals</a></li><li><a href="#capturings" data-type="xref" data-number="3.1.6.">Capturings</a></li><li><a href="#paragraphs" data-type="xref" data-number="3.1.7.">Paragraphs</a></li></ol></li><li><a href="#inline" data-type="xref" data-number="3.2.">Inline</a></li><li><a href="#functions-and-containers" data-type="xref" data-number="3.3.">Functions and Containers</a></li><li><a href="#meta" data-type="xref" data-number="3.4.">Meta</a></li></ol></li><li><a href="#document-model" data-type="xref" data-number="4.">Document Model</a><ol><li><a href="#document" data-type="xref" data-number="4.1.">Document</a></li><li><a href="#components" data-type="xref" data-number="4.2.">Component</a></li><li><a href="#section" data-type="xref" data-number="4.3.">Section</a><ol><li><a href="#syntax-1" data-type="xref" data-number="4.3.1.">Syntax</a></li><li><a href="#model" data-type="xref" data-number="4.3.2.">Model</a></li><li><a href="#attributes" data-type="xref" data-number="4.3.3.">Attributes</a></li></ol></li><li><a href="#content-box" data-type="xref" data-number="4.4.">Content Box</a></li></ol></li><li><a href="#warning" data-type="xref" data-number="5.">Warning</a><ol><li><a href="#figure" data-type="xref" data-number="5.1.">Figure</a></li><li><a href="#image" data-type="xref" data-number="5.2.">Image</a></li><li><a href="#code-block" data-type="xref" data-number="5.3.">Code Block</a></li><li><a href="#list-block" data-type="xref" data-number="5.4.">List Block</a><ol><li><a href="#table" data-type="xref" data-number="5.4.1.">Table</a></li></ol></li><li><a href="#captured-text" data-type="xref" data-number="5.5.">Captured Text</a></li><li><a href="#link-text" data-type="xref" data-number="5.6.">Link Text</a></li><li><a href="#macro-text" data-type="xref" data-number="5.7.">Macro Text</a></li><li><a href="#paragraph" data-type="xref" data-number="5.8.">Paragraph</a></li><li><a href="#plain-text" data-type="xref" data-number="5.9.">Plain Text</a></li><li><a href="#styledtext" data-type="xref" data-number="5.10.">StyledText</a></li><li><a href="#table-of-contents" data-type="xref" data-number="5.11.">Table of Contents</a></li></ol></li><li><a href="#data-syntax" data-type="xref" data-number="6.">Data Syntax</a><ol><li><a href="#token" data-type="xref" data-number="6.1.">Token</a></li><li><a href="#entry" data-type="xref" data-number="6.2.">Entry</a></li><li><a href="#group" data-type="xref" data-number="6.3.">Group</a></li></ol></li><li><a href="#quick-reference" data-type="xref" data-number="7.">Quick-reference</a></li></ol></nav>
 </p><section id="stx"><h1 data-number="1.">STX
 </h1><p>STX is a markup language for creating documents.
 It is designed to be simple enough to be easily read and written but at the 
@@ -17,10 +17,10 @@ documents.
 component structure described in the <a href="#document-model" data-type="xref">Document Model</a> section.
 </p><p>Building a document using components makes it possible to have &ldquo;inifite&rdquo;
 nesting and the option to render it to multiple <a href="#output-formats" data-type="xref" data-status="invalid">output formats</a>.
-</p><p>Nesting rules are based on the text alignment. Whenever there is <a href="#block-mark" data-type="xref">block mark</a>, 
+</p><p><a id="nesting-rules"></a>Nesting rules are based on the text alignment. Whenever there is <a href="#block-mark" data-type="xref">block mark</a>, 
 the content can be nested following the aligment of the subsequent text. 
-The content can be broken just by breaking the alignment or by using the
-<code>%</code> symbol.
+The content can be broken just by breaking the alignment or by using a <code>%</code> 
+(percentage symbol).
 </p><figure id="example-of-nested-components-"><pre data-type="programlisting" data-code-language="stx"><span class="stx">|= Column 1 | Column 2
 |- Cell     | - Nested list (item 1).
               - Item 2 with nested code block.
@@ -99,9 +99,16 @@ they are the building blocks for a document.
 </p><p>Block marks are not recognized inside inline content, consequently,
 paragraphs cannot begin with a block mark.
 </p><section id="sections"><h3 data-number="3.1.1.">Sections
-</h3><p>There are 6 levels of sections, compared with other markup languages,
-sections here are not just titles, they contain all subsequent components
-until a section with a level equal or less is found.
+</h3><p>There are 6 levels of sections, they can be created by repeating the <code>=</code> 
+(equal symbol). The number of symbols represents the level of the section.
+</p><p>The content of the section must be aligned with the section mark:
+</p><figure id="text-alignment-in-a-section-"><pre data-type="programlisting" data-code-language="stx"><span class="stx">=== Heading content
+
+Section content.
+</span></pre><figcaption data-number="8.">Text alignment in a section.
+</figcaption></figure><p>Compared with other markup languages, sections here are not just titles, 
+they contain all subsequent components until a section with a level equal 
+or less is found.
 </p><figure id="example-of-nested-sections-"><pre data-type="programlisting" data-code-language="stx"><span class="stx">= Section A                (1.)
 == Section B     (inside A: 1.1)
 === Section C    (inside B: 1.1.1)
@@ -114,23 +121,75 @@ until a section with a level equal or less is found.
 === Section J    (inside B: 1.1.2)
 == Section K     (inside A: 1.2)
 = Section L                (2.)
-</span></pre><figcaption data-number="8.">Example of nested sections.
-</figcaption></figure><p>The content of the section must be aligned with the section mark:
-</p><figure id="text-alignment-in-a-section-"><pre data-type="programlisting" data-code-language="stx"><span class="stx">=== Heading content
-
-Section content.
-</span></pre><figcaption data-number="9.">Text alignment in a section.
+</span></pre><figcaption data-number="9.">Example of nested sections.
 </figcaption></figure></section><section id="lists"><h3 data-number="3.1.2.">Lists
-</h3><table id="mark-description-unordered-list-item-ordered"><tr><th>Mark     </th><th>Description
-</th></tr><tr><td><code>-</code>      </td><td>Unordered list item
-</td></tr><tr><td><code>.</code>      </td><td>Ordered list item
-</td></tr></table></section><section id="tables"><h3 data-number="3.1.3.">Tables
-</h3><table id="-table-h-row-mark-table-d-row-mark"><tr><td><code>|=</code>    </td><td>table h row mark
-</td></tr><tr><td><code>|-</code>    </td><td>table d row mark
-</td></tr></table></section><section id="captions"><h3 data-number="3.1.4.">Captions
-</h3><table id="-pre-caption-mark-post-caption-mark"><tr><td><code>::</code>     </td><td>pre caption mark
-</td></tr><tr><td><code>:^</code>     </td><td>post caption mark
-</td></tr></table></section><section id="paragraphs"><h3 data-number="3.1.5.">Paragraphs
+</h3><p>There are two kind of lists: unordered and ordered, they can be created by
+using the <code>-</code> (dash symbol) and <code>.</code> (period symbol) respectively.
+</p><figure id="distinct-types-of-lists-"><pre data-type="programlisting" data-code-language="stx"><span class="stx">- Bulleted item 1.
+- Bulleted item 2.
+
+. Numbered item 1.
+. Numbered item 2.
+</span></pre><figcaption data-number="10.">Distinct types of lists.
+</figcaption></figure><p>The content of the items can be any supported component as long as the 
+<a href="#nesting-rules" data-type="xref">nesting rules</a> are followed.
+</p></section><section id="tables"><h3 data-number="3.1.3.">Tables
+</h3><p>Tables are created by gathering rows, the mark for heading rows is <code>|=</code> 
+(pipe and equal symbols) and for normal rows is <code>|-</code> (pipe and dash symbol). 
+</p><figure id="creating-a-table-with-a-heading-"><pre data-type="programlisting" data-code-language="stx"><span class="stx">|= Heading Row
+|- Normal Row 1
+|- Normal Row 2
+</span></pre><figcaption data-number="11.">Creating a table with a heading.
+</figcaption></figure><p>The content of a row represents a cell, more cells can be added to the row 
+by using the <code>|</code> (pipe symbol), this cell mark can be used inline, in other 
+words, multiple cells can be defined in a single line.
+</p><figure id="creating-a-table-with-multiple-columns-"><pre data-type="programlisting" data-code-language="stx"><span class="stx">|= Heading Column 1 | Heading Column 2 | Heading Column 3
+|- Normal Cell 1,1 | Normal Cell 1,2 | Normal Cell 1,3
+|- Normal Cell 2,1 
+   | Normal Cell 2,2 
+   | Normal Cell 3,3
+</span></pre><figcaption data-number="12.">Creating a table with multiple columns.
+</figcaption></figure></section><section id="captions"><h3 data-number="3.1.4.">Captions
+</h3><p>Captions are not components <em>per se</em>, they are used to create or change 
+other components:
+</p><ul><li>When using captions with tables, the caption becomes part of the table.
+</li><li>Captions used with any other component creates a figure, the other component
+gets wrapped by the figure.
+</li></ul><p>There are two ways to apply a caption to a component:
+</p><ul><li><p><strong>Before the component</strong>: They are created by using <code>::</code> (two colon symbols)
+and must be placed before the target component at the same aligment.
+</p><figure id="adding-a-caption-to-a-table-with-a-pre-caption"><pre data-type="programlisting" data-code-language="stx"><span class="stx">:: Reserved keywords.
+|= Keyword
+|- `null`
+|- `true`
+|- `false`
+</span></pre><figcaption data-number="13.">Adding a caption to a table with a pre-caption.
+</figcaption></figure></li><li><p><strong>After the component</strong>: They are created by using <code>:^</code> (colon and caret 
+symbols) and must be placed after the target component at the same aligment.
+</p><figure id="creating-a-figure-of-a-code-block-with-a"><pre data-type="programlisting" data-code-language="stx"><span class="stx">+++ code:js
+var x = 0;
++++
+:^ Declaring a variable.
+</span></pre><figcaption data-number="14.">Creating a figure of a code block with a post-caption.
+</figcaption></figure></li></ul></section><section id="literals"><h3 data-number="3.1.5.">Literals
+</h3><p>This component is allowed to contain raw text which won&apos;t be parsed by STX. 
+The text must be delimited by <code>+++</code> (three plus symbols); one line before
+and one line after.
+</p><figure id="simple-literal-component-"><pre data-type="programlisting" data-code-language="stx"><span class="stx">+++
+This text is not parsed by *STX*, so it _should_ be rendered as it is.
++++
+</span></pre><figcaption data-number="15.">Simple literal component.
+</figcaption></figure><p>Optionally, the raw text can be processed by a function to decorate it or
+create a richer component.
+The function must be inditacted by an <a href="#entry" data-type="xref">entry</a> right after the first <code>+++</code> 
+mark (there can by any amount of spaces in between).
+</p><figure id="code-block-component-produced-by-a-processed"><pre data-type="programlisting" data-code-language="stx"><span class="stx">+++ code:js
+console.log(&apos;Hello world!&apos;);
++++
+</span></pre><figcaption data-number="16.">Code block component produced by a processed literal.
+</figcaption></figure><p>See the <a>functions</a> sections for more details.
+</p></section><section id="capturings"><h3 data-number="3.1.6.">Capturings
+</h3></section><section id="paragraphs"><h3 data-number="3.1.7.">Paragraphs
 </h3></section></section><section id="inline"><h2 data-number="3.2.">Inline
 </h2><table id="syntax-description-content-inline-strong"><tr><th>Syntax                </th><th>Description
 </th></tr><tr><td><code>*</code> <em>content</em> <code>*</code>   </td><td>Inline strong text.

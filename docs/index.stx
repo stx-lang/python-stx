@@ -29,10 +29,11 @@ component structure described in the [Document Model] section.
 Building a document using components makes it possible to have ""inifite""
 nesting and the option to render it to multiple [output formats].
 
+@ref(`nesting rules`)
 Nesting rules are based on the text alignment. Whenever there is [block mark], 
 the content can be nested following the aligment of the subsequent text. 
-The content can be broken just by breaking the alignment or by using the
-`%` symbol.
+The content can be broken just by breaking the alignment or by using a `%` 
+(percentage symbol).
 
 +++ code:stx
 |= Column 1 | Column 2
@@ -159,9 +160,21 @@ paragraphs cannot begin with a block mark.
 
 === Sections
 
-There are 6 levels of sections, compared with other markup languages,
-sections here are not just titles, they contain all subsequent components
-until a section with a level equal or less is found.
+There are 6 levels of sections, they can be created by repeating the `=` 
+(equal symbol). The number of symbols represents the level of the section.
+
+The content of the section must be aligned with the section mark:
+
++++ code:stx
+=== Heading content
+
+Section content.
++++
+:^ Text alignment in a section.
+
+Compared with other markup languages, sections here are not just titles, 
+they contain all subsequent components until a section with a level equal 
+or less is found.
 
 +++ code:stx
 = Section A                (1.)
@@ -179,32 +192,112 @@ until a section with a level equal or less is found.
 +++
 :^ Example of nested sections.
 
-The content of the section must be aligned with the section mark:
-
-+++ code:stx
-=== Heading content
-
-Section content.
-+++
-:^ Text alignment in a section.
-
 === Lists
 
+There are two kind of lists: unordered and ordered, they can be created by
+using the `-` (dash symbol) and `.` (period symbol) respectively.
 
++++ code:stx
+- Bulleted item 1.
+- Bulleted item 2.
 
-|= Mark     | Description
-|- `-`      | Unordered list item
-|- `.`      | Ordered list item
+. Numbered item 1.
+. Numbered item 2.
++++
+:^ Distinct types of lists.
+
+The content of the items can be any supported component as long as the 
+[nesting rules] are followed.
 
 === Tables
 
-|- `\|=`    | table h row mark
-|- `\|-`    | table d row mark
+Tables are created by gathering rows, the mark for heading rows is `|=` 
+(pipe and equal symbols) and for normal rows is `|-` (pipe and dash symbol). 
+
++++ code:stx
+|= Heading Row
+|- Normal Row 1
+|- Normal Row 2
++++
+:^ Creating a table with a heading.
+
+The content of a row represents a cell, more cells can be added to the row 
+by using the `|` (pipe symbol), this cell mark can be used inline, in other 
+words, multiple cells can be defined in a single line.
+
++++ code:stx
+|= Heading Column 1 | Heading Column 2 | Heading Column 3
+|- Normal Cell 1,1 | Normal Cell 1,2 | Normal Cell 1,3
+|- Normal Cell 2,1 
+   | Normal Cell 2,2 
+   | Normal Cell 3,3
++++
+:^ Creating a table with multiple columns.
 
 === Captions
 
-|- `::`     | pre caption mark
-|- `:^`     | post caption mark
+Captions are not components _per se_, they are used to create or change 
+other components:
+
+- When using captions with tables, the caption becomes part of the table.
+- Captions used with any other component creates a figure, the other component
+  gets wrapped by the figure.
+
+There are two ways to apply a caption to a component:
+
+- *Before the component*: They are created by using `::` (two colon symbols)
+  and must be placed before the target component at the same aligment.
+
+  +++ code:stx
+  :: Reserved keywords.
+  |= Keyword
+  |- `null`
+  |- `true`
+  |- `false`
+  +++
+  :^ Adding a caption to a table with a pre-caption.
+
+- *After the component*: They are created by using `:^` (colon and caret 
+  symbols) and must be placed after the target component at the same aligment.
+
+  +++ code:stx
+  \+++ code:js
+  var x = 0;
+  \+++
+  :^ Declaring a variable.
+  +++
+  :^ Creating a figure of a code block with a post-caption.
+
+=== Literals
+
+This component is allowed to contain raw text which won't be parsed by STX. 
+The text must be delimited by `+++` (three plus symbols); one line before
+and one line after.
+
++++ code:stx
+\+++
+This text is not parsed by *STX*, so it _should_ be rendered as it is.
+\+++
++++
+:^ Simple literal component.
+
+Optionally, the raw text can be processed by a function to decorate it or
+create a richer component.
+The function must be inditacted by an [entry] right after the first `+++` 
+mark (there can by any amount of spaces in between).
+
++++ code:stx
+\+++ code:js
+console.log('Hello world!');
+\+++
++++
+:^ Code block component produced by a processed literal.
+
+!!! information
+See the [functions] sections for more details.
+!!!
+
+=== Capturings
 
 === Paragraphs
 

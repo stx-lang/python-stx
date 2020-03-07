@@ -199,6 +199,9 @@ def generate_paragraph(parent: Tag, paragraph: Paragraph, collapse: bool):
 
 
 def generate_plain_text(parent: Tag, plain_text: PlainText):
+    for ref in plain_text.get_refs():
+        parent.append_tag('a', {'id': ref}, text='')
+
     parent.append_text(plain_text.content)
 
 

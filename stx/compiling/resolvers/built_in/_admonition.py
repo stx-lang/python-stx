@@ -23,6 +23,12 @@ def resolve_warning(document: Document, call: FunctionCall) -> Component:
     return make_admonition(document, call, 'warning')
 
 
+def resolve_information(document: Document, call: FunctionCall) -> Component:
+    utils.check_unknown_options(call.options, call)
+
+    return make_admonition(document, call, 'information')
+
+
 def make_admonition(
         document: Document,
         call: FunctionCall,
