@@ -1,3 +1,3 @@
-# STX
+# STX Language
 
-https://bakasoft.github.io/stx/
+Please visit https://stx-lang.github.io/docs/ to read the documentation.
