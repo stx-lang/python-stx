@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta name="generator" content="STX 1.0.0"><title>STX Documentation</title><link rel="stylesheet" type="text/css" href="assets/layout.css"><link rel="stylesheet" type="text/css" href="assets/style.css"></head><body data-type="book"><h1>STX Documentation</h1><p><nav data-type="toc"><h1>Table of Contents</h1><ol><li><a href="#stx" data-type="xref" data-number="1.">STX</a></li><li><a href="#features" data-type="xref" data-number="2.">Features</a><ol><li><a href="#structured-documents" data-type="xref" data-number="2.1.">Structured Documents</a></li><li><a href="#cross-references" data-type="xref" data-number="2.2.">Cross References</a></li><li><a href="#numbering" data-type="xref" data-number="2.3.">Numbering</a></li><li><a href="#output-format" data-type="xref" data-number="2.4.">Output Formats</a><ol><li><a href="#html" data-type="xref" data-number="2.4.1.">HTML</a></li><li><a href="#json" data-type="xref" data-number="2.4.2.">JSON</a></li></ol></li></ol></li><li><a href="#syntax" data-type="xref" data-number="3.">Syntax</a><ol><li><a href="#block-mark" data-type="xref" data-number="3.1.">Block Components</a><ol><li><a href="#sections" data-type="xref" data-number="3.1.1.">Sections</a></li><li><a href="#lists" data-type="xref" data-number="3.1.2.">Lists</a></li><li><a href="#tables" data-type="xref" data-number="3.1.3.">Tables</a></li><li><a href="#captions" data-type="xref" data-number="3.1.4.">Captions</a></li><li><a href="#literals" data-type="xref" data-number="3.1.5.">Literals</a></li><li><a href="#capturings" data-type="xref" data-number="3.1.6.">Capturings</a></li><li><a href="#paragraphs" data-type="xref" data-number="3.1.7.">Paragraphs</a></li></ol></li><li><a href="#inline" data-type="xref" data-number="3.2.">Inline</a></li><li><a href="#functions-and-containers" data-type="xref" data-number="3.3.">Functions and Containers</a></li><li><a href="#meta" data-type="xref" data-number="3.4.">Meta</a></li></ol></li><li><a href="#document-model" data-type="xref" data-number="4.">Document Model</a><ol><li><a href="#document" data-type="xref" data-number="4.1.">Document</a></li><li><a href="#components" data-type="xref" data-number="4.2.">Component</a></li><li><a href="#section" data-type="xref" data-number="4.3.">Section</a><ol><li><a href="#syntax-1" data-type="xref" data-number="4.3.1.">Syntax</a></li><li><a href="#model" data-type="xref" data-number="4.3.2.">Model</a></li><li><a href="#attributes" data-type="xref" data-number="4.3.3.">Attributes</a></li></ol></li><li><a href="#content-box" data-type="xref" data-number="4.4.">Content Box</a></li></ol></li><li><a href="#warning" data-type="xref" data-number="5.">Warning</a><ol><li><a href="#figure" data-type="xref" data-number="5.1.">Figure</a></li><li><a href="#image" data-type="xref" data-number="5.2.">Image</a></li><li><a href="#code-block" data-type="xref" data-number="5.3.">Code Block</a></li><li><a href="#list-block" data-type="xref" data-number="5.4.">List Block</a><ol><li><a href="#table" data-type="xref" data-number="5.4.1.">Table</a></li></ol></li><li><a href="#captured-text" data-type="xref" data-number="5.5.">Captured Text</a></li><li><a href="#link-text" data-type="xref" data-number="5.6.">Link Text</a></li><li><a href="#macro-text" data-type="xref" data-number="5.7.">Macro Text</a></li><li><a href="#paragraph" data-type="xref" data-number="5.8.">Paragraph</a></li><li><a href="#plain-text" data-type="xref" data-number="5.9.">Plain Text</a></li><li><a href="#styledtext" data-type="xref" data-number="5.10.">StyledText</a></li><li><a href="#table-of-contents" data-type="xref" data-number="5.11.">Table of Contents</a></li></ol></li><li><a href="#data-syntax" data-type="xref" data-number="6.">Data Syntax</a><ol><li><a href="#token" data-type="xref" data-number="6.1.">Token</a></li><li><a href="#entry" data-type="xref" data-number="6.2.">Entry</a></li><li><a href="#group" data-type="xref" data-number="6.3.">Group</a></li></ol></li><li><a href="#quick-reference" data-type="xref" data-number="7.">Quick-reference</a></li></ol></nav>
+<!DOCTYPE html><html><head><meta name="generator" content="STX 1.0.0"><title>STX Documentation</title><link rel="stylesheet" type="text/css" href="assets/layout.css"><link rel="stylesheet" type="text/css" href="assets/style.css"></head><body data-type="book"><h1>STX Documentation</h1><p><nav data-type="toc"><h1>Table of Contents</h1><ol><li><a href="#stx" data-type="xref" data-number="1.">STX</a></li><li><a href="#features" data-type="xref" data-number="2.">Features</a><ol><li><a href="#structured-documents" data-type="xref" data-number="2.1.">Structured Documents</a></li><li><a href="#cross-references" data-type="xref" data-number="2.2.">Cross References</a></li><li><a href="#numbering" data-type="xref" data-number="2.3.">Numbering</a></li><li><a href="#output-format" data-type="xref" data-number="2.4.">Output Formats</a><ol><li><a href="#html" data-type="xref" data-number="2.4.1.">HTML</a></li><li><a href="#json" data-type="xref" data-number="2.4.2.">JSON</a></li></ol></li></ol></li><li><a href="#syntax" data-type="xref" data-number="3.">Syntax</a><ol><li><a href="#block-mark" data-type="xref" data-number="3.1.">Block Components</a><ol><li><a href="#sections" data-type="xref" data-number="3.1.1.">Sections</a></li><li><a href="#lists" data-type="xref" data-number="3.1.2.">Lists</a></li><li><a href="#tables" data-type="xref" data-number="3.1.3.">Tables</a></li><li><a href="#captions" data-type="xref" data-number="3.1.4.">Captions</a></li><li><a href="#literal-block" data-type="xref" data-number="3.1.5.">Literal Block</a></li><li><a href="#capturing-block" data-type="xref" data-number="3.1.6.">Capturing Block</a></li><li><a href="#content-breaks" data-type="xref" data-number="3.1.7.">Content Breaks</a></li><li><a href="#paragraphs" data-type="xref" data-number="3.1.8.">Paragraphs</a></li></ol></li><li><a href="#inline-components" data-type="xref" data-number="3.2.">Inline Components</a><ol><li><a href="#delimited-text" data-type="xref" data-number="3.2.1.">Delimited Text</a></li><li><a href="#links" data-type="xref" data-number="3.2.2.">Links</a></li><li><a href="#symbols" data-type="xref" data-number="3.2.3.">Symbols</a></li><li><a href="#capturing-functions" data-type="xref" data-number="3.2.4.">Capturing &amp; Functions</a></li><li><a href="#attributes" data-type="xref" data-number="3.2.5.">Attributes</a></li></ol></li></ol></li><li><a href="#functions" data-type="xref" data-number="4.">Functions</a></li><li><a href="#data-syntax" data-type="xref" data-number="5.">Data Syntax</a><ol><li><a href="#token" data-type="xref" data-number="5.1.">Token</a></li><li><a href="#entry" data-type="xref" data-number="5.2.">Entry</a></li><li><a href="#group" data-type="xref" data-number="5.3.">Group</a></li></ol></li><li><a href="#quick-reference" data-type="xref" data-number="6.">Quick-reference</a></li></ol></nav>
 </p><section id="stx"><h1 data-number="1.">STX
 </h1><p>STX is a markup language for creating documents.
 It is designed to be simple enough to be easily read and written but at the 
@@ -14,7 +14,7 @@ different and <strong>stricter</strong>.
 documents.
 </p><section id="structured-documents"><h2 data-number="2.1.">Structured Documents
 </h2><p>The text written in STX generates documents represented by a hierarchycal 
-component structure described in the <a href="#document-model" data-type="xref">Document Model</a> section.
+component structure described in the <a href="#document-model" data-type="xref" data-status="invalid">Document Model</a> section.
 </p><p>Building a document using components makes it possible to have &ldquo;inifite&rdquo;
 nesting and the option to render it to multiple <a href="#output-formats" data-type="xref" data-status="invalid">output formats</a>.
 </p><p><a id="nesting-rules"></a>Nesting rules are based on the text alignment. Whenever there is <a href="#block-mark" data-type="xref">block mark</a>, 
@@ -54,7 +54,7 @@ Please see [other options], it also works with [more options].
 </figcaption></figure></section><section id="numbering"><h2 data-number="2.3.">Numbering
 </h2><p>Since the documents in STX are organized by sections, they can be easily 
 numbered. Each section, figure and table are automatically numbered.
-</p><p>Additionally, there is a function for generating a <a href="#table-of-contents" data-type="xref">Table of Contents</a>.
+</p><p>Additionally, there is a function for generating a <a href="#table-of-contents" data-type="xref" data-status="invalid">Table of Contents</a>.
 All numbers of sections, figures and tables of this document were 
 auto-generated as well as the table of contents.
 </p></section><section id="output-format"><h2 data-number="2.4.">Output Formats
@@ -171,7 +171,7 @@ var x = 0;
 +++
 :^ Declaring a variable.
 </span></pre><figcaption data-number="14.">Creating a figure of a code block with a post-caption.
-</figcaption></figure></li></ul></section><section id="literals"><h3 data-number="3.1.5.">Literals
+</figcaption></figure></li></ul></section><section id="literal-block"><h3 data-number="3.1.5.">Literal Block
 </h3><p>This component is allowed to contain raw text which won&apos;t be parsed by STX. 
 The text must be delimited by <code>+++</code> (three plus symbols); one line before
 and one line after.
@@ -187,86 +187,86 @@ mark (there can by any amount of spaces in between).
 console.log(&apos;Hello world!&apos;);
 +++
 </span></pre><figcaption data-number="16.">Code block component produced by a processed literal.
-</figcaption></figure><p>See the <a>functions</a> sections for more details.
-</p></section><section id="capturings"><h3 data-number="3.1.6.">Capturings
-</h3></section><section id="paragraphs"><h3 data-number="3.1.7.">Paragraphs
-</h3></section></section><section id="inline"><h2 data-number="3.2.">Inline
-</h2><table id="syntax-description-content-inline-strong"><tr><th>Syntax                </th><th>Description
-</th></tr><tr><td><code>*</code> <em>content</em> <code>*</code>   </td><td>Inline strong text.
-</td></tr><tr><td><code>_</code> <em>content</em> <code>_</code>   </td><td>Inline emphasized text.
-</td></tr><tr><td><code>`</code> <em>content</em> <code>`</code>   </td><td>Inline code sample.
-</td></tr><tr><td><code>~~</code> <em>content</em> <code>~~</code> </td><td>Inline strikethrough text.
-</td></tr><tr><td><code>&quot;&quot;</code> <em>content</em> <code>&quot;&quot;</code> </td><td>Inline typographic quotation primary marks.
-</td></tr><tr><td><code>&apos;&apos;</code> <em>content</em> <code>&apos;&apos;</code> </td><td>Inline typographic quotation secondary marks.
-</td></tr><tr><td><code>[</code> <em>content</em> <code>]</code>                  </td><td>Inline link with implicit reference.
+</figcaption></figure><div data-type="information"><p>See the <a>functions</a> sections for more details.
+</p></div></section><section id="capturing-block"><h3 data-number="3.1.6.">Capturing Block
+</h3><p>This component creates a group of components which can be processed by a
+function to decorate them or create a richer component. The commponents
+must be delimited by <code>!!!</code> (three exclamation symbols); one line before 
+and one line after, the function must be inditacted by an <a href="#entry" data-type="xref">entry</a> right 
+after the first <code>!!!</code> mark (there can by any amount of spaces in between).
+</p><figure id="admonition-box-produced-by-a-captured-paragraph"><pre data-type="programlisting" data-code-language="stx"><span class="stx">!!! information
+This text will be shown as an information admonition.
+!!!
+</span></pre><figcaption data-number="17.">Admonition box produced by a captured paragraph.
+</figcaption></figure><div data-type="information"><p>See the <a>functions</a> sections for more details.
+</p></div></section><section id="content-breaks"><h3 data-number="3.1.7.">Content Breaks
+</h3><p>Any block component can be broken by using <code>%</code> (percentage symbol).
+</p><figure id="section-content-broken-"><pre data-type="programlisting" data-code-language="stx"><span class="stx">= Section A
+
+== Section B
+
+Content of section B. Next block mark will break this section.
+
+% 
+
+This content now is inside the Section A.
+</span></pre><figcaption data-number="18.">Section content broken.
+</figcaption></figure></section><section id="paragraphs"><h3 data-number="3.1.8.">Paragraphs
+</h3><p>Any other sequence of characters that doesn&apos;t match with a <a href="#block-mark" data-type="xref">block mark</a> is
+considered a paragraph. The paragraphs are composed by a sequence of 
+<a href="#inline-components" data-type="xref">inline components</a> and are broken by an empty line.
+</p><figure id="two-paragraphs-"><pre data-type="programlisting" data-code-language="stx"><span class="stx">This is the paragraph #1.
+
+This is the paragraph #2.
+This line is part of the paragraph #2.
+</span></pre><figcaption data-number="19.">Two paragraphs.
+</figcaption></figure></section></section><section id="inline-components"><h2 data-number="3.2.">Inline Components
+</h2><section id="delimited-text"><h3 data-number="3.2.1.">Delimited Text
+</h3><p>There are some delimiter marks that can decorate the surrounded inline 
+content for producing richer components. 
+These marks can be nested as any other component in STX.
+</p><table id="supported-delimited-text-components-"><caption data-number="1.">Supported delimited text components.
+</caption><tr><th>Mark </th><th>Description </th><th>Example
+</th></tr><tr><td><code>*</code> (asterisk symbol)     
+</td><td>Strong text: normally rendered as bold text.
+</td><td><code>Note: *This* is important!</code>
+</td></tr><tr><td><code>_</code> (underscore symbol)   
+</td><td>Emphasized text: normally rendered as cursive text.
+</td><td><code>A.K.A text in _italics_.</code>
+</td></tr><tr><td><code>`</code> (grave accent symbol) 
+</td><td>Code sample text: normally rendered with a monospace typography.
+</td><td><code>HTML uses the `&lt;code&gt;` tag.</code>
+</td></tr><tr><td><code>~~</code> (two tilde symbols)
+</td><td>Strikethrough text: normally rendered with a horizontal line through 
+its center.
+</td><td><code>Use ~~one~~ two tilde symbols.</code>
+</td></tr><tr><td><code>&quot;&quot;</code> (two double quotes symbol) 
+</td><td>Inline typographic quotation primary marks: the text is surrounded 
+with <code>“</code> and <code>”</code>.
+</td><td><code>&quot;&quot;Primary&quot;&quot; marks.</code>
+</td></tr><tr><td><code>&apos;&apos;</code> (two single quotes symbol) 
+</td><td>Inline typographic quotation secondary marks: the text is surrounded
+with <code>‘</code> and <code>’</code>.
+</td><td><code>&apos;&apos;Secondary&apos;&apos; marks.</code>
+</td></tr></table></section><section id="links"><h3 data-number="3.2.2.">Links
+</h3><table id="-content-inline-link-with-implicit-reference"><tr><td><code>[</code> <em>content</em> <code>]</code>                  </td><td>Inline link with implicit reference.
 </td></tr><tr><td><code>[</code> <em>content</em> <code>](</code> <em>reference</em> <code>)</code> </td><td>Inline link with explicit reference.
-</td></tr><tr><td><code>|</code> <em>content</em> </td><td>Inline table cell (only inside a row mark).
-</td></tr><tr><td><code>...</code> </td><td>Inline ellipsis symbol.
-</td></tr></table></section><section id="functions-and-containers"><h2 data-number="3.3.">Functions and Containers
-</h2><table id="syntax-description-content-simple-container"><tr><th>Syntax                             </th><th>Description
+</td></tr></table></section><section id="symbols"><h3 data-number="3.2.3.">Symbols
+</h3><table id="-inline-ellipsis-symbol-"><tr><td><code>...</code> </td><td>Inline ellipsis symbol.
+</td></tr></table></section><section id="capturing-functions"><h3 data-number="3.2.4.">Capturing &amp; Functions
+</h3><table id="syntax-description-content-simple-container"><tr><th>Syntax                             </th><th>Description
 </th></tr><tr><td><code>{</code> <em>content</em> <code>}</code>                 </td><td>Simple container.
-</td></tr><tr><td><code>{</code> <em>content</em> <code>}&lt;</code> <em><a href="#entry" data-type="xref">entry</a></em> <code>&gt;</code> </td><td>Capturing block
-</td></tr><tr><td><code>&lt;</code> <em><a href="#entry" data-type="xref">entry</a></em> <code>&gt;{</code> <em>content</em> <code>}</code> </td><td>Capturing block
 </td></tr><tr><td><code>&lt;</code> <em><a href="#entry" data-type="xref">entry</a></em> <code>&gt;</code>                 </td><td>Simple macro.
-</td></tr><tr><td><code>+++</code> <em><a href="#entry" data-type="xref">entry</a></em> <em><a href="#end-of-line" data-type="xref" data-status="invalid">end of line</a></em> 
-
-<em>literal text</em> 
-
-<code>+++</code> <em><a href="#end-of-line" data-type="xref" data-status="invalid">end of line</a></em>      </td><td>code block mark
-</td></tr></table></section><section id="meta"><h2 data-number="3.4.">Meta
-</h2><table id="-value-attribute-for-the-next-component-"><tr><td><code>@</code> <em><a href="#value" data-type="xref" data-status="invalid">value</a></em> </td><td>Attribute for the next component.
-</td></tr><tr><td><code>%</code> <em>content</em> </td><td>Break
-</td></tr></table></section></section><section id="document-model"><h1 data-number="4.">Document Model
-</h1><section id="document"><h2 data-number="4.1.">Document
-</h2></section><section id="components"><h2 data-number="4.2.">Component
-</h2></section><section id="section"><h2 data-number="4.3.">Section
-</h2><section id="syntax-1"><h3 data-number="4.3.1.">Syntax
-</h3><pre data-type="programlisting" data-code-language="stx"><span class="stx">= Section A
-
-Content Section A
-
-== Section A/B
-
-Content Section A/B
-</span></pre><pre data-type="programlisting" data-code-language="xml">&lt;section&gt;
-    &lt;heading&gt;Section A&lt;/heading&gt;
-    &lt;content&gt;
-        &lt;paragraph&gt;Content Section A&lt;/paragraph&gt;
-        &lt;section&gt;
-            &lt;heading&gt;Section A/B&lt;/heading&gt;
-            &lt;content&gt;
-                &lt;paragraph&gt;Content Section A/B&lt;/paragraph&gt;
-            &lt;/content&gt;
-        &lt;/section&gt;
-    &lt;/content&gt;
-&lt;/section
-</pre></section><section id="model"><h3 data-number="4.3.2.">Model
-</h3><table id="content-type-description-heading-component"><tr><th>Content   </th><th>Type        </th><th>Description
-</th></tr><tr><td><code>heading</code> </td><td><a href="#component" data-type="xref" data-status="invalid">Component</a> </td><td></tr><tr><td><code>content</code> </td><td><a href="#component" data-type="xref" data-status="invalid">Component</a> </td><td></tr></table></section><section id="attributes"><h3 data-number="4.3.3.">Attributes
-</h3><table id="content-type-description-type-token-number"><tr><th>Content   </th><th>Type        </th><th>Description
-</th></tr><tr><td><code>type</code>    </td><td><a href="#token" data-type="xref">Token</a>     </td><td></tr><tr><td><code>number</code>  </td><td><a href="#token" data-type="xref">Token</a>     </td><td>Number of the section, this value is
-assigned automatically.
-</td></tr></table></section></section><section id="content-box"><h2 data-number="4.4.">Content Box
-</h2></section></section><section id="warning"><h1 data-number="5.">Warning
-</h1><p>This is a warning box.
-</p><section id="figure"><h2 data-number="5.1.">Figure
-</h2></section><section id="image"><h2 data-number="5.2.">Image
-</h2></section><section id="code-block"><h2 data-number="5.3.">Code Block
-</h2></section><section id="list-block"><h2 data-number="5.4.">List Block
-</h2><section id="table"><h3 data-number="5.4.1.">Table
-</h3></section></section><section id="captured-text"><h2 data-number="5.5.">Captured Text
-</h2></section><section id="link-text"><h2 data-number="5.6.">Link Text
-</h2></section><section id="macro-text"><h2 data-number="5.7.">Macro Text
-</h2></section><section id="paragraph"><h2 data-number="5.8.">Paragraph
-</h2></section><section id="plain-text"><h2 data-number="5.9.">Plain Text
-</h2></section><section id="styledtext"><h2 data-number="5.10.">StyledText
-</h2></section><section id="table-of-contents"><h2 data-number="5.11.">Table of Contents
-</h2><pre data-type="programlisting" data-code-language="stx"><span class="stx">#toc
-</span></pre></section></section><section id="data-syntax"><h1 data-number="6.">Data Syntax
-</h1><section id="token"><h2 data-number="6.1.">Token
-</h2></section><section id="entry"><h2 data-number="6.2.">Entry
-</h2></section><section id="group"><h2 data-number="6.3.">Group
-</h2></section></section><section id="quick-reference"><h1 data-number="7.">Quick-reference
+</td></tr><tr><td><code>&lt;</code> <em><a href="#entry" data-type="xref">entry</a></em> <code>&gt;{</code> <em>content</em> <code>}</code> </td><td>Capturing block
+</td></tr><tr><td><code>{</code> <em>content</em> <code>}&lt;</code> <em><a href="#entry" data-type="xref">entry</a></em> <code>&gt;</code> </td><td>Capturing block
+</td></tr></table></section><section id="attributes"><h3 data-number="3.2.5.">Attributes
+</h3><table id="-value-attribute-for-the-next-component-"><tr><td><code>@</code> <em><a href="#value" data-type="xref" data-status="invalid">value</a></em> </td><td>Attribute for the next component.
+</td></tr></table></section></section></section><section id="functions"><h1 data-number="4.">Functions
+</h1></section><section id="data-syntax"><h1 data-number="5.">Data Syntax
+</h1><section id="token"><h2 data-number="5.1.">Token
+</h2></section><section id="entry"><h2 data-number="5.2.">Entry
+</h2></section><section id="group"><h2 data-number="5.3.">Group
+</h2></section></section><section id="quick-reference"><h1 data-number="6.">Quick-reference
 </h1><pre data-type="programlisting" data-code-language="stx"><span class="stx">= Section 1
 == Section 2
 === Section 3

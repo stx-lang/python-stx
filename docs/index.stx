@@ -268,7 +268,7 @@ There are two ways to apply a caption to a component:
   +++
   :^ Creating a figure of a code block with a post-caption.
 
-=== Literals
+=== Literal Block
 
 This component is allowed to contain raw text which won't be parsed by STX. 
 The text must be delimited by `+++` (three plus symbols); one line before
@@ -297,125 +297,110 @@ console.log('Hello world!');
 See the [functions] sections for more details.
 !!!
 
-=== Capturings
+=== Capturing Block
 
-=== Paragraphs
+This component creates a group of components which can be processed by a
+function to decorate them or create a richer component. The commponents
+must be delimited by `!!!` (three exclamation symbols); one line before 
+and one line after, the function must be inditacted by an [entry] right 
+after the first `!!!` mark (there can by any amount of spaces in between).
 
-== Inline
++++ code:stx
+!!! information
+This text will be shown as an information admonition.
+!!!
++++
+:^ Admonition box produced by a captured paragraph.
 
-|= Syntax                | Description
-|- `\*` _content_ `\*`   | Inline strong text.
-|- `\_` _content_ `\_`   | Inline emphasized text.
-|- `\`` _content_ `\``   | Inline code sample.
-|- `\~~` _content_ `\~~` | Inline strikethrough text.
-|- `\""` _content_ `\""` | Inline typographic quotation primary marks.
-|- `\''` _content_ `\''` | Inline typographic quotation secondary marks.
-|- `\[` _content_ `]`                  | Inline link with implicit reference.
-|- `\[` _content_ `](` _reference_ `)` | Inline link with explicit reference.
-|- `\|` _content_ | Inline table cell (only inside a row mark).
-|- `\...` | Inline ellipsis symbol.
+!!! information
+See the [functions] sections for more details.
+!!!
 
-== Functions and Containers
+=== Content Breaks
 
-|= Syntax                             | Description
-|- `\{` _content_ `}`                 | Simple container.
-|- `\{` _content_ `}\<` _[entry]_ `>` | Capturing block
-|- `\<` _[entry]_ `>\{` _content_ `}` | Capturing block
-|- `\<` _[entry]_ `>`                 | Simple macro.
-
-|- `+++` _[entry]_ _[end of line]_ <br>
-   _literal text_ <br>
-   `+++` _[end of line]_      | code block mark
-
-== Meta
-
-|- `@` _[value]_ | Attribute for the next component.
-|- `%` _content_ | Break
-
-= Document Model
-
-== Document
-
-@ref(components)
-== Component
-
-== Section
-
-=== Syntax
+Any block component can be broken by using `%` (percentage symbol).
 
 +++ code:stx
 = Section A
 
-Content Section A
+== Section B
 
-== Section A/B
+Content of section B. Next block mark will break this section.
 
-Content Section A/B
+% 
+
+This content now is inside the Section A.
 +++
+:^ Section content broken.
 
-+++ code:xml
-<section>
-    <heading>Section A</heading>
-    <content>
-        <paragraph>Content Section A</paragraph>
-        <section>
-            <heading>Section A/B</heading>
-            <content>
-                <paragraph>Content Section A/B</paragraph>
-            </content>
-        </section>
-    </content>
-</section
+=== Paragraphs
+
+Any other sequence of characters that doesn't match with a [block mark] is
+considered a paragraph. The paragraphs are composed by a sequence of 
+[inline components] and are broken by an empty line.
+
++++ code:stx
+This is the paragraph #1.
+
+This is the paragraph #2.
+This line is part of the paragraph #2.
 +++
+:^ Two paragraphs.
 
-=== Model
+== Inline Components
 
-|= Content   | Type        | Description
-|- `heading` | [Component] | 
-|- `content` | [Component] |
+=== Delimited Text
+
+There are some delimiter marks that can decorate the surrounded inline 
+content for producing richer components. 
+These marks can be nested as any other component in STX.
+
+:: Supported delimited text components.
+|= Mark | Description | Example
+|- `\*` (asterisk symbol)     
+   | Strong text: normally rendered as bold text.
+   | `Note: \*This\* is important!`
+|- `\_` (underscore symbol)   
+   | Emphasized text: normally rendered as cursive text.
+   | `A.K.A text in \_italics\_.`
+|- `\`` (grave accent symbol) 
+   | Code sample text: normally rendered with a monospace typography.
+   | `HTML uses the \`\<code>\` tag.`
+|- `\~~` (two tilde symbols)
+   | Strikethrough text: normally rendered with a horizontal line through 
+     its center.
+   | `Use \~~one\~~ two tilde symbols.`
+|- `\""` (two double quotes symbol) 
+   | Inline typographic quotation primary marks: the text is surrounded 
+     with `“` and `”`.
+   | `\""Primary\"" marks.`
+|- `\''` (two single quotes symbol) 
+   | Inline typographic quotation secondary marks: the text is surrounded
+     with `‘` and `’`.
+   | `\''Secondary\'' marks.`
+
+=== Links
+
+|- `\[` _content_ `]`                  | Inline link with implicit reference.
+|- `\[` _content_ `](` _reference_ `)` | Inline link with explicit reference.
+
+=== Symbols
+
+|- `\...` | Inline ellipsis symbol.
+
+=== Capturing & Functions
+
+|= Syntax                             | Description
+|- `\{` _content_ `}`                 | Simple container.
+|- `\<` _[entry]_ `>`                 | Simple macro.
+|- `\<` _[entry]_ `>\{` _content_ `}` | Capturing block
+|- `\{` _content_ `}\<` _[entry]_ `>` | Capturing block
 
 === Attributes
 
-|= Content   | Type        | Description
-|- `type`    | [Token]     | 
-|- `number`  | [Token]     | Number of the section, this value is
-                             assigned automatically.
+|- `@` _[value]_ | Attribute for the next component.
 
-== Content Box
-
-!!! warning
-= Warning
-
-This is a warning box.
-!!!
-
-== Figure
-
-== Image
-
-== Code Block
-
-== List Block
-
-=== Table
-
-== Captured Text
-
-== Link Text
-
-== Macro Text
-
-== Paragraph
-
-== Plain Text
-
-== StyledText
-
-== Table of Contents
-
-+++ code:stx
-#toc
-+++
+= Functions
 
 = Data Syntax
 

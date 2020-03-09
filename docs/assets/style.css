@@ -130,6 +130,7 @@ h1, h2, h3, h4, h5, h6 {
 code {
     padding: 2px 3px;
     margin: 0;
+    white-space: nowrap;
 }
 
 /* block code */
@@ -200,4 +201,28 @@ h4:hover a.section-mark,
 h5:hover a.section-mark,
 h6:hover a.section-mark {
     display: inline;
+}
+
+/* admonitions */
+
+div[data-type=information] {
+    border-color: #CDDDFF;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 0 15px 0 50px;
+    background-color: #ebf1ff;
+}
+
+div[data-type=information]::before {
+    content: '\24D8';
+    position: absolute;
+    font-size: 30px;
+    color: #b8c6e5;
+    margin-top: 10px;
+    margin-left: -40px;
+}
+
+div[data-type=information] p {
+    /* margin: 0; */
 }

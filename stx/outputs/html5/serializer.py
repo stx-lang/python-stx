@@ -212,6 +212,8 @@ def generate_styled_text(parent: Tag, styled_text: StyledText):
         tag_name = 'em'
     elif styled_text.style == 'code':
         tag_name = 'code'
+    elif styled_text.style == 'deleted':
+        tag_name = 'del'
     else:
         tag_name = None
 
