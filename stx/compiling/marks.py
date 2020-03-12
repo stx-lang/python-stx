@@ -46,7 +46,8 @@ ellipsis_single_mark = '...'
 # Area marks
 
 literal_area_mark = '+++'
-container_area_mark = '!!!'
+container_area_begin_mark = '{{{'
+container_area_end_mark = '}}}'
 
 # Special Marks
 
@@ -109,7 +110,8 @@ not_inline_marks = [
     post_caption_block_mark,
 
     literal_area_mark,
-    container_area_mark,
+    container_area_begin_mark,
+    container_area_end_mark,
 
     attribute_special_mark,
     directive_special_mark,

@@ -1,6 +1,5 @@
-from stx.compiling.resolvers import utils
-from stx.components import Component, FunctionCall, TableOfContents
-from stx.document import Document
+from stx.functions import utils
+from stx.components import FunctionCall
 from typing import List
 
 from stx.components import Component, TableOfContents, ElementReference, \

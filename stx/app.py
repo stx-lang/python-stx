@@ -20,7 +20,7 @@ def read_version() -> str:
         return f.read().strip()
 
 
-version = read_version()
+version = read_version()  # TODO parse version
 name = 'STX'
 title = f'{name} {version}'
 

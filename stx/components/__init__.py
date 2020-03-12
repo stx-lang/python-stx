@@ -7,6 +7,7 @@ from ._custom_text import CustomText
 from ._figure import Figure
 from ._function_call import FunctionCall
 from ._image import Image
+from ._layout import Layout
 from ._link_text import LinkText
 from ._list_block import ListBlock
 from ._literal import Literal

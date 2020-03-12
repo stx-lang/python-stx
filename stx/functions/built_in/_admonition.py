@@ -1,8 +1,7 @@
 from typing import Optional
 
-from stx.compiling.resolvers import utils
-from stx.components import FunctionCall, Component, Literal, ContentBox
-from stx.data_notation.values import Value
+from stx.functions import utils
+from stx.components import FunctionCall, Component, ContentBox
 from stx.document import Document
 from stx.utils.stx_error import StxError
 
@@ -33,10 +32,11 @@ def make_admonition(
         document: Document,
         call: FunctionCall,
         data_type: Optional[str]) -> Component:
-    content = utils.make_component_arg(call)
+    if call.argument is None:
+        raise call.error('Admonitions require a captured component.')
 
     box = ContentBox(call.location)
-    box.content = content
+    box.content = call.argument
     box.style = data_type
 
     return box

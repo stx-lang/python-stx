@@ -2,7 +2,7 @@ from typing import List
 
 from stx import app, logger
 from stx.components import Component, Composite, CodeBlock, Table, Image, \
-    FunctionCall, CustomText
+    FunctionCall, CustomText, Layout
 from stx.components import ListBlock, Paragraph, PlainText, StyledText
 from stx.components import LinkText, Literal, Figure, Section, Separator
 from stx.components import ContentBox, TableOfContents, ElementReference
@@ -127,6 +127,8 @@ def generate_component(
         generate_image(parent, component)
     elif isinstance(component, FunctionCall):
         generate_function_call(parent, component)
+    elif isinstance(component, Layout):
+        generate_layout(parent, component)
     else:
         raise NotImplementedError(f'Not implemented type: {type(component)}')
 
@@ -378,6 +380,20 @@ def generate_function_call(parent: Tag, call: FunctionCall):
             f'Function {call.key} was not processed.', call.location)
 
     generate_component(parent, call.result)
+
+
+def generate_layout(parent: Tag, layout: Layout):
+    container = parent.append_tag('div', {
+        'data-type': 'layout',
+        'data-dir': layout.direction,
+    })
+
+    for component in layout.components:
+        item = container.append_tag('div', {
+            'data-type': 'layout-item',
+        })
+
+        generate_component(item, component)
 
 
 def append_component_tag(

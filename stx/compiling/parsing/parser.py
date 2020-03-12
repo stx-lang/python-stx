@@ -15,7 +15,8 @@ from stx.compiling.marks import container_begin_mark, container_end_mark
 from stx.compiling.marks import function_begin_mark, function_end_mark
 from stx.compiling.marks import attribute_special_mark, directive_special_mark
 from stx.compiling.marks import all_marks, escape_char, literal_area_mark
-from stx.compiling.marks import container_area_mark
+from stx.compiling.marks import container_area_begin_mark
+from stx.compiling.marks import container_area_end_mark
 from stx.compiling.marks import strong_begin_mark, strong_end_mark
 from stx.compiling.marks import emphasized_begin_mark, emphasized_end_mark
 from stx.compiling.marks import code_begin_mark, code_end_mark
@@ -358,7 +359,7 @@ def parse_literal(
             inline=False,
             key=function.name,
             options=function.value,
-            plain_text_arg=text,
+            argument=Literal(location, text),
         )
     else:
         component = Literal(location, text)
@@ -371,7 +372,7 @@ def parse_literal(
 def parse_container(
         ctx: CTX, mark: str, location: Location, content: Content,
         indentation_before_mark: int) -> int:
-    if mark != container_area_mark:
+    if mark != container_area_begin_mark:
         return PASS
 
     content.read_spaces()
@@ -380,8 +381,11 @@ def parse_container(
 
     content.expect_end_of_line()
 
-    with ctx.using_stop_mark(container_area_mark):
+    with ctx.using_stop_mark(container_area_end_mark):
         component = capture_component(ctx, indentation_before_mark)
+
+    content.pull(container_area_end_mark)
+    content.expect_end_of_line()
 
     if function is not None:
         component = FunctionCall(
@@ -389,7 +393,7 @@ def parse_container(
             inline=False,
             key=function.name,
             options=function.value,
-            components_arg=[component],
+            argument=component,
         )
 
     ctx.composer.add(component)
@@ -588,7 +592,7 @@ def parse_inline_container(
             inline=True,
             key=function.name,
             options=function.value,
-            components_arg=contents))
+            argument=Composite(location, contents)))
 
     return CONSUMED
 

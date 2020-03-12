@@ -16,14 +16,12 @@ class FunctionCall(Component):
             inline: bool,
             key: str,
             options: Value,
-            components_arg: Optional[List[Component]] = None,
-            plain_text_arg: Optional[str] = None):
+            argument: Optional[Component] = None):
         self.location = location
         self.inline = inline
         self.key = key
         self.options = options
-        self.components_arg = components_arg
-        self.plain_text_arg = plain_text_arg
+        self.argument = argument
         self.result: Optional[Component] = None
 
     @property
@@ -31,6 +29,9 @@ class FunctionCall(Component):
         if self.result is not None:
             return self.result.display_mode
         return DisplayMode.DEFAULT
+
+    def is_rich(self) -> bool:
+        return True
 
     def write_text(self, output: TextIO):
         if self.result is not None:

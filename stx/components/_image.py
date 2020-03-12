@@ -23,6 +23,9 @@ class Image(Component):
     def display_mode(self) -> DisplayMode:
         return DisplayMode.DEFAULT
 
+    def is_rich(self) -> bool:
+        return True
+
     def write_text(self, output: TextIO):
         if self.alt:
             output.write(self.alt)

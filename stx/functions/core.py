@@ -1,4 +1,4 @@
-from stx.compiling.resolvers import registry
+from stx.functions import registry
 from stx.components import Component, FunctionCall
 from stx.document import Document
 from stx.utils.stx_error import StxError
@@ -23,10 +23,15 @@ def resolve_component(document: Document, component: Component):
 
 
 def resolve_function_call(document: Document, call: FunctionCall):
-    processor = registry.get_resolver(call.key)
+    processor = registry.get(call.key)
 
     if processor is None:
         raise StxError(
-            f'No resolver found for function {see(call.key)}.', call.location)
+            f'Function not found: {see(call.key)}', call.location)
 
     call.result = processor(document, call)
+
+    if call.result is None:
+        raise call.error('Function call did not produce a component.')
+
+    resolve_component(document, call.result)

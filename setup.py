@@ -6,9 +6,22 @@ def read_content(file: str) -> str:
         return f.read().strip()
 
 
+# TODO move this version parsing to a module
+version = read_content('version.txt')
+
+version_number, version_status = version.split(' ')
+
+if version_status == 'alpha':
+    development_status = 'Development Status :: 3 - Alpha'
+elif version_status == 'beta':
+    development_status = 'Development Status :: 4 - Beta'
+else:
+    development_status = 'Development Status :: 5 - Production/Stable'
+
+
 setuptools.setup(
     name='stx',
-    version=read_content('version.txt'),
+    version=version_number,
     author='Sergio Pedraza',
     author_email='sergio.uriel.ph@gmail.com',
     description='Python implementation of the STX Language',
@@ -26,11 +39,15 @@ setuptools.setup(
     },
     # See: https://pypi.org/classifiers/
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        development_status,
         'Topic :: Documentation',
         'Topic :: Text Processing :: Markup',
         'Topic :: Software Development :: Documentation',
         'Environment :: Console',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Education',
+        'Intended Audience :: Information Technology',
+        'Intended Audience :: Science/Research',
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',

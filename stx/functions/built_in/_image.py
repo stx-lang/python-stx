@@ -1,8 +1,6 @@
 from stx import logger
-from stx.compiling.reading.location import Location
-from stx.compiling.resolvers import utils
+from stx.functions import utils
 from stx.components import Component, Image, FunctionCall
-from stx.data_notation.values import Value, Token
 from stx.document import Document
 from stx.utils.stx_error import StxError
 

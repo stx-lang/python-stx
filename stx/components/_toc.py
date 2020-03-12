@@ -30,6 +30,9 @@ class TableOfContents(Component):
     def display_mode(self) -> DisplayMode:
         return DisplayMode.BLOCK
 
+    def is_rich(self) -> bool:
+        return True
+
     def write_text(self, output: TextIO):
         pass
 

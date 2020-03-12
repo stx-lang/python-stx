@@ -21,6 +21,9 @@ class Table(Component):
     def display_mode(self) -> DisplayMode:
         return DisplayMode.BLOCK
 
+    def is_rich(self) -> bool:
+        return True
+
     def write_text(self, output: TextIO):
         for row in self.rows:
             row.write_text(output)

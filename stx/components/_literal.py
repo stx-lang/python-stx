@@ -14,7 +14,7 @@ class Literal(Component):
             self,
             location: Location,
             text: str,
-            lang: Optional[str] = None,
+            lang: Optional[str] = None,  # TODO remove this field
             source: Optional[str] = None):
         self.location = location
         self.text = text
@@ -24,6 +24,9 @@ class Literal(Component):
     @property
     def display_mode(self) -> DisplayMode:
         return DisplayMode.DEFAULT
+
+    def is_rich(self) -> bool:
+        return False
 
     def write_text(self, output: TextIO):
         output.write(self.text)

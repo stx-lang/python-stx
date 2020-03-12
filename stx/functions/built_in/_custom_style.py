@@ -1,11 +1,15 @@
-from stx.compiling.resolvers import utils
-from stx.components import Component, FunctionCall, PlainText, CustomText
+from stx.functions import utils
+from stx.components import Component, FunctionCall, CustomText
 from stx.document import Document
 
 
 def resolve_custom_style(document: Document, call: FunctionCall) -> Component:
+    if call.argument is None:
+        raise call.error(
+            'Custom style function requires a captured component.')
+
     options = utils.make_options_dict(call, key_for_str='style')
-    contents = utils.make_component_list_arg(call)
+    contents = utils.make_component_list(call.argument)
 
     custom_style = options.pop('style')
 

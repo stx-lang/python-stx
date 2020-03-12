@@ -76,6 +76,9 @@ class Component:
             return len(self.ref) > 0
         return self.ref is not None
 
+    def is_rich(self) -> bool:
+        raise NotImplementedError()
+
     def get_text(self) -> str:
         output = StringIO()
 
@@ -115,3 +118,6 @@ class Component:
 
     def apply_advanced_attributes(self, attributes: TrackedDict[str, Value]):
         raise NotImplementedError()
+
+    def error(self, message: str) -> Exception:
+        return StxError(message, self.location)

@@ -20,6 +20,12 @@ class Paragraph(Component):
     def display_mode(self) -> DisplayMode:
         return DisplayMode.BLOCK
 
+    def is_rich(self) -> bool:
+        for c in self.contents:
+            if c.is_rich():
+                return True
+        return False
+
     def write_text(self, output: TextIO):
         for component in self.contents:
             component.write_text(output)

@@ -71,16 +71,21 @@ class Composer:
         self.pre_captions.append(caption)
 
     def push_post_caption(self, caption: Component):
-        comps = self.components
+        consumed = False
 
-        if len(comps) == 0:
+        for comps in reversed(self.stack):
+            if len(comps) > 0:
+                component = comps[-1]
+
+                if isinstance(component, Table):
+                    component.caption = caption
+                else:
+                    figure = Figure(component.location, component, caption)
+
+                    comps[-1] = figure
+
+                consumed = True
+                break
+
+        if not consumed:
             raise StxError('Expected component for post-caption.')
-
-        component = comps[-1]
-
-        if isinstance(component, Table):
-            component.caption = caption
-        else:
-            figure = Figure(component.location, component, caption)
-
-            comps[-1] = figure

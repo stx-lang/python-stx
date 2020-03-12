@@ -22,6 +22,9 @@ class TableRow(Component):
     def display_mode(self) -> DisplayMode:
         return DisplayMode.DEFAULT
 
+    def is_rich(self) -> bool:
+        return True
+
     def write_text(self, output: TextIO):
         for cell in self.cells:
             cell.write_text(output)

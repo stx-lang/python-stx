@@ -23,6 +23,9 @@ class StyledText(Component):
     def display_mode(self) -> DisplayMode:
         return DisplayMode.INLINE
 
+    def is_rich(self) -> bool:
+        return True
+
     def write_text(self, output: TextIO):
         for content in self.contents:
             content.write_text(output)

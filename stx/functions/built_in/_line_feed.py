@@ -1,4 +1,4 @@
-from stx.compiling.resolvers import utils
+from stx.functions import utils
 from stx.components import Component, FunctionCall, PlainText
 from stx.document import Document
 

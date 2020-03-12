@@ -4,9 +4,9 @@ from gramat.errors import GramatError
 from gramat.lexing.nodes import SyntaxNode, ContainerNode, TokenNode
 
 from stx.compiling.reading.location import Location
-from stx.compiling.resolvers import utils
-from stx.components import FunctionCall, Component, Literal, CodeBlock, \
-    PlainText, Composite, CustomText
+from stx.functions import utils
+from stx.components import FunctionCall, Component, CodeBlock, \
+    PlainText, CustomText
 from stx.document import Document
 from stx.grammars import registry
 
@@ -34,7 +34,8 @@ def generate_component(
 
 
 def resolve_code(document: Document, call: FunctionCall) -> Component:
-    text = utils.make_literal_arg(call)
+    if call.argument is None:
+        raise call.error('Code function requires a captured component.')
 
     options = utils.make_options_dict(call, key_for_str='lang')
 
@@ -42,21 +43,22 @@ def resolve_code(document: Document, call: FunctionCall) -> Component:
 
     utils.check_unknown_options(options, call)
 
-    grammar = registry.get_grammar(lang)
+    contents = None
 
-    contents = []
+    if lang is not None:
+        grammar = registry.get_grammar(lang)
 
-    if grammar is not None:
-        try:
-            nodes = grammar.tokenize(text)
+        if grammar is not None:
+            text = utils.make_plain_text(call.argument)
 
-            generate_component(call.location, nodes, contents)
-        except GramatError:
-            pass
+            try:
+                contents = []
+                nodes = grammar.tokenize(text)
+                generate_component(call.location, nodes, contents)
+            except GramatError:
+                contents = None
 
-    if len(contents) == 0:
-        contents.append(
-            PlainText(call.location, text)
-        )
+    if contents is None:
+        contents = utils.make_component_list(call.argument)
 
     return CodeBlock(call.location, contents, lang=lang)

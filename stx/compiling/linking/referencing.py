@@ -6,11 +6,14 @@ from stx.components import Component, Section, Table, Figure, LinkText
 from stx.document import Document
 from stx.utils.debug import see
 
-
 REF_LENGTH_HINT = 40
 
 
-def link_document_references(document: Document):
+# TODO refactor `ref` attribute, auto-generation,
+#  normalization and validation.
+
+
+def auto_generate_special_references(document: Document):
     roots = list()
     refs = set()
 
@@ -18,33 +21,46 @@ def link_document_references(document: Document):
         roots.append(document.content)
 
     for root in roots:
-        normalize_and_collect_wild_references(root, refs)
+        normalize_references(root)
+
+    for root in roots:
+        collect_references(root, refs)
 
     for root in roots:
         register_missing_references(root, refs)
+
+
+def validate_references(document: Document):
+    roots = list()
+    refs = set()
+
+    if document.content is not None:
+        roots.append(document.content)
+
+    for root in roots:
+        collect_references(root, refs)
 
     for root in roots:
         normalize_and_report_invalid_links(root, refs)
 
 
-def normalize_and_collect_wild_references(root: Component, refs: Set[str]):
+def collect_references(root: Component, refs: Set[str]):
     for component in root.walk():
-        normalize_wild_references(component)
-
         for ref in component.get_refs():
             if ref in refs:
-                raise Exception(f'Reference already taken: {ref}')
+                raise component.error(f'Reference already taken: {ref}')
             else:
                 refs.add(ref)
 
 
-def normalize_wild_references(component: Component):
-    wild_refs = component.get_refs()
+def normalize_references(root: Component):
+    for component in root.walk():
+        wild_refs = component.get_refs()
 
-    if len(wild_refs) > 0:
-        component.ref = [
-            make_ref(wild_ref) for wild_ref in wild_refs
-        ]
+        if len(wild_refs) > 0:
+            component.ref = [
+                make_ref(wild_ref) for wild_ref in wild_refs
+            ]
 
 
 def register_missing_references(root: Component, refs: Set[str]):

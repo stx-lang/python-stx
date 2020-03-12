@@ -18,3 +18,9 @@
 1. Fix passing content reference, make clear when a component must be in the same content
 1. Remove TRX
 1. Add support for headers with subtitles
+1. All functions must receive only a component as captured content.
+1. Remove inline function call before captured content (should be only after).
+1. Make inline type a boolean (inline=False, inline=True).
+1. Double check if the attributes are applying correctly.
+1. Implement comments.
+1. Add pylama.

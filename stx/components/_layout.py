@@ -5,17 +5,28 @@ from typing import List, Optional, TextIO
 from ._component import Component, DisplayMode
 from ..compiling.reading.location import Location
 from ..data_notation.values import Value
+from ..utils.stx_error import StxError
 from ..utils.tracked_dict import TrackedDict
 
 
-class Composite(Component):
+DIR_ROW = 'row'
+DIR_COLUMN = 'col'
+
+
+class Layout(Component):
 
     def __init__(
             self,
             location: Location,
-            components: Optional[List[Component]] = None):
+            components: List[Component],
+            direction: str):
         self.location = location
-        self.components = components if components is not None else []
+        self.components = components
+
+        if direction not in [DIR_ROW, DIR_COLUMN]:
+            raise StxError(f'Not allowed direction: {direction}', location)
+
+        self.direction = direction
 
     @property
     def display_mode(self) -> DisplayMode:
