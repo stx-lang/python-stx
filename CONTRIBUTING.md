@@ -37,3 +37,13 @@ You may need to install:
 ```shell script
 pip install setuptools wheel
 ```
+
+# Uploading Package
+
+```
+# Test
+python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+# Production
+twine upload dist/*
+```
