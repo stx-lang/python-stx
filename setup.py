@@ -6,17 +6,11 @@ def read_content(file: str) -> str:
         return f.read().strip()
 
 
-# TODO move this version parsing to a module
-version = read_content('version.txt')
+version_number = read_content('version.txt')
 
-version_number, version_status = version.split(' ')
-
-if version_status == 'alpha':
-    development_status = 'Development Status :: 3 - Alpha'
-elif version_status == 'beta':
-    development_status = 'Development Status :: 4 - Beta'
-else:
-    development_status = 'Development Status :: 5 - Production/Stable'
+# development_status = 'Development Status :: 3 - Alpha'
+development_status = 'Development Status :: 4 - Beta'
+# development_status = 'Development Status :: 5 - Production/Stable'
 
 
 setuptools.setup(

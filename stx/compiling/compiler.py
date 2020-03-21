@@ -23,9 +23,10 @@ def compile_document(file_path: str) -> Document:
 
     auto_generate_special_references(doc)
 
+    link_document_numbers(doc)
+
     resolve_document(doc)
 
-    link_document_numbers(doc)
     validate_references(doc)
 
     return doc
