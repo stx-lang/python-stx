@@ -5,7 +5,7 @@
 Use Python 3.8.0 through [pyenv](https://github.com/pyenv/pyenv#installation):
 
 ```shell script
-pyenv shell 3.8.0
+python --version
 python -m venv env
 source env/bin/activate
 ```
@@ -42,7 +42,7 @@ pip install setuptools wheel
 
 ```
 # Test
-python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 # Production
 twine upload dist/*

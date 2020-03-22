@@ -1,3 +1,11 @@
 -r requirements-main.txt
 
+# Testing
 pytest
+
+# Build
+setuptools
+wheel
+
+# Deployment
+twine
