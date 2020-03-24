@@ -28,7 +28,7 @@ setuptools.setup(
     install_requires=read_content('requirements-main.txt'),
     entry_points={
         'console_scripts': [
-            'stx = stx.__main__:main'
+            'stx=stx.app:cli'
         ]
     },
     # See: https://pypi.org/classifiers/

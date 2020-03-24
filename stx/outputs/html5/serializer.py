@@ -53,7 +53,7 @@ def generate_head(document: Document, html: Tag):
 
     head.append_tag('meta', {
         'name': 'generator',
-        'content': app.title,
+        'content': app.app_title,
     })
 
     if document.title:

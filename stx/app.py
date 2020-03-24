@@ -1,6 +1,7 @@
 import os
 import threading
 import time
+import click
 import pkg_resources
 
 from watchdog.events import FileSystemEventHandler, FileSystemEvent
@@ -12,9 +13,9 @@ from stx.document import Document
 from stx.outputs import OutputFile, OutputAction
 from stx.utils.debug import see
 
-name = 'stx'
-version = pkg_resources.require(name)[0].version
-title = f'{name} {version}'
+app_name = 'stx'
+app_version = pkg_resources.require(app_name)[0].version
+app_title = f'{app_name} {app_version}'
 
 
 def process_file(input_file: str) -> Document:
@@ -35,16 +36,19 @@ def watch_file(input_file: str):
     ignored_files = set()
 
     def refresh():
-        document = process_file(input_file)
+        try:
+            document = process_file(input_file)
 
-        ignored_files.clear()
+            ignored_files.clear()
 
-        for action in document.actions:
-            if (isinstance(action, OutputAction)
-                    and isinstance(action.target, OutputFile)):
-                ignored_files.add(
-                    os.path.abspath(action.target.file_path)
-                )
+            for action in document.actions:
+                if (isinstance(action, OutputAction)
+                        and isinstance(action.target, OutputFile)):
+                    ignored_files.add(
+                        os.path.abspath(action.target.file_path)
+                    )
+        except Exception as e:
+            print(e)
 
     class Handler(FileSystemEventHandler):
 
@@ -81,10 +85,26 @@ def watch_file(input_file: str):
     observer.join()
 
 
-def main(input_file: str, watch_mode=False):
+def main(input_file: str, watch_mode=False, version=False):
+    if version:
+        print(app_title)
+
     input_file = os.path.abspath(input_file)
 
     if watch_mode:
         watch_file(input_file)
     else:
         process_file(input_file)
+
+
+@click.command(name='stx')
+@click.argument(
+    'input_file', help='Input file in STX format.')
+@click.option(
+    '-w', '--watch', help='Watches the document for changes.',
+    is_flag=True, default=False)
+@click.option(
+    '-v', '--version', help='Shows the STX version.',
+    is_flag=True, default=False)
+def cli(input_file: str, watch: bool, version: bool):
+    main(input_file, watch, version)
