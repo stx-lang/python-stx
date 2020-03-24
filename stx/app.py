@@ -98,8 +98,7 @@ def main(input_file: str, watch_mode=False, version=False):
 
 
 @click.command(name='stx')
-@click.argument(
-    'input_file', help='Input file in STX format.')
+@click.argument('input_file')
 @click.option(
     '-w', '--watch', help='Watches the document for changes.',
     is_flag=True, default=False)
@@ -107,4 +106,5 @@ def main(input_file: str, watch_mode=False, version=False):
     '-v', '--version', help='Shows the STX version.',
     is_flag=True, default=False)
 def cli(input_file: str, watch: bool, version: bool):
+    """Processes the STX document indicated by INPUT_FILE."""
     main(input_file, watch, version)
