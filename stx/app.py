@@ -3,6 +3,7 @@ import threading
 import time
 import click
 import pkg_resources
+from click import ClickException
 
 from watchdog.events import FileSystemEventHandler, FileSystemEvent
 from watchdog.observers import Observer
@@ -88,6 +89,8 @@ def watch_file(input_file: str):
 def main(input_file: str, watch_mode=False, version=False):
     if version:
         print(app_title)
+    elif input_file == '':
+        raise ClickException('Missing input file.')
 
     input_file = os.path.abspath(input_file)
 
@@ -98,7 +101,7 @@ def main(input_file: str, watch_mode=False, version=False):
 
 
 @click.command(name='stx')
-@click.argument('input_file')
+@click.argument('input_file', default='')
 @click.option(
     '-w', '--watch', help='Watches the document for changes.',
     is_flag=True, default=False)
