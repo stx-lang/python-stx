@@ -1,6 +1,6 @@
 #!/bin/sh
 
-rm -r env/
-rm -r build/
-rm -r dist/
-rm -r stx.egg-info/
+rm -rf env/
+rm -rf build/
+rm -rf dist/
+rm -rf stx.egg-info/
