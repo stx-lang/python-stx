@@ -37,12 +37,14 @@ def make_output_action(
     if format_value is not None:
         actual_format = format_value.to_str()
         actual_target = OutputStdOut()
+        actual_theme = None
         actual_options = Empty()
     else:
         args_map = arguments.to_map()
 
         format_value = args_map.pop('format', None)
         target_value = args_map.pop('target', None)
+        theme_value = args_map.pop('theme', None)
         options_value = args_map.pop('options', None)
 
         if len(args_map) > 0:
@@ -62,6 +64,11 @@ def make_output_action(
         else:
             actual_target = OutputStdOut()
 
+        if theme_value is not None:
+            actual_theme = theme_value.to_str()
+        else:
+            actual_theme = None
+
         if options_value is not None:
             actual_options = options_value
         else:
@@ -75,6 +82,7 @@ def make_output_action(
         format_key=actual_format,
         target=actual_target,
         options=actual_options,
+        theme=actual_theme,
     )
 
 

@@ -9,6 +9,7 @@ from stx.components import ContentBox, TableOfContents, ElementReference
 from stx.components import CapturedText
 from stx.document import Document
 from stx.outputs.html5.dom import Tag
+from stx.outputs.html5.themes import HtmlTheme
 from stx.utils.stx_error import StxError
 from stx.utils.debug import see
 
@@ -27,19 +28,19 @@ CAPTURED_CLASS_TAGS = [
 ]
 
 
-def document_to_html(document: Document) -> List[Tag]:
+def document_to_html(document: Document, theme: HtmlTheme) -> List[Tag]:
     logger.info('Serializing HTML5 book...')
 
     html = Tag('html')
 
-    generate_head(document, html)
+    generate_head(document, html, theme)
 
-    generate_body(document, html)
+    generate_body(document, html, theme)
 
     return [Tag('!DOCTYPE html'), html]
 
 
-def generate_head(document: Document, html: Tag):
+def generate_head(document: Document, html: Tag, theme: HtmlTheme):
     head = html.append_tag('head')
 
     if document.encoding:
@@ -66,8 +67,10 @@ def generate_head(document: Document, html: Tag):
             'href': stylesheet,
         })
 
+    # TODO implement theme
 
-def generate_body(document: Document, html: Tag):
+
+def generate_body(document: Document, html: Tag, theme: HtmlTheme):
     body = html.append_tag('body', {'data-type': 'book'})
 
     if document.title is not None:
@@ -85,6 +88,8 @@ def generate_body(document: Document, html: Tag):
         footer = body.append_tag('footer')
 
         generate_component(footer, document.footer)
+
+    # TODO implement theme
 
 
 def generate_component(

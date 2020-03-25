@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import sys
-from typing import TextIO
+from typing import TextIO, Optional
 
 from stx import logger
 from stx.action import Action
@@ -52,12 +52,14 @@ class OutputAction(Action):
             location: Location,
             format_key: str,
             target: OutputTarget,
-            options: Value):
+            options: Value,
+            theme: Optional[str]):
         self.document = document
         self.location = location
         self.format_key = format_key
         self.target = target
         self.options = options
+        self.theme = theme
 
     def dump(self, out: TextIO):
         raise NotImplementedError()
