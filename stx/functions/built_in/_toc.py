@@ -13,7 +13,7 @@ from stx.document import Document
 def resolve_toc(document: Document, call: FunctionCall) -> Component:
     options = utils.make_options_dict(call, key_for_str='title')
 
-    title = options.pop('title')
+    title = options.pop('title', None)
 
     utils.check_unknown_options(options, call)
 

@@ -1,6 +1,8 @@
 import os
 import threading
 import time
+import traceback
+
 import click
 import pkg_resources
 from click import UsageError
@@ -33,7 +35,7 @@ def process_file(input_file: str) -> Document:
     return document
 
 
-def watch_file(input_file: str):
+def watch_file(input_file: str, debug_mode: bool):
     ignored_files = set()
 
     def refresh():
@@ -49,7 +51,9 @@ def watch_file(input_file: str):
                         os.path.abspath(action.target.file_path)
                     )
         except Exception as e:
-            print(e)
+            print(f'Error: {e}')
+            if debug_mode:
+                print(traceback.format_exc())
 
     class Handler(FileSystemEventHandler):
 
@@ -86,7 +90,7 @@ def watch_file(input_file: str):
     observer.join()
 
 
-def main(input_file: str, watch_mode=False, version=False):
+def main(input_file: str, watch_mode=False, version=False, debug_mode=False):
     if version:
         print(app_title)
     elif input_file == '':
@@ -95,7 +99,7 @@ def main(input_file: str, watch_mode=False, version=False):
     input_file = os.path.abspath(input_file)
 
     if watch_mode:
-        watch_file(input_file)
+        watch_file(input_file, debug_mode)
     else:
         process_file(input_file)
 
@@ -108,6 +112,9 @@ def main(input_file: str, watch_mode=False, version=False):
 @click.option(
     '-v', '--version', help='Shows the STX version.',
     is_flag=True, default=False)
-def cli(input_file: str, watch: bool, version: bool):
+@click.option(
+    '-d', '--debug', help='Enables debug mode.',
+    is_flag=True, default=False)
+def cli(input_file: str, watch: bool, version: bool, debug):
     """Processes the STX document indicated by INPUT_FILE."""
-    main(input_file, watch, version)
+    main(input_file, watch, version, debug)
