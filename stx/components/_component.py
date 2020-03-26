@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from enum import Enum
 from io import StringIO
-from typing import List, Iterable, TextIO, Union, Optional, Dict
+from typing import List, Iterable, TextIO, Union, Optional
 
 from stx.compiling.reading.location import Location
-from stx.data_notation.values import Value, Token
+from stx.data_notation.values import Value
 from stx.utils.stx_error import StxError
-from stx.utils.debug import see
 from stx.utils.tracked_dict import TrackedDict
 
 

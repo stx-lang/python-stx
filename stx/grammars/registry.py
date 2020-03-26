@@ -4,7 +4,7 @@ import os
 from typing import Dict, List, Optional
 
 from gramat import actions
-from gramat.expressions import Expression, EvalContext
+from gramat.expressions import EvalContext
 from gramat.lexing.lexer import generate_nodes
 from gramat.lexing.nodes import SyntaxNode
 from gramat.parsing.source import Source

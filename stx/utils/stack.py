@@ -22,4 +22,3 @@ class Stack(Generic[T]):
             return self.items[-1]
 
         return default
-

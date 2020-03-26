@@ -1,9 +1,8 @@
-from io import StringIO
 from typing import Optional, Union, List
 
 from stx import logger
-from stx.components import FunctionCall, Component, Literal, Composite, \
-    Paragraph
+from stx.components import (
+    FunctionCall, Component, Composite, Paragraph)
 from stx.data_notation.values import Value
 from stx.utils.stx_error import StxError
 from stx.utils.debug import see

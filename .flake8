@@ -1,6 +1,6 @@
 [flake8]
 
-max-complexity = 10
+max-complexity = 20
 
 exclude=
     build/*,

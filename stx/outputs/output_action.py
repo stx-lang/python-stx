@@ -3,14 +3,11 @@ from __future__ import annotations
 import sys
 from typing import TextIO, Optional
 
-from stx import logger
 from stx.action import Action
 from stx.compiling.reading.location import Location
-from stx.data_notation.values import Value, Empty
+from stx.data_notation.values import Value
 from stx.document import Document
 from stx.utils.files import resolve_sibling
-from stx.utils.stx_error import StxError
-from stx.utils.debug import see
 
 
 class OutputTarget:

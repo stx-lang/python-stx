@@ -1,5 +1,5 @@
 from os import path, walk
-from typing import Iterator, List, Iterable
+from typing import Iterator, List
 
 
 def resolve_path(base_path: str, relative_path: str) -> str:

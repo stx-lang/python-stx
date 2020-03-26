@@ -2,44 +2,38 @@ from io import StringIO
 from typing import List, Optional
 
 from stx.compiling.composer import Composer
-
-from stx.compiling.marks import heading_block_marks, header_row_block_mark, \
-    not_inline_marks, inline_marks, link_ref_begin_mark, link_ref_end_mark
-from stx.compiling.marks import normal_row_block_mark, cell_block_mark
-from stx.compiling.marks import pre_caption_block_mark
-from stx.compiling.marks import post_caption_block_mark
-from stx.compiling.marks import unordered_item_block_mark
-from stx.compiling.marks import ordered_item_block_mark, section_levels
-from stx.compiling.marks import link_text_begin_mark, link_text_end_mark
-from stx.compiling.marks import container_begin_mark, container_end_mark
-from stx.compiling.marks import function_begin_mark, function_end_mark
-from stx.compiling.marks import attribute_special_mark, directive_special_mark
 from stx.compiling.marks import all_marks, escape_char, literal_area_mark
+from stx.compiling.marks import attribute_special_mark, directive_special_mark
+from stx.compiling.marks import code_begin_mark, code_end_mark
 from stx.compiling.marks import container_area_begin_mark
 from stx.compiling.marks import container_area_end_mark
-from stx.compiling.marks import strong_begin_mark, strong_end_mark
-from stx.compiling.marks import emphasized_begin_mark, emphasized_end_mark
-from stx.compiling.marks import code_begin_mark, code_end_mark
-from stx.compiling.marks import deleted_begin_mark, deleted_end_mark
+from stx.compiling.marks import container_begin_mark, container_end_mark
 from stx.compiling.marks import d_quote_begin_mark, d_quote_end_mark
-from stx.compiling.marks import s_quote_begin_mark, s_quote_end_mark
+from stx.compiling.marks import deleted_begin_mark, deleted_end_mark
 from stx.compiling.marks import ellipsis_single_mark
-
+from stx.compiling.marks import emphasized_begin_mark, emphasized_end_mark
+from stx.compiling.marks import function_begin_mark, function_end_mark
+from stx.compiling.marks import heading_block_marks, header_row_block_mark, \
+    not_inline_marks, inline_marks, link_ref_begin_mark, link_ref_end_mark
+from stx.compiling.marks import link_text_begin_mark, link_text_end_mark
+from stx.compiling.marks import normal_row_block_mark, cell_block_mark
+from stx.compiling.marks import ordered_item_block_mark, section_levels
+from stx.compiling.marks import post_caption_block_mark
+from stx.compiling.marks import pre_caption_block_mark
+from stx.compiling.marks import s_quote_begin_mark, s_quote_end_mark
+from stx.compiling.marks import strong_begin_mark, strong_end_mark
+from stx.compiling.marks import unordered_item_block_mark
 from stx.compiling.reading.content import Content
 from stx.compiling.reading.location import Location
 from stx.compiling.reading.reader import Reader
-
 from stx.components import Component, Section, Composite, Table, TableRow, \
     Paragraph, DisplayMode
+from stx.components import FunctionCall
 from stx.components import LinkText, StyledText, PlainText, Literal, ListBlock
-from stx.components import TableOfContents, FunctionCall
-
 from stx.data_notation.parsing import parse_entry, skip_void, try_parse_entry
 from stx.data_notation.values import Value
-
 from stx.document import Document
 from stx.outputs import make_output_action
-
 from stx.utils.closeable import Closeable
 from stx.utils.debug import see
 from stx.utils.files import resolve_include_files
@@ -506,7 +500,8 @@ def parse_inline(
             signal = (
                 parse_inline_function(ctx, mark, location, content)
                 or
-                parse_inline_container(ctx, mark, location, content, indentation)
+                parse_inline_container(
+                    ctx, mark, location, content, indentation)
                 or
                 parse_inline_style(ctx, mark, location, content, indentation)
                 or

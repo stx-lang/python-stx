@@ -3,7 +3,6 @@ from typing import List, Optional
 from stx.compiling.reading.chain import Chain
 from stx.compiling.reading.content import Content
 from stx.compiling.reading.location import Location
-from stx.utils.thread_context import context
 
 
 class Reader:

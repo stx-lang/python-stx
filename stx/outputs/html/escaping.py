@@ -1,4 +1,3 @@
-import string
 from typing import TextIO, Any
 
 entities = {

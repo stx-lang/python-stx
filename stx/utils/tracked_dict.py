@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar, Optional, Dict, Set, List
+from typing import Generic, TypeVar, Optional, Dict, Set
 
 KT = TypeVar('KT')
 VT = TypeVar('VT')

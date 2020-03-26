@@ -1,20 +1,10 @@
 from __future__ import annotations
 
-from io import TextIOWrapper
-from typing import Optional, List
+from typing import List
+from typing import Optional
 
 from stx.action import Action
 from stx.components import Component
-
-import sys
-from typing import Optional, TextIO
-
-from stx import logger
-from stx.compiling.reading.location import Location
-from stx.data_notation.values import Value, Empty
-from stx.utils.files import resolve_sibling
-from stx.utils.stx_error import StxError
-from stx.utils.debug import see
 
 
 class Document:

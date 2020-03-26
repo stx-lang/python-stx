@@ -3,7 +3,6 @@ from typing import Optional
 from stx.functions import utils
 from stx.components import FunctionCall, Component, ContentBox
 from stx.document import Document
-from stx.utils.stx_error import StxError
 
 
 def resolve_admonition(document: Document, call: FunctionCall) -> Component:

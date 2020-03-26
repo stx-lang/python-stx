@@ -1,8 +1,9 @@
 from typing import List
 
 from stx import app, logger
-from stx.components import Component, Composite, CodeBlock, Table, Image, \
-    FunctionCall, CustomText, Layout
+from stx.components import (
+    Component, Composite, CodeBlock, Table, Image,
+    FunctionCall, CustomText, Layout)
 from stx.components import ListBlock, Paragraph, PlainText, StyledText
 from stx.components import LinkText, Literal, Figure, Section, Separator
 from stx.components import ContentBox, TableOfContents, ElementReference
@@ -11,7 +12,6 @@ from stx.document import Document
 from stx.outputs.html.dom import Tag
 from stx.outputs.html.themes import HtmlTheme
 from stx.utils.stx_error import StxError
-from stx.utils.debug import see
 
 TYPE_H_TAGS = {
     'chapter': 'h1',
@@ -425,4 +425,3 @@ def append_component_tag(
         tag['id'] = tag_id
 
     return tag
-

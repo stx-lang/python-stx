@@ -11,9 +11,6 @@ class JsonOutputAction(OutputAction):
         d = document_to_json(self.document)
 
         # TODO implement options
-        # if output.options.to_dict():
         indent = 2
-        # else:
-            # indent = None
 
         json.dump(d, out, indent=indent)

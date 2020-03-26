@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Optional, TextIO
+from typing import List, TextIO
 
 from ._component import Component, DisplayMode
 from ..compiling.reading.location import Location

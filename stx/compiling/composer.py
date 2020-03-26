@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from stx.components import Component, Composite, Figure, Table
+from stx.components import Component, Figure, Table
 from stx.data_notation.values import Value
 from stx.utils.stx_error import StxError
 from stx.utils.debug import see
