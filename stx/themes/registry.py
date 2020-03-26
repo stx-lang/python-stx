@@ -1,6 +1,6 @@
 from typing import Any
 
-from stx.themes.classic_html5.handler import classic_theme
+from stx.themes.built_in.classic_html import classic_theme
 
 _themes = {}
 

@@ -1,2 +1,2 @@
-graft stx/themes/classic_html5/assets
-graft stx/grammars/built_in
+include stx/resources/*/**
+prune stx/resources/__pycache__

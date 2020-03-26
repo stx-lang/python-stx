@@ -25,3 +25,9 @@ escaped-char: "\\" (`" \\ / b f n r t` | escaped-unicode)
 escaped-unicode: "u" {4; hex-digit}
 
 void: {`\u0020 \r \n \t`}
+
+name: {1 `a-z A-Z _ - 0-9`}
+
+integer: {1 `0-9`}
+
+hex-digit: `a-f A-F 0-9`
