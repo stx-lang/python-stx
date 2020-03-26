@@ -4,7 +4,7 @@ from stx import logger
 from stx.compiling.reading.location import Location
 from stx.data_notation.values import Value, Empty
 from stx.document import Document
-from stx.outputs.html5.output import HtmlOutputAction
+from stx.outputs.html.output import HtmlOutputAction
 from stx.outputs.json.output import JsonOutputAction
 from stx.outputs.output_action import OutputAction, OutputStdOut
 from stx.outputs.output_action import OutputTarget

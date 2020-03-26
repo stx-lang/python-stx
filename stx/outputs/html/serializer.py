@@ -8,8 +8,8 @@ from stx.components import LinkText, Literal, Figure, Section, Separator
 from stx.components import ContentBox, TableOfContents, ElementReference
 from stx.components import CapturedText
 from stx.document import Document
-from stx.outputs.html5.dom import Tag
-from stx.outputs.html5.themes import HtmlTheme
+from stx.outputs.html.dom import Tag
+from stx.outputs.html.themes import HtmlTheme
 from stx.utils.stx_error import StxError
 from stx.utils.debug import see
 
@@ -60,6 +60,11 @@ def generate_head(document: Document, html: Tag, theme: HtmlTheme):
     if document.title:
         head.append_tag('title', text=document.title)
 
+    for css in theme.head_styles:
+        head.append_tag('style', {
+            'type': 'text/css',
+        }, text=css, text_literal=True)
+
     for stylesheet in document.stylesheets:
         head.append_tag('link', {
             'rel': 'stylesheet',
@@ -67,7 +72,10 @@ def generate_head(document: Document, html: Tag, theme: HtmlTheme):
             'href': stylesheet,
         })
 
-    # TODO implement theme
+    for js in theme.head_scripts:
+        head.append_tag('script', {
+            'type': 'application/javascript',
+        }, text=js, text_literal=True)
 
 
 def generate_body(document: Document, html: Tag, theme: HtmlTheme):
@@ -89,7 +97,10 @@ def generate_body(document: Document, html: Tag, theme: HtmlTheme):
 
         generate_component(footer, document.footer)
 
-    # TODO implement theme
+    for js in theme.body_scripts:
+        body.append_tag('script', {
+            'type': 'application/javascript',
+        }, text=js, text_literal=True)
 
 
 def generate_component(

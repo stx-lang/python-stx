@@ -1,6 +1,6 @@
 from typing import Any
 
-from stx.themes.classic_html5.handler import ClassicHtmlTheme
+from stx.themes.classic_html5.handler import classic_theme
 
 _themes = {}
 
@@ -24,4 +24,4 @@ def get_theme(name: str, output_format: str) -> Any:
     return _themes[key]
 
 
-register_theme('classic', 'html', ClassicHtmlTheme())
+register_theme('classic', 'html', classic_theme)

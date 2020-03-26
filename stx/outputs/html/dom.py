@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, TextIO, List, Optional
 
-from stx.outputs.html5.escaping import write_text
+from stx.outputs.html.escaping import write_text
 
 
 class Element:
@@ -53,10 +53,14 @@ class Tag(Element):
             name: str,
             attributes: Dict[str, Any] = None,
             *args,
-            text: str = None) -> Tag:
+            text: str = None,
+            text_literal=False) -> Tag:
 
         if text is not None:
-            children = [Text(text)]
+            if text_literal:
+                children = [Literal(text)]
+            else:
+                children = [Text(text)]
         else:
             children = None
 

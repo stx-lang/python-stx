@@ -1,0 +1,54 @@
+[data-type=toc] ol{
+    list-style-type: none;
+    padding: 0;
+}
+
+[data-type=toc] li > ol{
+    padding-left: 1em;
+}
+
+[data-number]::before{
+  content: attr(data-number) ' ';
+}
+
+caption[data-number]::before{
+    content: 'Table ' attr(data-number) ' ';
+}
+
+figcaption[data-number]::before{
+  content: 'Figure ' attr(data-number) ' ';
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: flex-start;
+    margin: 0;
+}
+
+#layout-start{
+    flex-grow: 0;
+}
+
+#layout-center{
+    flex-grow: 1;
+}
+
+[data-type=toc]{
+    min-width: 200px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: scroll;
+    padding: 1em;
+}
+
+main{
+    max-width: 210mm;
+    padding: 1em;
+    padding-bottom: 95vh;
+    margin: auto;
+}
