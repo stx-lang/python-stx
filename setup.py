@@ -23,6 +23,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/stx-lang/python-stx',
     packages=setuptools.find_packages(),
+    package_data={'stx': ['resources/data/**']},
     python_requires='>=3.8',
     license='MIT',
     install_requires=read_content('requirements-main.txt'),
