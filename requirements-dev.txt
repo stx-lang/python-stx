@@ -1,5 +1,8 @@
 -r requirements-main.txt
 
+# Audit
+flake8
+
 # Testing
 pytest
 

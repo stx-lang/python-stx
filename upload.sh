@@ -12,6 +12,9 @@ source env/bin/activate && \
 echo "Installing requirements..."  && \
 pip install -r requirements-dev.txt && \
 
+echo "Auditing code..."  && \
+flake8 && \
+
 echo "Generating dist package..."  && \
 python setup.py sdist bdist_wheel && \
 
