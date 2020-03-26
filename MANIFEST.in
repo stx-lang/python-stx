@@ -1,1 +1,2 @@
 graft stx/themes/classic_html5/assets
+graft stx/grammars/built_in
