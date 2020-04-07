@@ -23,10 +23,14 @@ def compile_document(file_path: str) -> Document:
 
     auto_generate_special_references(doc)
 
-    link_document_numbers(doc)
+    while True:
+        link_document_numbers(doc)
 
-    resolve_document(doc)
+        resolved_components = resolve_document(doc)
 
-    validate_references(doc)
+        validate_references(doc)
+
+        if resolved_components == 0:
+            break
 
     return doc

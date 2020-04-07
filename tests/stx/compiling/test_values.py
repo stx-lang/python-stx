@@ -14,9 +14,9 @@ def test_parse_value():
     assert parse('~') is None
     assert parse('abc') == 'abc'
     assert parse('`abc`') == 'abc'
-    assert parse('a=1') == {'a': '1'}
-    assert parse('nothing=~') == {'nothing': None}
+    assert parse('a:1') == {'a': '1'}
+    assert parse('nothing:~') == {'nothing': None}
     assert parse('~, ~, ~') == [None, None, None]
-    assert parse('a=1, b=2') == {'a': '1', 'b': '2'}
-    assert parse('a=1, b=(2, 3, 4), c=5') == {
+    assert parse('a:1, b:2') == {'a': '1', 'b': '2'}
+    assert parse('a:1, b:(2, 3, 4), c:5') == {
         'a': '1', 'b': ['2', '3', '4'], 'c': '5'}

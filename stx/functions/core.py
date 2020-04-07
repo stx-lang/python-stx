@@ -5,24 +5,35 @@ from stx.utils.stx_error import StxError
 from stx.utils.debug import see
 
 
-def resolve_document(document: Document):
+def resolve_document(document: Document) -> int:
+    count = 0
+
     if document.content is not None:
-        resolve_component(document, document.content)
+        count += resolve_component(document, document.content)
+
+    return count
 
 
-def resolve_component(document: Document, component: Component):
+def resolve_component(document: Document, component: Component) -> int:
+    count = 0
     children = component.get_children()
 
     # Resolve children first
     for child in children:
-        resolve_component(document, child)
+        count += resolve_component(document, child)
 
     # Resolve function then
     if isinstance(component, FunctionCall):
-        resolve_function_call(document, component)
+        count += resolve_function_call(document, component)
+
+    return count
 
 
 def resolve_function_call(document: Document, call: FunctionCall):
+    # Check if it is already resolved
+    if call.result is not None:
+        return 0
+
     processor = registry.get(call.key)
 
     if processor is None:
@@ -34,4 +45,4 @@ def resolve_function_call(document: Document, call: FunctionCall):
     if call.result is None:
         raise call.error('Function call did not produce a component.')
 
-    resolve_component(document, call.result)
+    return 1 + resolve_component(document, call.result)
