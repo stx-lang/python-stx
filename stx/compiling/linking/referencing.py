@@ -65,13 +65,12 @@ def normalize_references(root: Component):
 
 def register_missing_references(root: Component, refs: Set[str]):
     for component in root.walk():
-        if not component.has_refs():
-            if isinstance(component, Section):
-                register_section_reference(component, refs)
-            elif isinstance(component, Table):
-                register_table_reference(component, refs)
-            elif isinstance(component, Figure):
-                register_figure_reference(component, refs)
+        if isinstance(component, Section):
+            register_section_reference(component, refs)
+        elif isinstance(component, Table):
+            register_table_reference(component, refs)
+        elif isinstance(component, Figure):
+            register_figure_reference(component, refs)
 
 
 def normalize_and_report_invalid_links(root: Component, refs: Set[str]):
