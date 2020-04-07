@@ -3,9 +3,10 @@
 VERSION=$(cat version.txt)
 
 echo "Clear previous builds..." && \
-./clear.sh && \
+rm -rf env/ && rm -rf build/ && \
+rm -rf dist/ && rm -rf *.egg-info/ && \
 
-echo "Create a new brand virtual env..." && \
+echo "Create a new virtual env..." && \
 python -m venv env && \
 
 echo "Activating virtual env..." && \
@@ -17,14 +18,17 @@ pip install -r requirements-dev.txt && \
 echo "Auditing code..." && \
 flake8 && \
 
-echo "Generating dist package..." && \
+echo "Running unit tests..." && \
+pytest && \
+
+echo "Generating dist archives..." && \
 python setup.py sdist bdist_wheel && \
 
-echo "Uploading version $VERSION..." && \
+echo "Uploading package $VERSION..." && \
 twine upload dist/* && \
 
 echo "Creating tag..." && \
 git tag $VERSION && \
-git push origin $VERSION && \
+git push --all && \
 
 echo "Done!"
