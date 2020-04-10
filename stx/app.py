@@ -17,7 +17,12 @@ from stx.outputs import OutputFile, OutputAction
 from stx.utils.debug import see
 
 app_name = 'stx'
-app_version = pkg_resources.require(app_name)[0].version
+
+try:
+    app_version = pkg_resources.require(app_name)[0].version
+except pkg_resources.DistributionNotFound:
+    app_version = '?'
+
 app_title = f'{app_name} {app_version}'
 
 
