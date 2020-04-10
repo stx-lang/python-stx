@@ -9,8 +9,9 @@ from gramat.lexing.lexer import generate_nodes
 from gramat.lexing.nodes import SyntaxNode
 from gramat.options import Options
 from gramat.parsing.source import Source
+from gramat.actions import compile_file
 
-from stx import resources
+from stx import resources, logger
 
 
 def load_grammar(res_path: str) -> Grammar:
@@ -52,6 +53,14 @@ _registry: Dict[str, GrammarReference] = {
 
 def register_grammar(lang: str, grammar: Grammar, rule_name: str):
     _registry[lang] = GrammarReference(grammar, rule_name)
+
+    logger.info(f'Registered grammar for {lang} lang.')
+
+
+def register_grammar_from_file(lang: str, gramat_file: str, rule_name: str):
+    grammar = compile_file(gramat_file)
+
+    register_grammar(lang, grammar, rule_name)
 
 
 def get_grammar(lang: str) -> Optional[GrammarReference]:

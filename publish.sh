@@ -24,11 +24,13 @@ pytest && \
 echo "Generating dist archives..." && \
 python setup.py sdist bdist_wheel && \
 
-echo "Uploading package $VERSION..." && \
+echo "" && \
+echo "Publish package $VERSION..." && \
 twine upload dist/* && \
 
-echo "Creating tag..." && \
-git tag $VERSION && \
-git push --all && \
+echo "" && \
+echo "Pushing tag..." && \
+git tag $VERSION -a -m "Release for version $VERSION" && \
+git push --follow-tags && \
 
 echo "Done!"

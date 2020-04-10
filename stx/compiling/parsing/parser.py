@@ -33,10 +33,11 @@ from stx.components import LinkText, StyledText, PlainText, Literal, ListBlock
 from stx.data_notation.parsing import parse_entry, skip_void, try_parse_entry
 from stx.data_notation.values import Value
 from stx.document import Document
+from stx.grammars import registry
 from stx.outputs import make_output_action
 from stx.utils.closeable import Closeable
 from stx.utils.debug import see
-from stx.utils.files import resolve_include_files
+from stx.utils.files import resolve_include_files, resolve_sibling
 from stx.utils.stx_error import StxError
 
 PASS = 0
@@ -437,6 +438,8 @@ def parse_directive(ctx: CTX, mark: str, location: Location) -> int:
         process_import(ctx, location, file_path, value)
     elif key == 'output':
         process_output(ctx, location, value)
+    elif key == 'grammar':
+        process_grammar(ctx, location, value)
     else:
         raise StxError(f'Unsupported directive: {key}')
 
@@ -457,6 +460,21 @@ def process_output(ctx: CTX, location: Location, value: Value):
     action = make_output_action(ctx.document, location, value)
 
     ctx.document.actions.append(action)
+
+
+def process_grammar(ctx: CTX, location: Location, value: Value):
+    d = value.to_dict()
+
+    lang = d['lang']
+    file = d['file']
+    rule = d.get('rule', lang)
+
+    file = resolve_sibling(ctx.document.source_file, file)
+
+    try:
+        registry.register_grammar_from_file(lang, file, rule)
+    except Exception as e:
+        raise StxError(str(e), location) from e
 
 
 def parse_inline_component(
