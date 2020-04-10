@@ -24,13 +24,14 @@ pytest && \
 echo "Generating dist archives..." && \
 python setup.py sdist bdist_wheel && \
 
+(git rev-parse $VERSION >/dev/null 2>&1 || \
+  echo "" && \
+  echo "Pushing tag..." && \
+  git tag $VERSION -a -m "Release for version $VERSION" && git \
+  push --follow-tags) && \
+
 echo "" && \
 echo "Publish package $VERSION..." && \
 twine upload dist/* && \
-
-echo "" && \
-echo "Pushing tag..." && \
-git tag $VERSION -a -m "Release for version $VERSION" && \
-git push --follow-tags && \
 
 echo "Done!"
