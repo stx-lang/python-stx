@@ -270,6 +270,11 @@ class Content:
     def read_line(self, indentation: int) -> Optional[str]:
         loc0 = self.get_location()
 
+        # Case when an empty line is immediately found
+        if self.peek() == '\n':
+            self.move_next()
+            return '\n'
+
         while self.column < indentation:
             if self.peek() != ' ':
                 self.go_back(loc0)
